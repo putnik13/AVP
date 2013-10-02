@@ -93,6 +93,12 @@
         <configuration>
           <runTarget>ScreenManager.html</runTarget>
           <hostedWebapp>${webappDirectory}</hostedWebapp>
+		  <logLevel>INFO</logLevel>
+          <style>${gwtCompilerOutputStyle}</style>
+          <draftCompile>${gwtDraftCompile}</draftCompile>
+          <strict>true</strict>
+          <compileReport>${gwtCompileReport}</compileReport>
+          <enableAssertions>${gwtEnableAssertions}</enableAssertions>
         </configuration>
       </plugin>
 

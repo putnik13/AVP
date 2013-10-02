@@ -2,9 +2,6 @@
 <module rename-to='ScreenManager'>
   <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User' />
-  <inherits name='com.smartgwt.SmartGwt'/>
-  <inherits name='com.google.common.collect.Collect'/>
-  <inherits name='com.atanor.smanager.Rpc'/>
   
   <!-- Inherit the default GWT style sheet.  You can change       -->
   <!-- the theme of your GWT application by uncommenting          -->
@@ -14,7 +11,15 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <!-- Other module inherits                                      -->
-
+  <inherits name='com.smartgwt.SmartGwt'/>
+  <inherits name='com.google.common.collect.Collect'/>
+  <inherits name='com.atanor.smanager.Rpc'/>
+  
+  <!-- Specify properties                                         -->
+  <!-- <set-property name="user.agent" value="opera,safari,gecko1_8,ie8,ie9"/>-->
+  <set-property name="user.agent" value="safari,gecko1_8"/>
+  <set-property name="locale" value="default"/>
+  
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.atanor.smanager.client.ScreenManager' />
 

@@ -12,6 +12,16 @@
   
   <properties>
     <gwtVersion>2.5.1</gwtVersion>
+	
+	<!-- Used for speed up the GWT compiler for developers -->
+	<!-- Allow optimization for production mode (set to false) -->
+    <gwtDraftCompile>true</gwtDraftCompile>
+	
+    <!-- OBFUSCATED, PRETTY, or DETAILED -->
+    <gwtCompilerOutputStyle>OBFUSCATED</gwtCompilerOutputStyle>
+    <gwtEnableAssertions>false</gwtEnableAssertions>
+    <gwtCompileReport>false</gwtCompileReport>
+		
     <smartgwt.version>4.0</smartgwt.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
