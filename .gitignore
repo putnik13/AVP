@@ -1,5 +1,8 @@
 *.class
 
+.gwt-cache
+.settings
+
 # Package Files #
 *.jar
 *.war
@@ -12,6 +15,6 @@ gwt-unitCache/
 .apt_generated/
 
 # more caches and things from deploy #
-war/WEB-INF/deploy/
-war/WEB-INF/classes/
+WEB-INF/deploy/*
+WEB-INF/classes/*
 
