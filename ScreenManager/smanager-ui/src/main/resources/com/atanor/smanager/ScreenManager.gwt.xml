@@ -12,6 +12,7 @@
 
   <!-- Other module inherits                                      -->
   <inherits name='com.smartgwt.SmartGwt'/>
+  <inherits name="com.smartgwt.Drawing"/>
   <inherits name='com.google.common.collect.Collect'/>
   <inherits name='com.atanor.smanager.Rpc'/>
   
