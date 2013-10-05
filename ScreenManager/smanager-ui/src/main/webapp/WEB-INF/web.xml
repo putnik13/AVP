@@ -8,7 +8,7 @@
   <!-- Servlets -->
   <servlet>
     <servlet-name>configServlet</servlet-name>
-    <servlet-class>com.atanor.smanager.server.services.ConfigServiceImpl</servlet-class>
+    <servlet-class>com.atanor.smanager.services.ConfigServiceImpl</servlet-class>
   </servlet>
 
   <servlet-mapping>

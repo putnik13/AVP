@@ -1,4 +1,4 @@
-package com.atanor.smanager.server.services;
+package com.atanor.smanager.services;
 
 import java.util.Arrays;
 import java.util.List;

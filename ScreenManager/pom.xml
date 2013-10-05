@@ -62,7 +62,8 @@
   
   <dependencyManagement>
     <dependencies>
-      <dependency>
+      <!-- GWT -->
+	  <dependency>
         <groupId>com.google.gwt</groupId>
         <artifactId>gwt-servlet</artifactId>
         <version>${gwtVersion}</version>
@@ -73,17 +74,6 @@
         <artifactId>gwt-user</artifactId>
         <version>${gwtVersion}</version>
         <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.smartgwt</groupId>
-        <artifactId>smartgwt</artifactId>
-        <version>${smartgwt.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.7</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>javax.validation</groupId>
@@ -98,7 +88,31 @@
         <classifier>sources</classifier>
         <scope>provided</scope>
       </dependency>
+	  
+	  <!-- DB -->
+	  <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>5.1.25</version>
+      </dependency>
       <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-entitymanager</artifactId>
+        <version>4.2.1.Final</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate.javax.persistence</groupId>
+        <artifactId>hibernate-jpa-2.0-api</artifactId>
+        <version>1.0.1.Final</version>
+      </dependency>
+	  
+	  <!-- Third-party -->
+      <dependency>
+        <groupId>com.smartgwt</groupId>
+        <artifactId>smartgwt</artifactId>
+        <version>${smartgwt.version}</version>
+      </dependency>
+	  <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>15.0</version>
@@ -107,8 +121,17 @@
         <groupId>com.google.guava</groupId>
         <artifactId>guava-gwt</artifactId>
         <version>15.0</version>
-      </dependency>	    
+      </dependency>
+      
+	  <!-- Tests -->
+	  <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.7</version>
+        <scope>test</scope>
+      </dependency>	  
     </dependencies>
+	
   </dependencyManagement>
   
   <modules>
