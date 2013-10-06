@@ -1,30 +1,17 @@
-package com.atanor.smanager.persistence.dao;
+package com.atanor.smanager.domain.dao;
 
 import java.util.List;
 
 import junit.framework.Assert;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.atanor.smanager.persistence.entity.Display;
+import com.atanor.smanager.domain.entity.Display;
+
 
 @Ignore
-public class DisplayDAOTest {
-
-	DisplayDAO dao = new DisplayDAO();
-
-	@Before
-	public void setUp() throws Exception {
-		dao.getEntityManager().getTransaction().begin();
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		dao.getEntityManager().getTransaction().rollback();
-	}
+public class DisplayDaoTest extends BaseDaoTest<Display>{
 
 	@Test
 	public void testInsertRecord() throws Exception {

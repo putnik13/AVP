@@ -1,4 +1,4 @@
-package com.atanor.smanager.persistence.entity;
+package com.atanor.smanager.domain.entity;
 
 public abstract class AbstractEntity<P> {
 

@@ -53,6 +53,7 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- 
     <dependency>
    		<groupId>javax.validation</groupId>
    		<artifactId>validation-api</artifactId>
@@ -64,6 +65,7 @@
       <classifier>sources</classifier>
       <scope>provided</scope>
     </dependency>
+    -->
     <dependency>
 		<groupId>com.google.guava</groupId>
     	<artifactId>guava</artifactId>
