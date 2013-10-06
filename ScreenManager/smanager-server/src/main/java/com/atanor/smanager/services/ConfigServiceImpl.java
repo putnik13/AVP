@@ -5,10 +5,12 @@ import java.util.List;
 
 import com.atanor.smanager.rpc.services.ConfigService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.google.inject.Singleton;
 
 /**
  * The server side implementation of the RPC service.
  */
+@Singleton
 @SuppressWarnings("serial")
 public class ConfigServiceImpl extends RemoteServiceServlet implements
 		ConfigService {

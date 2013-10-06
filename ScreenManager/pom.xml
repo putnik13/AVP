@@ -106,6 +106,23 @@
         <version>1.0.1.Final</version>
       </dependency>
 	  
+	  <!-- DI -->
+	  <dependency>
+	    <groupId>com.google.inject</groupId>
+	    <artifactId>guice</artifactId>
+	    <version>3.0</version>
+      </dependency>
+	  <dependency>
+	    <groupId>com.google.inject.extensions</groupId>
+	    <artifactId>guice-servlet</artifactId>
+	    <version>3.0</version>
+      </dependency>
+	  <dependency>
+        <groupId>com.google.inject.extensions</groupId>
+	    <artifactId>guice-persist</artifactId>
+	    <version>3.0</version>
+      </dependency>
+
 	  <!-- Third-party -->
       <dependency>
         <groupId>com.smartgwt</groupId>

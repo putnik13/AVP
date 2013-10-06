@@ -5,16 +5,16 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 
 import com.atanor.smanager.persistence.entity.AbstractEntity;
+import com.google.inject.Inject;
 
 @SuppressWarnings("rawtypes")
 public class GenericDAOImpl<E extends AbstractEntity, P> implements
 		GenericDAO<E, P> {
 
-	private EntityManager entityManager = Persistence
-			.createEntityManagerFactory("SMANAGER").createEntityManager();
+	@Inject
+	private EntityManager entityManager;
 	private Class<E> entityClass;
 
 	@SuppressWarnings("unchecked")

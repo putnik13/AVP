@@ -5,16 +5,19 @@
 
 <web-app>
 
-  <!-- Servlets -->
-  <servlet>
-    <servlet-name>configServlet</servlet-name>
-    <servlet-class>com.atanor.smanager.services.ConfigServiceImpl</servlet-class>
-  </servlet>
+  <filter>
+    <filter-name>guiceFilter</filter-name>
+    <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+  </filter>
 
-  <servlet-mapping>
-    <servlet-name>configServlet</servlet-name>
-    <url-pattern>/ScreenManager/config</url-pattern>
-  </servlet-mapping>
+  <filter-mapping>
+    <filter-name>guiceFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <listener>
+    <listener-class>com.atanor.smanager.injector.AppConfig</listener-class>
+  </listener>
 
   <!-- Default page to serve -->
   <welcome-file-list>
