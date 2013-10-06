@@ -1,13 +1,14 @@
-package com.atanor.smanager.persistence.dao;
+package com.atanor.smanager.domain.dao;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import com.atanor.smanager.persistence.entity.AbstractEntity;
+import com.atanor.smanager.domain.entity.AbstractEntity;
+
 
 @SuppressWarnings("rawtypes")
-public interface GenericDAO<E extends AbstractEntity, P> {
+public interface GenericDao<E extends AbstractEntity, P> {
 
 	/**
 	 * Persist the indicated entity to database
