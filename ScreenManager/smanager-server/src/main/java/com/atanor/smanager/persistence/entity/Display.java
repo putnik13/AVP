@@ -1,4 +1,4 @@
-package com.atanor.smanager.domain.entity;
+package com.atanor.smanager.persistence.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

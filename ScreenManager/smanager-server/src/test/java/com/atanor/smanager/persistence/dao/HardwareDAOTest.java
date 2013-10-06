@@ -1,18 +1,31 @@
-package com.atanor.smanager.domain.dao;
+package com.atanor.smanager.persistence.dao;
 
 import java.util.List;
 
 import junit.framework.Assert;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.atanor.smanager.domain.entity.Display;
-import com.atanor.smanager.domain.entity.Hardware;
-
+import com.atanor.smanager.persistence.entity.Display;
+import com.atanor.smanager.persistence.entity.Hardware;
 
 @Ignore
-public class HardwareDaoTest extends BaseDaoTest<Hardware> {
+public class HardwareDAOTest {
+
+	HardwareDAO dao = new HardwareDAO();
+
+	@Before
+	public void setUp() throws Exception {
+		dao.getEntityManager().getTransaction().begin();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		dao.getEntityManager().getTransaction().rollback();
+	}
 
 	@Test
 	public void testInsertRecord() throws Exception {
@@ -73,10 +86,12 @@ public class HardwareDaoTest extends BaseDaoTest<Hardware> {
 		Hardware hardware2 = new Hardware("testModel1", "testManufacture1");
 		Hardware hardware3 = new Hardware("testModel2", "testManufacture2");
 
+		// Сохраняем все авто
 		dao.insert(hardware1);
 		dao.insert(hardware2);
 		dao.insert(hardware3);
 
+		// Получаем все авто с БД
 		List<Hardware> allHardware = dao.findAll();
 		Assert.assertEquals(3, allHardware.size());
 

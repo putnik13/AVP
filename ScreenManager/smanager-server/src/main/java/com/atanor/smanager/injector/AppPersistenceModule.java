@@ -1,22 +1,21 @@
 package com.atanor.smanager.injector;
 
-import com.atanor.smanager.domain.dao.DisplayDao;
-import com.atanor.smanager.domain.dao.GenericDao;
-import com.atanor.smanager.domain.dao.HardwareDao;
-import com.atanor.smanager.domain.dao.PresetDao;
-import com.atanor.smanager.domain.entity.Display;
-import com.atanor.smanager.domain.entity.Hardware;
-import com.atanor.smanager.domain.entity.Preset;
+import com.atanor.smanager.persistence.dao.DisplayDAO;
+import com.atanor.smanager.persistence.dao.GenericDAO;
+import com.atanor.smanager.persistence.dao.HardwareDAO;
+import com.atanor.smanager.persistence.entity.Display;
+import com.atanor.smanager.persistence.entity.Hardware;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
+import com.google.inject.persist.jpa.JpaPersistModule;
 
 public class AppPersistenceModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(new TypeLiteral<GenericDao<Hardware, Long>>() {}).to(new TypeLiteral<HardwareDao>() {});
-		bind(new TypeLiteral<GenericDao<Display, Long>>() {}).to(new TypeLiteral<DisplayDao>() {});
-		bind(new TypeLiteral<GenericDao<Preset, Long>>() {}).to(new TypeLiteral<PresetDao>() {});
+		install(new JpaPersistModule("SMANAGER-JPA"));
+		bind(new TypeLiteral<GenericDAO<Hardware, Long>>() {}).to(new TypeLiteral<HardwareDAO>() {});
+		bind(new TypeLiteral<GenericDAO<Display, Long>>() {}).to(new TypeLiteral<DisplayDAO>() {});
 	}
 
 }

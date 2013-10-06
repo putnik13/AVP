@@ -1,4 +1,4 @@
-package com.atanor.smanager.domain.dao;
+package com.atanor.smanager.persistence.dao;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -6,12 +6,12 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import com.atanor.smanager.domain.entity.AbstractEntity;
+import com.atanor.smanager.persistence.entity.AbstractEntity;
 import com.google.inject.Inject;
 
 @SuppressWarnings("rawtypes")
-public class GenericDaoImpl<E extends AbstractEntity, P> implements
-		GenericDao<E, P> {
+public class GenericDAOImpl<E extends AbstractEntity, P> implements
+		GenericDAO<E, P> {
 
 	@Inject
 	private EntityManager entityManager;
