@@ -22,7 +22,7 @@ public class BaseDaoTest<E extends AbstractEntity> {
 
 	@After
 	public void tearDown() throws Exception {
-		dao.getEntityManager().getTransaction().rollback();;
+		dao.getEntityManager().getTransaction().rollback();
 	}
 	
 }

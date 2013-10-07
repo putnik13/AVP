@@ -1,7 +1,7 @@
 @echo off
 
 title mysql
-mysql --user=smanager --password=smanager < mysql-reset.sql
+mysql --user=smanager --password=smanager < mysql-preload.sql
 @if errorlevel 1 goto errormark
 
 @goto endmark
