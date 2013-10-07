@@ -24,7 +24,7 @@ public class ActiveScreen extends AbstractEntity<Long> {
 	private String source;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "preset_id")
+	@JoinColumn(name = "preset_id", nullable = false)
 	private Preset preset;
 
 	@Column(name = "start_section_hz")

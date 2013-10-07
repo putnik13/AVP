@@ -24,16 +24,12 @@ public class Preset extends AbstractEntity<Long> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Id
-	@Column(name = "display_layout")
+	@Column(name = "display_layout", length = 32)
 	@Enumerated(EnumType.STRING)
 	private DisplayLayout layout;
 
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "preset")
 	private List<ActiveScreen> activeScreens;
-
-	@Column(name = "section_quantity")
-	private Integer sectionQuantity;
 
 	public Preset() {
 	}
@@ -43,9 +39,8 @@ public class Preset extends AbstractEntity<Long> {
 		return id;
 	}
 
-	public Preset(final DisplayLayout layout, final Integer sectionQuantity) {
+	public Preset(final DisplayLayout layout) {
 		this.layout = layout;
-		this.sectionQuantity = sectionQuantity;
 	}
 
 	public DisplayLayout getLayout() {
@@ -62,14 +57,6 @@ public class Preset extends AbstractEntity<Long> {
 
 	public void setActiveScreens(final List<ActiveScreen> activeScreens) {
 		this.activeScreens = activeScreens;
-	}
-
-	public Integer getSectionQuantity() {
-		return sectionQuantity;
-	}
-
-	public void setSectionQuantity(final Integer sectionQuantity) {
-		this.sectionQuantity = sectionQuantity;
 	}
 
 }
