@@ -6,7 +6,7 @@ import javax.inject.Singleton;
 import com.atanor.smanager.domain.converter.HardwareConverter;
 import com.atanor.smanager.rpc.dto.HardwareDto;
 import com.atanor.smanager.rpc.services.ConfigService;
-import com.atanor.smanager.services.ConfigurationService;
+import com.atanor.smanager.services.EquipmentConfigService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 @Singleton
@@ -14,13 +14,13 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class ConfigServlet extends RemoteServiceServlet implements ConfigService {
 
 	@Inject
-	private ConfigurationService configService;
+	private EquipmentConfigService equipService;
 
 	@Inject
 	private HardwareConverter hardwareConverter;
 
 	public HardwareDto getHardwareConfiguration() {
-		return hardwareConverter.convert(configService.getActiveHardware());
+		return hardwareConverter.convert(equipService.getActiveHardware());
 	}
 
 }

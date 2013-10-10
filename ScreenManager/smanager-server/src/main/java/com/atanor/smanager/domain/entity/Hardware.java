@@ -10,8 +10,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -34,7 +36,9 @@ public class Hardware extends AbstractEntity<Long> {
 	
 	@Column(name = "active")
 	private Boolean active;
-	
+    
+	@OneToOne
+    @JoinColumn(name = "display_id")
 	private Display display;
 
 	public Hardware() {

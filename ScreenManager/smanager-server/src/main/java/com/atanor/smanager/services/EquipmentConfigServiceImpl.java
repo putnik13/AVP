@@ -8,7 +8,7 @@ import com.atanor.smanager.domain.dao.HardwareDao;
 import com.atanor.smanager.domain.entity.Hardware;
 import com.google.common.collect.Lists;
 
-public class ConfigurationServiceImpl implements ConfigurationService {
+public class EquipmentConfigServiceImpl implements EquipmentConfigService {
 
 	@Inject
 	private HardwareDao hardwareDao;
