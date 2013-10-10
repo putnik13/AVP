@@ -1,25 +1,26 @@
 package com.atanor.smanager.servlet;
 
-import java.util.Arrays;
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.atanor.smanager.domain.converter.HardwareConverter;
+import com.atanor.smanager.rpc.dto.HardwareDto;
 import com.atanor.smanager.rpc.services.ConfigService;
-import com.atanor.smanager.services.PresetService;
+import com.atanor.smanager.services.ConfigurationService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 @Singleton
 @SuppressWarnings("serial")
-public class ConfigServlet extends RemoteServiceServlet implements
-		ConfigService {
+public class ConfigServlet extends RemoteServiceServlet implements ConfigService {
 
 	@Inject
-	private PresetService presetService;
-	
-	public List<String> getAvailableConfigurations() {
-		return Arrays.asList("CONFIG1","CONFIG2","CONFIG3");
+	private ConfigurationService configService;
+
+	@Inject
+	private HardwareConverter hardwareConverter;
+
+	public HardwareDto getHardwareConfiguration() {
+		return hardwareConverter.convert(configService.getActiveHardware());
 	}
 
 }

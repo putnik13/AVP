@@ -9,6 +9,9 @@ public class DisplayDto extends AbstractDto {
 	private Integer high;
 	private PanelLayoutDto layout;
 
+	public DisplayDto() {
+	}
+
 	public DisplayDto(final Long id) {
 		this.id = id;
 	}

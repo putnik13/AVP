@@ -1,10 +1,8 @@
 package com.atanor.smanager.client;
 
-import java.util.List;
-
+import com.atanor.smanager.rpc.dto.HardwareDto;
 import com.atanor.smanager.rpc.services.ConfigService;
 import com.atanor.smanager.rpc.services.ConfigServiceAsync;
-import com.google.common.base.Joiner;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -22,8 +20,7 @@ public class ScreenManager implements EntryPoint {
 	/**
 	 * Create a remote service proxy to talk to the server-side Config service.
 	 */
-	private final ConfigServiceAsync configService = GWT
-			.create(ConfigService.class);
+	private final ConfigServiceAsync configService = GWT.create(ConfigService.class);
 
 	/**
 	 * This is the entry point method.
@@ -46,22 +43,19 @@ public class ScreenManager implements EntryPoint {
 	}
 
 	private void getConfigurations() {
-		configService
-				.getAvailableConfigurations(new AsyncCallback<List<String>>() {
+		configService.getHardwareConfiguration(new AsyncCallback<HardwareDto>() {
 
-					@Override
-					public void onSuccess(List<String> result) {
-						String joined = Joiner.on("\t").join(result);
-						SC.say("Hello Sergey! :) The server has following configurations: "
-								+ joined);
-					}
+			@Override
+			public void onSuccess(HardwareDto result) {
+				SC.say("Fetched configuration for following hardware: " + result.getModelName());
+			}
 
-					@Override
-					public void onFailure(Throwable caught) {
-						SC.say("Configurations are not available!");
-						caught.printStackTrace();
-					}
-				});
+			@Override
+			public void onFailure(Throwable caught) {
+				SC.say("Configurations are not available!");
+				caught.printStackTrace();
+			}
+		});
 	}
 
 }

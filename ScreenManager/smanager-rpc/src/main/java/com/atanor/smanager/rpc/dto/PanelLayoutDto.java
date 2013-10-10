@@ -6,6 +6,9 @@ public class PanelLayoutDto extends AbstractDto {
 	private String name;
 	private Integer panelQuantity;
 
+	public PanelLayoutDto() {
+	}
+
 	public String getName() {
 		return name;
 	}

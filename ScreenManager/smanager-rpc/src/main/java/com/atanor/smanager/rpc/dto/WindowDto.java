@@ -12,6 +12,9 @@ public class WindowDto extends AbstractDto {
 	private Integer yBottomRight;
 	private Integer zIndex;
 
+	public WindowDto() {
+	}
+
 	public WindowDto(final Long id) {
 		this.id = id;
 	}

@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "hardware")
-@NamedQuery(name = "Hardware.getAll", query = "SELECT c from Hardware c")
+@NamedQuery(name = "Hardware.getAll", query = "SELECT h from Hardware h")
 public class Hardware extends AbstractEntity<Long> {
 
 	@Id
@@ -31,7 +31,10 @@ public class Hardware extends AbstractEntity<Long> {
 
 	@ElementCollection
 	private List<String> sources;
-
+	
+	@Column(name = "active")
+	private Boolean active;
+	
 	private Display display;
 
 	public Hardware() {
@@ -78,4 +81,12 @@ public class Hardware extends AbstractEntity<Long> {
 		this.display = display;
 	}
 
+	public Boolean isActive() {
+		return active;
+	}
+
+	public void setActive(final Boolean active) {
+		this.active = active;
+	}
+	
 }

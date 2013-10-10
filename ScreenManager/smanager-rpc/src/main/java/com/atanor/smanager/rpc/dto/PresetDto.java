@@ -8,6 +8,9 @@ public class PresetDto extends AbstractDto {
 	private Long id;
 	private List<WindowDto> windows;
 
+	public PresetDto() {
+	}
+
 	public PresetDto(final Long id) {
 		this.id = id;
 	}
@@ -15,7 +18,7 @@ public class PresetDto extends AbstractDto {
 	public Long getId() {
 		return id;
 	}
-	
+
 	public List<WindowDto> getWindows() {
 		return windows;
 	}
