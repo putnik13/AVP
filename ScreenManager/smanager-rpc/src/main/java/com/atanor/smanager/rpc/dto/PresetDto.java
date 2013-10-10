@@ -6,27 +6,27 @@ import java.util.List;
 public class PresetDto extends AbstractDto {
 
 	private Long id;
-	private LayoutDto layout;
-	private List<ActiveScreenDto> activeScreens;
+	private PanelLayoutDto layout;
+	private List<WindowDto> windows;
 
 	public PresetDto(final Long id) {
 		this.id = id;
 	}
 
-	public LayoutDto getLayout() {
+	public PanelLayoutDto getLayout() {
 		return layout;
 	}
 
-	public void setLayout(LayoutDto layout) {
+	public void setLayout(final PanelLayoutDto layout) {
 		this.layout = layout;
 	}
 
-	public List<ActiveScreenDto> getActiveScreens() {
-		return activeScreens;
+	public List<WindowDto> getWindows() {
+		return windows;
 	}
 
-	public void setActiveScreens(List<ActiveScreenDto> activeScreens) {
-		this.activeScreens = activeScreens;
+	public void setWindows(final List<WindowDto> windows) {
+		this.windows = windows;
 	}
 
 	public Long getId() {

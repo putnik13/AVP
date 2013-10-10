@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-public enum DisplayLayout {
+public enum PanelLayout {
 
 	ONExONE("1x1", 1), ONExTWO("1x2", 2), ONExTHREE("1x3", 3), ONExFOUR("1x4", 4), ONExFIVE("1x5", 5),
 	// -------------------
@@ -19,29 +19,29 @@ public enum DisplayLayout {
 
 	private String description;
 
-	private Integer sectionQuantity;
+	private Integer panelQuantity;
 
-	private static Map<String, DisplayLayout> layouts = Maps.newHashMap();
+	private static Map<String, PanelLayout> layouts = Maps.newHashMap();
 	static {
-		for (DisplayLayout l : EnumSet.allOf(DisplayLayout.class)) {
+		for (PanelLayout l : EnumSet.allOf(PanelLayout.class)) {
 			layouts.put(l.toString(), l);
 		}
 	}
 
-	private DisplayLayout(final String description, final Integer sectionQuantity) {
+	private PanelLayout(final String description, final Integer panelQuantity) {
 		this.description = description;
-		this.sectionQuantity = sectionQuantity;
+		this.panelQuantity = panelQuantity;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public Integer getSectionQuantity() {
-		return sectionQuantity;
+	public Integer getPanelQuantity() {
+		return panelQuantity;
 	}
 
-	public static DisplayLayout getLayout(String description) {
+	public static PanelLayout getLayout(String description) {
 		return layouts.get(description);
 	}
 

@@ -3,11 +3,12 @@ package com.atanor.smanager.servlet;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.atanor.smanager.rpc.services.ConfigService;
 import com.atanor.smanager.services.PresetService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 @Singleton
 @SuppressWarnings("serial")

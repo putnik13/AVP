@@ -8,7 +8,7 @@ public class AppCoreModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(PresetService.class).to(PresetServiceImpl.class);
+		bind(PresetService.class).to(PresetServiceImpl.class);		
 	}
 
 }

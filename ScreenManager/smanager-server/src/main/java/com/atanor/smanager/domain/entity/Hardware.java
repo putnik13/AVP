@@ -1,13 +1,16 @@
 package com.atanor.smanager.domain.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,22 +22,17 @@ public class Hardware extends AbstractEntity<Long> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "modelname", length = 32)
+	@Column(name = "model_name", length = 32)
 	private String modelName;
 
-	@Column(name = "manufacturename", length = 32)
-	private String manufactureName;
-
-	@OneToOne
-    @JoinColumn(name = "display_id", referencedColumnName = "id")
-	private Display display;
+	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "hardware")
+	private List<Preset> presets;
 
 	public Hardware() {
 	}
 
-	public Hardware(final String modelName, final String manufactureName) {
+	public Hardware(final String modelName) {
 		this.modelName = modelName;
-		this.manufactureName = manufactureName;
 	}
 
 	@Override
@@ -50,27 +48,12 @@ public class Hardware extends AbstractEntity<Long> {
 		this.modelName = modelName;
 	}
 
-	public String getManufactureName() {
-		return manufactureName;
+	public List<Preset> getPresets() {
+		return presets;
 	}
 
-	public void setManufactureName(final String manufactureName) {
-		this.manufactureName = manufactureName;
+	public void setPresets(final List<Preset> presets) {
+		this.presets = presets;
 	}
 
-	public Display getDisplay() {
-		return display;
-	}
-
-	public void setDisplay(final Display display) {
-		this.display = display;
-	}
-
-	@Override
-	public String toString() {
-		return "Hardware [id=" + id + ", modelName=" + modelName
-				+ ", manufactureName=" + manufactureName + ", display="
-				+ display + "]";
-	}
-	
 }

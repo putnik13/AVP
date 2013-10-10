@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -19,17 +21,21 @@ import javax.persistence.Table;
 @Table(name = "presets")
 @NamedQuery(name = "Preset.getAll", query = "SELECT p FROM Preset p")
 public class Preset extends AbstractEntity<Long> {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "display_layout", length = 32)
+	@Column(name = "panel_layout", length = 32)
 	@Enumerated(EnumType.STRING)
-	private DisplayLayout layout;
+	private PanelLayout layout;
 
-	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "preset")
-	private List<ActiveScreen> activeScreens;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "harware_id")
+	private Hardware hardware;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "preset")
+	private List<Window> windows;
 
 	public Preset() {
 	}
@@ -39,24 +45,32 @@ public class Preset extends AbstractEntity<Long> {
 		return id;
 	}
 
-	public Preset(final DisplayLayout layout) {
+	public Preset(final PanelLayout layout) {
 		this.layout = layout;
 	}
 
-	public DisplayLayout getLayout() {
+	public PanelLayout getLayout() {
 		return layout;
 	}
 
-	public void setLayout(final DisplayLayout layout) {
+	public void setLayout(final PanelLayout layout) {
 		this.layout = layout;
 	}
 
-	public List<ActiveScreen> getActiveScreens() {
-		return activeScreens;
+	public List<Window> getWindows() {
+		return windows;
 	}
 
-	public void setActiveScreens(final List<ActiveScreen> activeScreens) {
-		this.activeScreens = activeScreens;
+	public void setWindows(final List<Window> windows) {
+		this.windows = windows;
+	}
+
+	public Hardware getHardware() {
+		return hardware;
+	}
+
+	public void setHardware(final Hardware hardware) {
+		this.hardware = hardware;
 	}
 
 }

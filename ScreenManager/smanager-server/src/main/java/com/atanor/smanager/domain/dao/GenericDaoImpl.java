@@ -4,10 +4,10 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import com.atanor.smanager.domain.entity.AbstractEntity;
-import com.google.inject.Inject;
 
 @SuppressWarnings("rawtypes")
 public class GenericDaoImpl<E extends AbstractEntity, P> implements

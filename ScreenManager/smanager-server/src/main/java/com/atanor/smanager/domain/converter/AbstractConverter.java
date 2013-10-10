@@ -9,8 +9,8 @@ import com.google.common.collect.Lists;
 @SuppressWarnings("rawtypes")
 public abstract class AbstractConverter<D extends AbstractDto, E extends AbstractEntity> implements Converter<D, E> {
 
-	protected static <D extends AbstractDto, E extends AbstractEntity> List<D> convertList(final List<E> entities,
-			final Converter<D, E> converter) {
+	protected static <D extends AbstractDto, E extends AbstractEntity> List<D> convertList(
+			final Converter<D, E> converter, final List<E> entities) {
 		final List<D> converted = Lists.newArrayList();
 		if (entities != null) {
 			for (E entity : entities) {
