@@ -3,10 +3,7 @@ package com.atanor.smanager.domain.entity;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,10 +23,6 @@ public class Preset extends AbstractEntity<Long> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "panel_layout", length = 32)
-	@Enumerated(EnumType.STRING)
-	private PanelLayout layout;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "harware_id")
 	private Hardware hardware;
@@ -43,18 +36,6 @@ public class Preset extends AbstractEntity<Long> {
 	@Override
 	public Long getId() {
 		return id;
-	}
-
-	public Preset(final PanelLayout layout) {
-		this.layout = layout;
-	}
-
-	public PanelLayout getLayout() {
-		return layout;
-	}
-
-	public void setLayout(final PanelLayout layout) {
-		this.layout = layout;
 	}
 
 	public List<Window> getWindows() {

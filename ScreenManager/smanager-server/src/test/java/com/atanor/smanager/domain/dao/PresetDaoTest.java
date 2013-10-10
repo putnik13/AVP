@@ -1,5 +1,6 @@
 package com.atanor.smanager.domain.dao;
 
+import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -7,9 +8,8 @@ import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.atanor.smanager.domain.entity.Window;
-import com.atanor.smanager.domain.entity.PanelLayout;
 import com.atanor.smanager.domain.entity.Preset;
+import com.atanor.smanager.domain.entity.Window;
 import com.google.common.collect.Lists;
 
 @Ignore
@@ -17,7 +17,7 @@ public class PresetDaoTest extends BaseDaoTest<Preset> {
 
 	@Test
 	public void testInsertRecord() throws Exception {
-		Preset preset = new Preset(PanelLayout.TWOxTHREE);
+		Preset preset = new Preset();
 
 		Window w1 = new Window("Window 1", "VIDEO", 1, 2, 1, 2, 1);
 		Window w2 = new Window("Window 2", "CAMERA1", 3, 1, 1, 1, 2);
@@ -30,7 +30,7 @@ public class PresetDaoTest extends BaseDaoTest<Preset> {
 
 	@Test
 	public void testDeleteRecord() throws Exception {
-		Preset preset = new Preset(PanelLayout.ONExONE);
+		Preset preset = new Preset();
 
 		Long id = dao.insert(preset);
 		preset = dao.find(id);
@@ -39,7 +39,7 @@ public class PresetDaoTest extends BaseDaoTest<Preset> {
 
 	@Test
 	public void testSelect() throws Exception {
-		Preset preset = new Preset(PanelLayout.TWOxTHREE);
+		Preset preset = new Preset();
 
 		Window w1 = new Window("Window 1", "VIDEO", 1, 2, 1, 2, 1);
 		Window w2 = new Window("Window 2", "CAMERA1", 3, 1, 1, 1, 2);
@@ -52,8 +52,8 @@ public class PresetDaoTest extends BaseDaoTest<Preset> {
 		Preset presetFromDB = dao.find(id);
 		Assert.assertNotNull(presetFromDB);
 
-		Assert.assertEquals(PanelLayout.TWOxTHREE, presetFromDB.getLayout());
-		Assert.assertEquals(Integer.valueOf(6), presetFromDB.getLayout().getPanelQuantity());
+//		Assert.assertEquals(PanelLayout.TWOxTHREE, presetFromDB.getLayout());
+//		Assert.assertEquals(Integer.valueOf(6), presetFromDB.getLayout().getPanelQuantity());
 
 		Assert.assertEquals(3, presetFromDB.getWindows().size());
 
@@ -84,24 +84,26 @@ public class PresetDaoTest extends BaseDaoTest<Preset> {
 
 	@Test
 	public void testUpdate() throws Exception {
-		Preset preset = new Preset(PanelLayout.ONExONE);
-
+		Preset preset = new Preset();
+		preset.setWindows(Arrays.asList(new Window()));
+		
 		Long id = dao.insert(preset);
-
-		preset.setLayout(PanelLayout.ONExTWO);
-
-		dao.update(preset);
-
 		Preset presetFromDB = dao.find(id);
 		Assert.assertNotNull(presetFromDB);
-		Assert.assertEquals(PanelLayout.ONExTWO, presetFromDB.getLayout());
-		Assert.assertEquals(Integer.valueOf(2), presetFromDB.getLayout().getPanelQuantity());
+		Assert.assertEquals(1, presetFromDB.getWindows().size());
+		
+		presetFromDB.getWindows().add(new Window());
+		dao.update(presetFromDB);
+
+		presetFromDB = dao.find(id);
+		Assert.assertNotNull(presetFromDB);
+		Assert.assertEquals(2, presetFromDB.getWindows().size());
 	}
 
 	public void testGetAll() {
-		Preset preset1 = new Preset(PanelLayout.ONExONE);
-		Preset preset2 = new Preset(PanelLayout.ONExTWO);
-		Preset preset3 = new Preset(PanelLayout.ONExTHREE);
+		Preset preset1 = new Preset();
+		Preset preset2 = new Preset();
+		Preset preset3 = new Preset();
 
 		dao.insert(preset1);
 		dao.insert(preset2);
@@ -110,14 +112,14 @@ public class PresetDaoTest extends BaseDaoTest<Preset> {
 		List<Preset> allDisplay = dao.findAll();
 		Assert.assertEquals(3, allDisplay.size());
 
-		Assert.assertEquals(PanelLayout.ONExONE, allDisplay.get(0).getLayout());
-		Assert.assertEquals(Integer.valueOf(1), allDisplay.get(0).getLayout().getPanelQuantity());
-
-		Assert.assertEquals(PanelLayout.ONExTWO, allDisplay.get(1).getLayout());
-		Assert.assertEquals(Integer.valueOf(2), allDisplay.get(1).getLayout().getPanelQuantity());
-
-		Assert.assertEquals(PanelLayout.ONExTHREE, allDisplay.get(2).getLayout());
-		Assert.assertEquals(Integer.valueOf(2), allDisplay.get(2).getLayout().getPanelQuantity());
+//		Assert.assertEquals(PanelLayout.ONExONE, allDisplay.get(0).getLayout());
+//		Assert.assertEquals(Integer.valueOf(1), allDisplay.get(0).getLayout().getPanelQuantity());
+//
+//		Assert.assertEquals(PanelLayout.ONExTWO, allDisplay.get(1).getLayout());
+//		Assert.assertEquals(Integer.valueOf(2), allDisplay.get(1).getLayout().getPanelQuantity());
+//
+//		Assert.assertEquals(PanelLayout.ONExTHREE, allDisplay.get(2).getLayout());
+//		Assert.assertEquals(Integer.valueOf(2), allDisplay.get(2).getLayout().getPanelQuantity());
 	}
 	
 	private void populatePreset(Preset preset, List<Window> screens){
