@@ -97,6 +97,22 @@ public class PresetDaoTest extends BaseDaoTest<Preset> {
 		Assert.assertNull(presetFromDB.getWindows());
 	}
 
+	@Test
+	public void testUpdateByNewRecord() throws Exception {
+		Preset preset = new Preset();
+		Window w0 = new Window();
+		w0.setPreset(preset);
+		preset.setWindows(Arrays.asList(w0));
+
+		Long id = dao.insert(preset);
+		
+		preset = new Preset(id);		
+		dao.update(preset);
+		Preset presetFromDB = dao.find(id);
+		Assert.assertNotNull(presetFromDB);
+		Assert.assertNull(presetFromDB.getWindows());
+	}
+	
 	public void testGetAll() {
 		Preset preset1 = new Preset();
 		Preset preset2 = new Preset();

@@ -13,14 +13,26 @@ public class DisplayConverter extends AbstractConverter<DisplayDto, Display> {
 	private PanelLayoutConverter layoutConverter;
 
 	@Override
-	public DisplayDto convert(Display entity) {
+	public DisplayDto toDto(final Display entity) {
 		Validate.notNull(entity, "entity param can not be null");
 
 		final DisplayDto dto = new DisplayDto(entity.getId());
 		dto.setWidth(entity.getWidth());
 		dto.setHigh(entity.getHigh());
-		dto.setLayout(layoutConverter.convert(entity.getLayout()));
+		dto.setLayout(layoutConverter.toDto(entity.getLayout()));
 
 		return dto;
+	}
+
+	@Override
+	public Display toEntity(final DisplayDto dto) {
+		Validate.notNull(dto, "dto param can not be null");
+
+		final Display entity = new Display();
+		entity.setWidth(dto.getWidth());
+		entity.setHigh(dto.getHigh());
+		entity.setLayout(layoutConverter.toEntity(dto.getLayout()));
+
+		return entity;
 	}
 }

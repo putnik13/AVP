@@ -16,15 +16,28 @@ public class HardwareConverter extends AbstractConverter<HardwareDto, Hardware> 
 	private PresetConverter presetConverter;
 
 	@Override
-	public HardwareDto convert(Hardware entity) {
+	public HardwareDto toDto(final Hardware entity) {
 		Validate.notNull(entity, "entity param can not be null");
 
 		final HardwareDto dto = new HardwareDto(entity.getId());
 		dto.setModelName(entity.getModelName());
 		dto.setSources(entity.getSources());
-		dto.setDisplay(displayConverter.convert(entity.getDisplay()));
-		dto.setPresets(convertList(presetConverter, entity.getPresets()));
+		dto.setDisplay(displayConverter.toDto(entity.getDisplay()));
+		dto.setPresets(convertEntityList(presetConverter, entity.getPresets()));
 
 		return dto;
+	}
+
+	@Override
+	public Hardware toEntity(final HardwareDto dto) {
+		Validate.notNull(dto, "dto param can not be null");
+		
+		final Hardware entity = new Hardware();
+		entity.setModelName(dto.getModelName());
+		entity.setSources(dto.getSources());
+		entity.setDisplay(displayConverter.toEntity(dto.getDisplay()));
+		entity.setPresets(convertDtoList(presetConverter, dto.getPresets()));
+		
+		return entity;
 	}
 }

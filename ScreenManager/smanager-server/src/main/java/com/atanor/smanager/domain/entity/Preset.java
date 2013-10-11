@@ -32,7 +32,11 @@ public class Preset extends AbstractEntity<Long> {
 
 	public Preset() {
 	}
-
+	
+	public Preset(Long id) {
+		this.id = id;
+	}
+	
 	@Override
 	public Long getId() {
 		return id;

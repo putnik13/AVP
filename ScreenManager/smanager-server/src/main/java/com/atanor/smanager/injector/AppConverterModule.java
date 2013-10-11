@@ -25,7 +25,7 @@ public class AppConverterModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(new TypeLiteral<Converter<PresetDto, Preset>>() {}).to(new TypeLiteral<PresetConverter>() {}).in(Singleton.class);
-		bind(new TypeLiteral<Converter<PanelLayoutDto, PanelLayout>>() {}).to(new TypeLiteral<PanelLayoutConverter>() {}).in(Singleton.class);
+//		bind(new TypeLiteral<Converter<PanelLayoutDto, PanelLayout>>() {}).to(new TypeLiteral<PanelLayoutConverter>() {}).in(Singleton.class);
 		bind(new TypeLiteral<Converter<WindowDto, Window>>() {}).to(new TypeLiteral<WindowConverter>() {}).in(Singleton.class);
 		bind(new TypeLiteral<Converter<DisplayDto, Display>>() {}).to(new TypeLiteral<DisplayConverter>() {}).in(Singleton.class);
 		bind(new TypeLiteral<Converter<HardwareDto, Hardware>>() {}).to(new TypeLiteral<HardwareConverter>() {}).in(Singleton.class);

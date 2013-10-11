@@ -1,6 +1,7 @@
 package com.atanor.smanager.rpc.services;
 
 import com.atanor.smanager.rpc.dto.HardwareDto;
+import com.atanor.smanager.rpc.dto.PresetDto;
 import com.atanor.smanager.shared.AppConstants;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -10,6 +11,10 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath(AppConstants.CONFIG_PATH)
 public interface ConfigService extends RemoteService {
-	
+
 	HardwareDto getHardwareConfiguration();
+
+	Boolean applyPreset(PresetDto preset);
+
+	Boolean savePreset(PresetDto preset);
 }

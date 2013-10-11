@@ -13,12 +13,22 @@ public class PresetConverter extends AbstractConverter<PresetDto, Preset> {
 	private WindowConverter winConverter;
 
 	@Override
-	public PresetDto convert(Preset entity) {
+	public PresetDto toDto(final Preset entity) {
 		Validate.notNull(entity, "entity param can not be null");
-		
+
 		final PresetDto dto = new PresetDto(entity.getId());
-		dto.setWindows(convertList(winConverter, entity.getWindows()));
+		dto.setWindows(convertEntityList(winConverter, entity.getWindows()));
 
 		return dto;
+	}
+
+	@Override
+	public Preset toEntity(final PresetDto dto) {
+		Validate.notNull(dto, "dto param can not be null");
+
+		final Preset entity = new Preset();
+		entity.setWindows(convertDtoList(winConverter, dto.getWindows()));
+
+		return entity;
 	}
 }
