@@ -26,7 +26,7 @@ public class PresetConverter extends AbstractConverter<PresetDto, Preset> {
 	public Preset toEntity(final PresetDto dto) {
 		Validate.notNull(dto, "dto param can not be null");
 
-		final Preset entity = new Preset();
+		final Preset entity = new Preset(dto.getId());
 		entity.setWindows(convertDtoList(winConverter, dto.getWindows()));
 
 		return entity;
