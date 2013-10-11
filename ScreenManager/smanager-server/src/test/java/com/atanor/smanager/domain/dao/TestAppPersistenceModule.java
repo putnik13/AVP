@@ -7,7 +7,7 @@ public class TestAppPersistenceModule extends AppPersistenceModule {
 
 	@Override
 	protected void configure() {
-		install(new JpaPersistModule("SMANAGER-JPA"));
+		install(new JpaPersistModule("TEST-SMANAGER-JPA"));
 		bind(TestJPAInitializer.class).asEagerSingleton();
 		super.configure();
 	}
