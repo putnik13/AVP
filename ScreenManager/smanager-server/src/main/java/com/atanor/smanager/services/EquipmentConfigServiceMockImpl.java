@@ -37,4 +37,10 @@ public class EquipmentConfigServiceMockImpl implements EquipmentConfigService {
 		return source;
 	}
 
+	@Override
+	public Boolean savePreset(Preset preset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

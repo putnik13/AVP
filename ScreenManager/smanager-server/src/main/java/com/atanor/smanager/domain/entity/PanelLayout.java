@@ -24,7 +24,7 @@ public enum PanelLayout {
 	private static Map<String, PanelLayout> layouts = Maps.newHashMap();
 	static {
 		for (PanelLayout l : EnumSet.allOf(PanelLayout.class)) {
-			layouts.put(l.toString(), l);
+			layouts.put(l.description, l);
 		}
 	}
 

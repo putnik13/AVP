@@ -29,6 +29,9 @@ public class Display extends AbstractEntity<Long> {
 	@Enumerated(EnumType.STRING)
 	private PanelLayout layout;
 
+	public Display() {
+	}
+
 	public Display(final PanelLayout layout, final Integer width, final Integer high) {
 		this.layout = layout;
 		this.width = width;

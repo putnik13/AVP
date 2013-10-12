@@ -47,12 +47,12 @@ public class WindowDto extends AbstractDto {
 		this.yTopLeft = yTopLeft;
 	}
 
-	public Integer getXBottomRigh() {
+	public Integer getXBottomRight() {
 		return xBottomRigh;
 	}
 
-	public void setXBottomRigh(final Integer xBottomRigh) {
-		this.xBottomRigh = xBottomRigh;
+	public void setXBottomRight(final Integer xBottomRight) {
+		this.xBottomRigh = xBottomRight;
 	}
 
 	public Integer getYBottomRight() {

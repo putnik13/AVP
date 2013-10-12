@@ -8,7 +8,7 @@ import com.atanor.smanager.rpc.dto.WindowDto;
 public class WindowConverter extends AbstractConverter<WindowDto, Window> {
 
 	@Override
-	public WindowDto convert(Window entity) {
+	public WindowDto toDto(final Window entity) {
 		Validate.notNull(entity, "entity param can not be null");
 		
 		final WindowDto dto = new WindowDto(entity.getId());
@@ -16,11 +16,27 @@ public class WindowConverter extends AbstractConverter<WindowDto, Window> {
 		dto.setSource(entity.getSource());
 		dto.setXTopLeft(entity.getXTopLeft());
 		dto.setYTopLeft(entity.getYTopLeft());
-		dto.setXBottomRigh(entity.getXBottomRight());
+		dto.setXBottomRight(entity.getXBottomRight());
 		dto.setYBottomRight(entity.getYBottomRight());
 		dto.setZIndex(entity.getZIndex());
 		
 		return dto;
+	}
+
+	@Override
+	public Window toEntity(final WindowDto dto) {
+		Validate.notNull(dto, "dto param can not be null");
+		
+		final Window entity = new Window();
+		entity.setName(dto.getName());
+		entity.setSource(dto.getSource());
+		entity.setXTopLeft(dto.getXTopLeft());
+		entity.setYTopLeft(dto.getYTopLeft());
+		entity.setXBottomRight(dto.getXBottomRight());
+		entity.setYBottomRight(dto.getYBottomRight());
+		entity.setZIndex(dto.getZIndex());
+		
+		return entity;
 	}
 
 }
