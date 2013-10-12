@@ -61,7 +61,7 @@ public class NavigationArea extends HLayout {
 							$namePreset.setMaxWidth(164);
 							$namePreset.setMaxHeight(62);
 							$namePreset.setBackgroundColor("lightgrey");
-							$namePreset.setProperty("preset", pres);
+//							$namePreset.setProperty("preset", pres);
 							$namePreset.draw();
 //							$namePreset
 //									.addDoubleClickHandler(new DoubleClickHandler() {
