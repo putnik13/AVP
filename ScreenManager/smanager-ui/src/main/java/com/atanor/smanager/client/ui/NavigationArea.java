@@ -86,7 +86,7 @@ public class NavigationArea extends HLayout {
 								final Label $windowN = new Label();
 								$windowN.setTop(window.getYTopLeft() / 20);
 								$windowN.setLeft(window.getXTopLeft() / 10);
-								$windowN.setWidth((window.getXBottomRigh() - window
+								$windowN.setWidth((window.getXBottomRight() - window
 										.getXTopLeft()) / 10);
 								$windowN.setHeight((window.getYBottomRight() - window
 										.getYTopLeft()) / 20);
