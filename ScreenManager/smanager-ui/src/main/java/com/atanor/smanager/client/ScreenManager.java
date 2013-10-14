@@ -1,5 +1,6 @@
 package com.atanor.smanager.client;
 
+import com.atanor.smanager.client.event.Client;
 import com.atanor.smanager.client.ui.MainArea;
 import com.atanor.smanager.client.ui.NavigationArea;
 import com.atanor.smanager.rpc.dto.HardwareDto;
@@ -33,8 +34,7 @@ public class ScreenManager implements EntryPoint {
 	 */
 	private final ConfigServiceAsync configService = GWT
 			.create(ConfigService.class);
-	SimpleEventBus bus = new SimpleEventBus();
-
+	
 	/**
 	 * This is the entry point method.
 	 */
@@ -50,21 +50,16 @@ public class ScreenManager implements EntryPoint {
 
 		VLayout vLayout = new VLayout();
 
-		westLayout = new NavigationArea(bus);
+		westLayout = new NavigationArea(Client.getBus());
 		westLayout.setWidth("15%");
 
-		eastLayout = new MainArea(bus);
+		eastLayout = new MainArea(Client.getBus());
 		eastLayout.setWidth("85%");
 
 		northLayout = new HLayout();
 		northLayout.setMembers(westLayout, eastLayout);
 
 		mainLayout.addMember(northLayout);
-
-		final NavigationArea navArea = new NavigationArea(bus);
-		final MainArea area = new MainArea(bus);
-		area.setWidth("70%");
-		area.setHeight("400px");
 
 		RootPanel.get().add(mainLayout);
 

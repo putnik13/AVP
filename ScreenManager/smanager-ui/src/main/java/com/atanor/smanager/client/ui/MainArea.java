@@ -5,12 +5,10 @@ import java.util.LinkedHashMap;
 import com.atanor.smanager.client.event.AnimateEvent;
 import com.atanor.smanager.client.event.AnimateEventHandler;
 import com.atanor.smanager.rpc.dto.HardwareDto;
+import com.atanor.smanager.rpc.dto.WindowDto;
 import com.atanor.smanager.rpc.services.ConfigService;
 import com.atanor.smanager.rpc.services.ConfigServiceAsync;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.types.Alignment;
@@ -21,35 +19,36 @@ import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.drawing.DrawRect;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
-import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
-import com.smartgwt.client.widgets.form.fields.events.FocusEvent;
-import com.smartgwt.client.widgets.form.fields.events.FocusHandler;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
-import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
-import com.smartgwt.client.widgets.toolbar.ToolStrip;
-import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class MainArea extends HLayout {
+public class MainArea extends HLayout implements ClickHandler {
 
 	final TabSet topTabSet = new TabSet();
 	private final ConfigServiceAsync configService = GWT
 			.create(ConfigService.class);
 	// panels at all
 	private int nHorizontal = 5, nVertical = 3; // number of panels
+	private int layoutN;
 	private String name = "drawRect", selectedInput = null;
+	private Label mainLayout;
+	private int scaleY = 4, scaleX = 2;
+
+	// private ClickHandler handler = new ClickHandler() {
+	// @Override
+	// public void onClick(ClickEvent event) {
+	// (Label)event.getSource();
+	//
+	// }
+	// };
 
 	@SuppressWarnings("deprecation")
 	public MainArea(final SimpleEventBus bus) {
@@ -62,22 +61,6 @@ public class MainArea extends HLayout {
 		topTabSet.setTabBarAlign(Side.RIGHT);
 		topTabSet.setAlign(Alignment.LEFT);
 
-		// ToolStrip toolStrip = new ToolStrip();
-		// toolStrip.setWidth100();
-		//
-		// ToolStripButton iconButton = new ToolStripButton();
-		// iconButton.setTitle(" Get Data! ");
-		//
-		// iconButton.addClickHandler(new ClickHandler() {
-		// @Override
-		// public void onClick(ClickEvent event) {
-		// getConfigurations();
-		// }
-		//
-		// });
-		//
-		// toolStrip.addButton(iconButton);
-
 		VLayout layout = new VLayout(5);
 		layout.setAlign(Alignment.RIGHT);
 
@@ -89,12 +72,11 @@ public class MainArea extends HLayout {
 		mainLayout.setBorder("1px solid black");
 		mainLayout.setMaxWidth(808);
 		mainLayout.setMaxHeight(282);
-		// mainLayout.setAlign(Alignment.CENTER);
+		mainLayout.setOverflow(Overflow.HIDDEN);
 
 		final Label member1 = new Label();
 		final Label member2 = new Label();
-		
-		
+
 		member1.setDragAppearance(DragAppearance.TARGET);
 		member1.setCanDragResize(true);
 		member1.setResizeFrom("T", "B", "L", "R", "RB");
@@ -117,7 +99,6 @@ public class MainArea extends HLayout {
 			}
 		});
 
-		
 		member2.setDragAppearance(DragAppearance.TARGET);
 		member2.setCanDragResize(true);
 		member2.setResizeFrom("T", "B", "L", "R", "RB");
@@ -155,7 +136,8 @@ public class MainArea extends HLayout {
 
 		applyLayout.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				member1.setContents("<div align = center><H1>"+selectedInput+"</H1></div>");
+				member1.setContents("<div align = center><H1>" + selectedInput
+						+ "</H1></div>");
 				member1.redraw();
 				applyLayout.disable();
 				cancelLayout.enable();
@@ -243,9 +225,6 @@ public class MainArea extends HLayout {
 			@Override
 			public void onChanged(ChangedEvent event) {
 				selectedInput = event.getItem().getDisplayValue();
-				System.out.println("Selected --"
-						+ event.getItem().getDisplayValue());
-
 			}
 		});
 
@@ -253,25 +232,45 @@ public class MainArea extends HLayout {
 
 		buttonLayout.addMember(form);
 		buttonLayout.setAlign(Alignment.CENTER);
-		// buttonLayout.addChild(selectInputsList);
 		buttonLayout.addMember(applyLayout);
 		buttonLayout.addMember(saveLayout);
 		buttonLayout.addMember(cancelLayout);
 
 		layout.addMember(buttonLayout);
-
 		layout.draw();
 
 		bus.addHandler(AnimateEvent.TYPE, new AnimateEventHandler() {
 			@Override
 			public void animate(AnimateEvent event) {
 
-				int layoutN = event.getLayoutNumber();
+				setLayoutN(event.getLayoutNumber());
 
-				mainLayout.setZIndex(0);
-				mainLayout.addChild(member1);
-				mainLayout.setZIndex(1);
-				mainLayout.addChild(member2);
+				configService
+						.getHardwareConfiguration(new AsyncCallback<HardwareDto>() {
+
+							@Override
+							public void onSuccess(final HardwareDto result) {
+								int win = 0;
+								System.out.println("Tray to DRAW!!!");
+
+								for (WindowDto window : result.getPresets()
+										.get(getLayoutN()).getWindows()) {
+
+									mainLayout.addChild(createWind(
+											window.getXTopLeft(),
+											window.getYTopLeft(),
+											window.getXBottomRight(),
+											window.getYBottomRight()));
+									win++;
+								}
+							}
+
+							@Override
+							public void onFailure(Throwable caught) {
+								SC.say("Configurations are not available!");
+								caught.printStackTrace();
+							}
+						});
 				mainLayout.redraw();
 				applyLayout.enable();
 				cancelLayout.enable();
@@ -301,36 +300,38 @@ public class MainArea extends HLayout {
 		return tab;
 	}
 
-	private void getConfigurations() {
-		configService
-				.getHardwareConfiguration(new AsyncCallback<HardwareDto>() {
+	private Label createWind(int topXLeft, int topYLeft, int botXRight,
+			int botYRight) {
+		Label win = new Label();
+		win.setBorder("2px solid black");
+		win.setBackgroundColor("blue");
+		win.setOpacity(21);
+		win.setCanDragResize(true);
+		win.setTop(topYLeft / scaleY);
+		win.setLeft(topXLeft / scaleX);
+		win.setWidth((botXRight - topXLeft) / scaleX);
+		win.setHeight((botYRight - topYLeft) / scaleY);
+		win.addClickHandler(this);
+		win.draw();
+		return win;
+	};
 
-					@Override
-					public void onSuccess(HardwareDto result) {
-						SC.say("Fetched configuration for following hardware: "
-								+ result.getSources());
-					}
-
-					@Override
-					public void onFailure(Throwable caught) {
-						SC.say("Configurations are not available!");
-						caught.printStackTrace();
-					}
-				});
+	public int getLayoutN() {
+		return layoutN;
 	}
 
-	public class DragRect extends DrawRect {
-		public DragRect() {
-			setPadding(4);
-			setMinWidth(10);
-			setMinHeight(10);
-			setMaxWidth(1000);
-			setMaxHeight(700);
-			setKeepInParentRect(false);
-			setCanDragReposition(true);
-			setDragAppearance(DragAppearance.OUTLINE);
-			setCanDragResize(true);
-			setCanFocus(true);
-		}
+	public void setLayoutN(int layoutN) {
+		this.layoutN = layoutN;
+	}
+
+	@Override
+	public void onClick(ClickEvent event) {
+		System.out.println("ClickEvent --- " + event.getSource());
+
+//		if (event.getSource() == "Label") {
+			((Label) event.getSource()).setOpacity(10);
+			((Label) event.getSource()).setCanDragReposition(true);
+			((Label) event.getSource()).setShowOverCanvas(true);
+//		}
 	}
 }
