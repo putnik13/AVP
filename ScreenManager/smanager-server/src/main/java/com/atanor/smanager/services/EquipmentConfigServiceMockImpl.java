@@ -29,7 +29,7 @@ public class EquipmentConfigServiceMockImpl implements EquipmentConfigService {
 		Preset preset2 = new Preset();
 		Window w5 = new Window("Window 0", "Input 1", 0, 0, 1200, 1200, 0);
 		Window w6 = new Window("Window 1", "Input 2", 1200, 0, 1600, 600, 0);
-		Window w7 = new Window("Window 1", "Input 3", 1200, 600, 1600, 1200, 0);
+		Window w7 = new Window("Window 2", "Input 3", 1200, 600, 1600, 1200, 0);
 		preset2.setWindows(Arrays.asList(w5, w6, w7));
 
 		source.setPresets(Arrays.asList(preset1, preset2));

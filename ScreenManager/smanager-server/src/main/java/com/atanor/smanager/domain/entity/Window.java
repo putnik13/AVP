@@ -2,7 +2,6 @@ package com.atanor.smanager.domain.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "preset_windows")
-@NamedQuery(name = "Window.getAll", query = "SELECT w FROM Window w")
+@NamedQuery(name = "Window.GetAll", query = "SELECT w FROM Window w")
 public class Window extends AbstractEntity<Long> {
 
 	@Id
@@ -26,7 +25,7 @@ public class Window extends AbstractEntity<Long> {
 	@Column(name = "source", length = 32)
 	private String source;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "preset_id", nullable = false)
 	private Preset preset;
 

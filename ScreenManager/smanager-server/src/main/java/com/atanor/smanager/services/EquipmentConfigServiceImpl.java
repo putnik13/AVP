@@ -45,11 +45,13 @@ public class EquipmentConfigServiceImpl implements EquipmentConfigService {
 
 	@Override
 	public Boolean savePreset(Preset preset) {
-		
+
 		final Preset persistedEntity = presetDao.find(preset.getId());
 		if (persistedEntity != null) {
+			preset.setHardware(persistedEntity.getHardware());
 			presetDao.update(preset);
 		} else {
+			preset.setHardware(getActiveHardware());
 			presetDao.insert(preset);
 		}
 

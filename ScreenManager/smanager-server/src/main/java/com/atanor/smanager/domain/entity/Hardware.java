@@ -6,7 +6,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +17,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "hardware")
-@NamedQuery(name = "Hardware.getAll", query = "SELECT h from Hardware h")
+@NamedQuery(name = "Hardware.GetAll", query = "SELECT h from Hardware h")
 public class Hardware extends AbstractEntity<Long> {
 
 	@Id
@@ -28,17 +27,17 @@ public class Hardware extends AbstractEntity<Long> {
 	@Column(name = "model_name", length = 32)
 	private String modelName;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "hardware")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hardware")
 	private List<Preset> presets;
 
 	@ElementCollection
 	private List<String> sources;
-	
-	@Column(name = "active")
+
+	@Column(name = "active", columnDefinition = "BOOLEAN")
 	private Boolean active;
-    
-	@OneToOne
-    @JoinColumn(name = "display_id")
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "display_id")
 	private Display display;
 
 	public Hardware() {
@@ -92,5 +91,5 @@ public class Hardware extends AbstractEntity<Long> {
 	public void setActive(final Boolean active) {
 		this.active = active;
 	}
-	
+
 }

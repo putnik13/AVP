@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "presets")
-@NamedQuery(name = "Preset.getAll", query = "SELECT p FROM Preset p")
+@NamedQuery(name = "Preset.GetAll", query = "SELECT p FROM Preset p")
 public class Preset extends AbstractEntity<Long> {
 
 	@Id
@@ -24,19 +24,19 @@ public class Preset extends AbstractEntity<Long> {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "harware_id")
+	@JoinColumn(name = "hardware_id")
 	private Hardware hardware;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "preset")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "preset")
 	private List<Window> windows;
 
 	public Preset() {
 	}
-	
+
 	public Preset(Long id) {
 		this.id = id;
 	}
-	
+
 	@Override
 	public Long getId() {
 		return id;

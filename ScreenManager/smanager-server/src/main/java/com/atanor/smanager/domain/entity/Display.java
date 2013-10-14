@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "display")
-@NamedQuery(name = "Display.getAll", query = "SELECT d from Display d")
+@NamedQuery(name = "Display.GetAll", query = "SELECT d from Display d")
 public class Display extends AbstractEntity<Long> {
 
 	@Id
