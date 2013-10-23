@@ -68,7 +68,7 @@ public class NavigatePresetViewImpl extends VLayout implements NavigatePresetVie
 
 		Double scaleFactor = presetWidth.doubleValue() / displayWidth.doubleValue();
 		Long presetHeight = Math.round(scaleFactor * displayHeight.doubleValue());
-		System.out.println("presetWidth: " + presetWidth + "; presetHeight: " + presetHeight);
+
 		for (PresetDto preset : config.getPresets()) {
 			createPresetWindow(preset, presetWidth, presetHeight, scaleFactor);
 		}
