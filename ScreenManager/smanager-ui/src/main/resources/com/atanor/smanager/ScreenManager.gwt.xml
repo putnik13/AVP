@@ -12,8 +12,11 @@
 
   <!-- Other module inherits                                      -->
   <inherits name='com.smartgwt.SmartGwt'/>
-  <inherits name="com.smartgwt.Drawing"/>
+  <inherits name="com.smartgwt.Drawing"/><!-- TODO remove this!!! -->
   <inherits name='com.google.common.collect.Collect'/>
+  <inherits name="com.google.gwt.inject.Inject"/>
+  <inherits name="com.google.gwt.activity.Activity"/>
+  <inherits name="com.google.gwt.place.Place"/>
   <inherits name='com.atanor.smanager.Rpc'/>
   
   <!-- Specify properties                                         -->

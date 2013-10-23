@@ -127,7 +127,12 @@
 	    <artifactId>guice-persist</artifactId>
 	    <version>3.0</version>
       </dependency>
-
+      <dependency>
+        <groupId>com.google.gwt.inject</groupId>
+        <artifactId>gin</artifactId>
+        <version>2.1.1</version>
+      </dependency>
+	  
 	  <!-- Third-party -->
       <dependency>
         <groupId>com.smartgwt</groupId>

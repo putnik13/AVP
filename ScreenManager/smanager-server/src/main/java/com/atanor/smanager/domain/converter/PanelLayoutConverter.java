@@ -13,7 +13,12 @@ public class PanelLayoutConverter {
 		final PanelLayoutDto dto = new PanelLayoutDto();
 		dto.setName(entity.getDescription());
 		dto.setPanelQuantity(entity.getPanelQuantity());
-
+		
+		if(entity == PanelLayout.THREExFIVE){
+			dto.setRowPanelQuantity(3);
+			dto.setColumnPanelQuantity(5);
+		}
+		
 		return dto;
 	}
 

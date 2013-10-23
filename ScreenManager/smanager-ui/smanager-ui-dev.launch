@@ -13,5 +13,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.google.gwt.dev.DevMode"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-war d:\projects\AVP\ScreenManager\smanager-ui\target\smanager-ui-1.0-SNAPSHOT -remoteUI &quot;${gwt_remote_ui_server_port}:${unique_id}&quot; -startupUrl ScreenManager.html -logLevel INFO -codeServerPort 9997 -port 8888 com.atanor.smanager.ScreenManager"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="smanager-ui"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms512m -Xmx1024m -XX:MaxPermSize=256m -XX:ReservedCodeCacheSize=128m"/>
 </launchConfiguration>

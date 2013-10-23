@@ -5,7 +5,9 @@ public class PanelLayoutDto extends AbstractDto {
 
 	private String name;
 	private Integer panelQuantity;
-
+	private Integer rowPanelQuantity;
+	private Integer columnPanelQuantity;
+	
 	public PanelLayoutDto() {
 	}
 
@@ -23,6 +25,22 @@ public class PanelLayoutDto extends AbstractDto {
 
 	public void setPanelQuantity(Integer panelQuantity) {
 		this.panelQuantity = panelQuantity;
+	}
+
+	public Integer getRowPanelQuantity() {
+		return rowPanelQuantity;
+	}
+
+	public void setRowPanelQuantity(Integer rowPanelQuantity) {
+		this.rowPanelQuantity = rowPanelQuantity;
+	}
+
+	public Integer getColumnPanelQuantity() {
+		return columnPanelQuantity;
+	}
+
+	public void setColumnPanelQuantity(Integer columnPanelQuantity) {
+		this.columnPanelQuantity = columnPanelQuantity;
 	}
 
 }
