@@ -115,7 +115,7 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 			public void onChanged(ChangedEvent event) {
 				final String newValue = (String) event.getValue();
 				final WindowLabel window = getSelectedWindow();
-				if (!newValue.equals(window.getContents())) {
+				if (window != null && !newValue.equals(window.getContents())) {
 					window.setContents(newValue);
 					window.getDto().setSource(newValue);
 					onWindowChanged(window);
@@ -249,8 +249,8 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 
 	@Override
 	public void setPreset(final Long presetId) {
+		cleanState();
 		if (layouts.containsKey(presetId)) {
-			cleanPresetLayouts();
 			cancelButton.enable();
 
 			PresetLabel layout = layouts.get(presetId);

@@ -17,7 +17,8 @@ public class DisplayConverterTest extends BaseConverterTest<DisplayConverter> {
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals(PanelLayout.ONExTHREE.getDescription(), result.getLayout().getName());
-		Assert.assertEquals(PanelLayout.ONExTHREE.getPanelQuantity(), result.getLayout().getPanelQuantity());
+		Assert.assertEquals(PanelLayout.ONExTHREE.getRowPanelQuantity(), result.getLayout().getRowPanelQuantity());
+		Assert.assertEquals(PanelLayout.ONExTHREE.getColumnPanelQuantity(), result.getLayout().getColumnPanelQuantity());
 		Assert.assertEquals(Integer.valueOf(1800), result.getWidth());
 		Assert.assertEquals(Integer.valueOf(600), result.getHigh());
 	}
@@ -30,14 +31,17 @@ public class DisplayConverterTest extends BaseConverterTest<DisplayConverter> {
 		
 		PanelLayoutDto layout = new PanelLayoutDto();
 		layout.setName(PanelLayout.ONExTHREE.getDescription());
-		layout.setPanelQuantity(PanelLayout.ONExTHREE.getPanelQuantity());
+		layout.setRowPanelQuantity(PanelLayout.ONExTHREE.getRowPanelQuantity());
+		layout.setColumnPanelQuantity(PanelLayout.ONExTHREE.getColumnPanelQuantity());
+		
 		source.setLayout(layout);
 		
 		Display result = converter.toEntity(source);
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals(PanelLayout.ONExTHREE.getDescription(), result.getLayout().getDescription());
-		Assert.assertEquals(PanelLayout.ONExTHREE.getPanelQuantity(), result.getLayout().getPanelQuantity());
+		Assert.assertEquals(PanelLayout.ONExTHREE.getRowPanelQuantity(), result.getLayout().getRowPanelQuantity());
+		Assert.assertEquals(PanelLayout.ONExTHREE.getColumnPanelQuantity(), result.getLayout().getColumnPanelQuantity());
 		Assert.assertEquals(Integer.valueOf(1800), result.getWidth());
 		Assert.assertEquals(Integer.valueOf(600), result.getHigh());
 	}

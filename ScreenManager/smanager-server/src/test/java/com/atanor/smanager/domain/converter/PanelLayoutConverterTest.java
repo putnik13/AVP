@@ -30,20 +30,23 @@ public class PanelLayoutConverterTest {
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals(PanelLayout.ONExTHREE.getDescription(), result.getName());
-		Assert.assertEquals(PanelLayout.ONExTHREE.getPanelQuantity(), result.getPanelQuantity());
+		Assert.assertEquals(PanelLayout.ONExTHREE.getRowPanelQuantity(), result.getRowPanelQuantity());
+		Assert.assertEquals(PanelLayout.ONExTHREE.getColumnPanelQuantity(), result.getColumnPanelQuantity());
 	}
 
 	@Test
 	public void testToEntity() {
 		PanelLayoutDto source = new PanelLayoutDto();
 		source.setName(PanelLayout.ONExTHREE.getDescription());
-		source.setPanelQuantity(PanelLayout.ONExTHREE.getPanelQuantity());
+		source.setRowPanelQuantity(PanelLayout.ONExTHREE.getRowPanelQuantity());
+		source.setColumnPanelQuantity(PanelLayout.ONExTHREE.getColumnPanelQuantity());
 		
 		PanelLayout result = converter.toEntity(source);
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals(PanelLayout.ONExTHREE.getDescription(), result.getDescription());
-		Assert.assertEquals(PanelLayout.ONExTHREE.getPanelQuantity(), result.getPanelQuantity());
+		Assert.assertEquals(PanelLayout.ONExTHREE.getRowPanelQuantity(), result.getRowPanelQuantity());
+		Assert.assertEquals(PanelLayout.ONExTHREE.getColumnPanelQuantity(), result.getColumnPanelQuantity());
 	}
 	
 	@Test(expected = NullPointerException.class)

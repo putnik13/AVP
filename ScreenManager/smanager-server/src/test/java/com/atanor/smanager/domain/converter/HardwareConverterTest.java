@@ -49,8 +49,10 @@ public class HardwareConverterTest extends BaseConverterTest<HardwareConverter> 
 		Assert.assertEquals(Integer.valueOf(1200), result.getDisplay().getWidth());
 		Assert.assertEquals(Integer.valueOf(1800), result.getDisplay().getHigh());
 		Assert.assertEquals(PanelLayout.TWOxTHREE.getDescription(), result.getDisplay().getLayout().getName());
-		Assert.assertEquals(PanelLayout.TWOxTHREE.getPanelQuantity(), result.getDisplay().getLayout()
-				.getPanelQuantity());
+		Assert.assertEquals(PanelLayout.TWOxTHREE.getRowPanelQuantity(), result.getDisplay().getLayout()
+				.getRowPanelQuantity());
+		Assert.assertEquals(PanelLayout.TWOxTHREE.getColumnPanelQuantity(), result.getDisplay().getLayout()
+				.getColumnPanelQuantity());
 
 		Assert.assertEquals(2, result.getPresets().size());
 		Assert.assertEquals(1, result.getPresets().get(0).getWindows().size());
@@ -67,7 +69,9 @@ public class HardwareConverterTest extends BaseConverterTest<HardwareConverter> 
 		display.setHigh(1800);
 		PanelLayoutDto layout = new PanelLayoutDto();
 		layout.setName(PanelLayout.TWOxTHREE.getDescription());
-		layout.setPanelQuantity(PanelLayout.TWOxTHREE.getPanelQuantity());
+		layout.setRowPanelQuantity(PanelLayout.TWOxTHREE.getRowPanelQuantity());
+		layout.setColumnPanelQuantity(PanelLayout.TWOxTHREE.getColumnPanelQuantity());
+		
 		display.setLayout(layout);
 		
 		source.setDisplay(display);
@@ -119,9 +123,11 @@ public class HardwareConverterTest extends BaseConverterTest<HardwareConverter> 
 		Assert.assertEquals(Integer.valueOf(1200), result.getDisplay().getWidth());
 		Assert.assertEquals(Integer.valueOf(1800), result.getDisplay().getHigh());
 		Assert.assertEquals(PanelLayout.TWOxTHREE.getDescription(), result.getDisplay().getLayout().getDescription());
-		Assert.assertEquals(PanelLayout.TWOxTHREE.getPanelQuantity(), result.getDisplay().getLayout()
-				.getPanelQuantity());
-
+		Assert.assertEquals(PanelLayout.TWOxTHREE.getRowPanelQuantity(), result.getDisplay().getLayout()
+				.getRowPanelQuantity());
+		Assert.assertEquals(PanelLayout.TWOxTHREE.getColumnPanelQuantity(), result.getDisplay().getLayout()
+				.getColumnPanelQuantity());
+		
 		Assert.assertEquals(2, result.getPresets().size());
 		Assert.assertEquals(1, result.getPresets().get(0).getWindows().size());
 		Assert.assertEquals(2, result.getPresets().get(1).getWindows().size());

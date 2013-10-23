@@ -4,7 +4,6 @@ package com.atanor.smanager.rpc.dto;
 public class PanelLayoutDto extends AbstractDto {
 
 	private String name;
-	private Integer panelQuantity;
 	private Integer rowPanelQuantity;
 	private Integer columnPanelQuantity;
 	
@@ -17,14 +16,6 @@ public class PanelLayoutDto extends AbstractDto {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Integer getPanelQuantity() {
-		return panelQuantity;
-	}
-
-	public void setPanelQuantity(Integer panelQuantity) {
-		this.panelQuantity = panelQuantity;
 	}
 
 	public Integer getRowPanelQuantity() {

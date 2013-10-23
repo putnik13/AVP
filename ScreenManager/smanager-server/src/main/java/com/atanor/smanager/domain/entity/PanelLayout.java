@@ -7,19 +7,20 @@ import com.google.common.collect.Maps;
 
 public enum PanelLayout {
 
-	ONExONE("1x1", 1), ONExTWO("1x2", 2), ONExTHREE("1x3", 3), ONExFOUR("1x4", 4), ONExFIVE("1x5", 5),
+	ONExONE("1x1", 1, 1), ONExTWO("1x2", 1, 2), ONExTHREE("1x3", 1, 3), ONExFOUR("1x4", 1, 4), ONExFIVE("1x5", 1, 5),
 	// -------------------
-	TWOxTWO("2x2", 4), TWOxTHREE("2x3", 6), TWOxFOUR("2x4", 8), TWOxFIVE("2x5", 10),
+	TWOxTWO("2x2", 2, 2), TWOxTHREE("2x3", 2, 3), TWOxFOUR("2x4", 2, 4), TWOxFIVE("2x5", 2, 5),
 	// -------------------
-	THREExTHREE("3x3", 9), THREExFOUR("3x4", 12), THREExFIVE("3x5", 15),
+	THREExTHREE("3x3", 3, 3), THREExFOUR("3x4", 3, 4), THREExFIVE("3x5", 3, 5),
 	// -------------------
-	FOURxFOUR("4x4", 16), FOURxFIVE("4x5", 20),
+	FOURxFOUR("4x4", 4, 4), FOURxFIVE("4x5", 4, 5),
 	// -------------------
-	FIVExFIVE("5x5", 25);
+	FIVExFIVE("5x5", 5, 5);
 
 	private String description;
 
-	private Integer panelQuantity;
+	private Integer rowPanelQuantity;
+	private Integer columnPanelQuantity;
 
 	private static Map<String, PanelLayout> layouts = Maps.newHashMap();
 	static {
@@ -28,17 +29,22 @@ public enum PanelLayout {
 		}
 	}
 
-	private PanelLayout(final String description, final Integer panelQuantity) {
+	private PanelLayout(final String description, final Integer rowPanelQuantity, final Integer columnPanelQuantity) {
 		this.description = description;
-		this.panelQuantity = panelQuantity;
+		this.rowPanelQuantity = rowPanelQuantity;
+		this.columnPanelQuantity = columnPanelQuantity;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public Integer getPanelQuantity() {
-		return panelQuantity;
+	public Integer getRowPanelQuantity() {
+		return rowPanelQuantity;
+	}
+
+	public Integer getColumnPanelQuantity() {
+		return columnPanelQuantity;
 	}
 
 	public static PanelLayout getLayout(String description) {
