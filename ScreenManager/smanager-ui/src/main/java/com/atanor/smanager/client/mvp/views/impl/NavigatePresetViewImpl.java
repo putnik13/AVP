@@ -138,7 +138,7 @@ public class NavigatePresetViewImpl extends VLayout implements NavigatePresetVie
 	private void cleanPresetLayouts() {
 		for (Canvas child : getChildren()) {
 			if (child instanceof HLayout) {
-				removeChild(child);
+				child.destroy();
 			}
 		}
 	}

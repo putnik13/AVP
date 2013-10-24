@@ -14,6 +14,7 @@ import com.atanor.smanager.client.ui.builder.UiBuilder;
 import com.atanor.smanager.client.ui.builder.post.EditPresetPostBuilder;
 import com.atanor.smanager.client.ui.builder.post.EditWindowPostBuilder;
 import com.atanor.smanager.client.ui.style.EditWindowStyleApplier;
+import com.atanor.smanager.client.ui.style.PanelsDisplayStyleApplier;
 import com.atanor.smanager.rpc.dto.DisplayDto;
 import com.atanor.smanager.rpc.dto.HardwareDto;
 import com.atanor.smanager.rpc.dto.PanelLayoutDto;
@@ -46,7 +47,8 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 	private EditPresetPresenter presenter;
 
 	private final Label panelDisplay;
-	private final HLayout panelDisplayLayout;
+	private final Label editorDisplay;
+
 	private final Map<Long, PresetLabel> layouts = Maps.newHashMap();
 	private final LinkedHashMap<String, String> sourcesMap = Maps.newLinkedHashMap();
 
@@ -62,14 +64,18 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		setWidth("85%");
 		setOverflow(Overflow.HIDDEN);
 		setShowResizeBar(true);
-		setMembersMargin(40);
 
 		panelDisplay = new Label();
-		panelDisplay.setShowEdges(true);
 		panelDisplay.setBorder("1px solid black");
-		panelDisplay.setOverflow(Overflow.HIDDEN);
+		panelDisplay.setAlign(Alignment.CENTER);
 
-		panelDisplayLayout = new HLayout();
+		editorDisplay = new Label();
+		editorDisplay.setWidth100();
+		editorDisplay.setHeight100();
+
+		HLayout panelDisplayLayout = new HLayout();
+		panelDisplayLayout.setPadding(40);
+		panelDisplayLayout.setWidth100();
 		panelDisplayLayout.setAlign(Alignment.CENTER);
 		panelDisplayLayout.addMember(panelDisplay);
 
@@ -152,15 +158,19 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		vButtonLayout.setShowEdges(true);
 		vButtonLayout.addMember(hButtonLayout);
 
+		VLayout vDesktopLayout = new VLayout();
+		vDesktopLayout.addChild(panelDisplayLayout);
+		vDesktopLayout.addChild(editorDisplay);
+
 		addMember(vButtonLayout);
-		addMember(panelDisplayLayout);
+		addMember(vDesktopLayout);
 	}
 
 	private void updateWindowDtos(final PresetLabel preset) {
 		for (Canvas child : preset.getChildren()) {
 			if (child instanceof WindowLabel) {
 				WindowLabel window = (WindowLabel) child;
-				window.updateDto(scaleFactor);
+				window.updateDto();
 			}
 		}
 	}
@@ -242,10 +252,8 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		panel.setLeft(left);
 		panel.setWidth(Ints.checkedCast(panelWidth));
 		panel.setHeight(Ints.checkedCast(panelHeight));
-		panel.setBorder("1px solid black");
-		panel.setBackgroundColor("darkgrey");
-		panel.setCanDragResize(false);
-		panel.setCanDragReposition(false);
+
+		new PanelsDisplayStyleApplier().applyStyle(panel);
 
 		panelDisplay.addChild(panel);
 	}
@@ -253,17 +261,20 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 	private void createPresetLayouts(List<PresetDto> presets) {
 		Long panelDisplayWidth = new Long(panelDisplay.getWidth());
 		Long panelDisplayHeight = new Long(panelDisplay.getHeight());
+		Long leftOffset = calculateLeftOffset();
+		Long topOffset = new Long(panelDisplay.getTop());
 
 		layouts.clear();
 		for (PresetDto preset : presets) {
-			createPresetLayout(preset, panelDisplayWidth, panelDisplayHeight, scaleFactor);
+			createPresetLayout(preset, panelDisplayWidth, panelDisplayHeight, leftOffset, topOffset);
 		}
 	}
 
-	private void createPresetLayout(PresetDto preset, Long presetWidth, Long presetHeight, Double scaleFactor) {
+	private void createPresetLayout(PresetDto preset, Long presetWidth, Long presetHeight, Long leftOffset,
+			Long topOffset) {
 
 		PresetLabel lab = UiBuilder.buildPresetLayout(preset, presetWidth, presetHeight, scaleFactor,
-				new EditPresetPostBuilder(), new EditWindowPostBuilder());
+				new EditPresetPostBuilder(), new EditWindowPostBuilder(leftOffset, topOffset));
 		layouts.put(lab.getId(), lab);
 	}
 
@@ -277,7 +288,7 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 			layout = layout.clone();
 			addWindowsHandlers(layout);
 
-			panelDisplay.addChild(layout);
+			editorDisplay.addChild(layout);
 		}
 	}
 
@@ -348,9 +359,9 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 	}
 
 	private void cleanPresetLayouts() {
-		for (Canvas child : panelDisplay.getChildren()) {
+		for (Canvas child : editorDisplay.getChildren()) {
 			if (child instanceof PresetLabel) {
-				panelDisplay.removeChild(child);
+				child.destroy();
 			}
 		}
 	}
@@ -364,7 +375,7 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 	}
 
 	private WindowLabel getSelectedWindow() {
-		for (Canvas preset : panelDisplay.getChildren()) {
+		for (Canvas preset : editorDisplay.getChildren()) {
 			if (preset instanceof PresetLabel) {
 				for (Canvas child : preset.getChildren()) {
 					if (child instanceof WindowLabel) {
@@ -381,7 +392,7 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 	}
 
 	private PresetLabel getCurrentPreset() {
-		for (Canvas child : panelDisplay.getChildren()) {
+		for (Canvas child : editorDisplay.getChildren()) {
 			if (child instanceof PresetLabel) {
 				return (PresetLabel) child;
 			}
@@ -405,7 +416,10 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 	public void setPresetConfiguration(final PresetDto preset) {
 		Long panelDisplayWidth = new Long(panelDisplay.getWidth());
 		Long panelDisplayHeight = new Long(panelDisplay.getHeight());
-		createPresetLayout(preset, panelDisplayWidth, panelDisplayHeight, scaleFactor);
+		Long leftOffset = calculateLeftOffset();
+		Long topOffset = new Long(panelDisplay.getTop());
+
+		createPresetLayout(preset, panelDisplayWidth, panelDisplayHeight, leftOffset, topOffset);
 	}
 
 	@Override
@@ -413,4 +427,8 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		applyButton.disable();
 	}
 
+	private Long calculateLeftOffset() {
+		Integer delta = getElement().getClientWidth() - panelDisplay.getWidth();
+		return Math.round(delta.doubleValue() / 2);
+	}
 }

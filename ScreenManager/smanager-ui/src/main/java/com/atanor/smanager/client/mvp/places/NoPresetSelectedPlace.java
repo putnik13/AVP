@@ -15,7 +15,7 @@ public class NoPresetSelectedPlace extends Place {
 		}
 
 		public String getToken(NoPresetSelectedPlace place) {
-			return null;
+			return "empty";
 		}
 	}
 }

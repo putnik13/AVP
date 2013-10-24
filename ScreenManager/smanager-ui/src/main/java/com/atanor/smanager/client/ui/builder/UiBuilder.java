@@ -21,7 +21,7 @@ public class UiBuilder {
 
 		for (WindowDto window : preset.getWindows()) {
 
-			final WindowLabel wlabel = new WindowLabel(window);
+			final WindowLabel wlabel = new WindowLabel(window, scaleFactor);
 
 			Long wTop = Math.round(scaleFactor * window.getYTopLeft().doubleValue());
 			wlabel.setTop(Ints.checkedCast(wTop));

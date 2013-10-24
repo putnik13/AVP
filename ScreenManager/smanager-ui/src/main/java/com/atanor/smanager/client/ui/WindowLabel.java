@@ -8,11 +8,16 @@ import com.smartgwt.client.widgets.Label;
 public class WindowLabel extends Label {
 
 	private final WindowDto dto;
+	private final Double scaleFactor;
+	
 	private Boolean selected = Boolean.FALSE;
 	private Boolean dirty = Boolean.FALSE;
-
-	public WindowLabel(final WindowDto dto) {
+	private Long leftOffset;
+	private Long topOffset;
+	
+	public WindowLabel(final WindowDto dto, final Double scaleFactor) {
 		this.dto = dto;
+		this.scaleFactor = scaleFactor;
 	}
 
 	public WindowDto getDto() {
@@ -35,36 +40,48 @@ public class WindowLabel extends Label {
 		this.dirty = dirty;
 	}
 
+	public void setLeftOffset(final Long leftOffset) {
+		this.leftOffset = leftOffset;
+	}
+
+	public void setTopOffset(final Long topOffset) {
+		this.topOffset = topOffset;
+	}
+
 	public WindowLabel clone() {
-		final WindowLabel clone = new WindowLabel(dto);
+		final WindowLabel clone = new WindowLabel(dto, scaleFactor);
 
 		clone.setTop(getTop());
 		clone.setLeft(getLeft());
 		clone.setWidth(getWidth());
 		clone.setHeight(getHeight());
 		clone.setContents(getContents());
+		clone.setLeftOffset(leftOffset);
+		clone.setTopOffset(topOffset);
 
 		new EditWindowStyleApplier().applyStyle(clone);
 
 		return clone;
 	}
 
-	public void updateDto(final Double scaleFactor) {
+	public void updateDto() {
 		if (isDirty()) {
 			dto.setSource(getContents());
 
-			final Long xTopLeft = Math.round(new Long(getLeft()).doubleValue() / scaleFactor);
+			final Long xTopLeft = Math.round((new Long(getLeft()).doubleValue() - leftOffset.doubleValue())
+					/ scaleFactor);
 			dto.setXTopLeft(Ints.checkedCast(xTopLeft));
 
-			final Long yTopLeft = Math.round(new Long(getTop()).doubleValue() / scaleFactor);
+			final Long yTopLeft = Math
+					.round((new Long(getTop()).doubleValue() - topOffset.doubleValue()) / scaleFactor);
 			dto.setYTopLeft(Ints.checkedCast(yTopLeft));
 
 			final Long xBottomRight = Math.round((new Long(getLeft()).doubleValue() + new Long(getWidth())
-					.doubleValue()) / scaleFactor);
+					.doubleValue() - leftOffset.doubleValue()) / scaleFactor);
 			dto.setXBottomRight(Ints.checkedCast(xBottomRight));
 
 			final Long yBottomRight = Math.round((new Long(getTop()).doubleValue() + new Long(getHeight())
-					.doubleValue()) / scaleFactor);
+					.doubleValue() - topOffset.doubleValue()) / scaleFactor);
 			dto.setYBottomRight(Ints.checkedCast(yBottomRight));
 		}
 	}

@@ -6,7 +6,7 @@ public class NavigateWindowPostBuilder implements WindowPostBuilder {
 
 	@Override
 	public void doPostBuild(WindowLabel preset) {
-		preset.setBorder("1px solid black");
+		preset.setBorder("1px inset black");
 		preset.setBackgroundColor("darkgrey");
 	}
 
