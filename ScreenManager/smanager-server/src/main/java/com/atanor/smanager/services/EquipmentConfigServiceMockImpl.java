@@ -43,4 +43,10 @@ public class EquipmentConfigServiceMockImpl implements EquipmentConfigService {
 		return null;
 	}
 
+	@Override
+	public Preset getPresetById(Long presetId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

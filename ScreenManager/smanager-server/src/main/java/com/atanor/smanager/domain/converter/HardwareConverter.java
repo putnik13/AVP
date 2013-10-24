@@ -39,7 +39,7 @@ public class HardwareConverter extends AbstractConverter<HardwareDto, Hardware> 
 	public Hardware toEntity(final HardwareDto dto) {
 		Validate.notNull(dto, "dto param can not be null");
 
-		final Hardware entity = new Hardware();
+		final Hardware entity = new Hardware(dto.getId());
 		entity.setModelName(dto.getModelName());
 		entity.setSources(dto.getSources());
 		entity.setDisplay(displayConverter.toEntity(dto.getDisplay()));

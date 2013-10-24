@@ -58,4 +58,9 @@ public class EquipmentConfigServiceImpl implements EquipmentConfigService {
 		return Boolean.TRUE;
 	}
 
+	@Override
+	public Preset getPresetById(Long presetId) {
+		return presetDao.find(presetId);
+	}
+
 }

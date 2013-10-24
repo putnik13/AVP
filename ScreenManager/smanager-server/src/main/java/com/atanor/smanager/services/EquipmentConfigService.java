@@ -8,4 +8,6 @@ public interface EquipmentConfigService {
 	Hardware getActiveHardware();
 
 	Boolean savePreset(Preset preset);
+	
+	Preset getPresetById(Long presetId);
 }

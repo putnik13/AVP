@@ -28,7 +28,7 @@ public class DisplayConverter extends AbstractConverter<DisplayDto, Display> {
 	public Display toEntity(final DisplayDto dto) {
 		Validate.notNull(dto, "dto param can not be null");
 
-		final Display entity = new Display();
+		final Display entity = new Display(dto.getId());
 		entity.setWidth(dto.getWidth());
 		entity.setHigh(dto.getHigh());
 		entity.setLayout(layoutConverter.toEntity(dto.getLayout()));

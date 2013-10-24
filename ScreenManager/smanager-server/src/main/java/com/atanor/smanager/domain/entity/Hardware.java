@@ -43,6 +43,10 @@ public class Hardware extends AbstractEntity<Long> {
 	public Hardware() {
 	}
 
+	public Hardware(final Long id) {
+		this.id = id;
+	}
+	
 	public Hardware(final String modelName) {
 		this.modelName = modelName;
 	}

@@ -27,7 +27,7 @@ public class WindowConverter extends AbstractConverter<WindowDto, Window> {
 	public Window toEntity(final WindowDto dto) {
 		Validate.notNull(dto, "dto param can not be null");
 		
-		final Window entity = new Window();
+		final Window entity = new Window(dto.getId());
 		entity.setName(dto.getName());
 		entity.setSource(dto.getSource());
 		entity.setXTopLeft(dto.getXTopLeft());

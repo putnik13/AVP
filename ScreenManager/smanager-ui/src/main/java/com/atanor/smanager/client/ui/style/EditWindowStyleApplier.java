@@ -15,8 +15,8 @@ public class EditWindowStyleApplier {
 		canvas.setAlign(Alignment.CENTER);
 		canvas.setValign(VerticalAlignment.CENTER);
 		
-		canvas.setSelected(false);
-		canvas.setDirty(false);
+//		canvas.setSelected(false);
+//		canvas.setDirty(false);
 	}
 
 }

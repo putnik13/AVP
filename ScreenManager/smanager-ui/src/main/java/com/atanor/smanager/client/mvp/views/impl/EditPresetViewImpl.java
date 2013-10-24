@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.atanor.smanager.client.Client;
 import com.atanor.smanager.client.mvp.places.NoPresetSelectedPlace;
+import com.atanor.smanager.client.mvp.presenters.EditPresetPresenter;
 import com.atanor.smanager.client.mvp.views.EditPresetView;
 import com.atanor.smanager.client.ui.PresetLabel;
 import com.atanor.smanager.client.ui.WindowLabel;
@@ -42,6 +43,8 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 
 	private static final int HEADER_SIZE = 60;
 
+	private EditPresetPresenter presenter;
+
 	private final Label panelDisplay;
 	private final HLayout panelDisplayLayout;
 	private final Map<Long, PresetLabel> layouts = Maps.newHashMap();
@@ -51,6 +54,8 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 	private final IButton applyButton;
 	private final IButton saveButton;
 	private final IButton cancelButton;
+
+	private Double scaleFactor;
 
 	public EditPresetViewImpl() {
 		setHeight100();
@@ -84,7 +89,11 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 
 		saveButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-
+				final PresetLabel preset = getCurrentPreset();
+				if (preset != null) {
+					updateWindowDtos(preset);
+					presenter.savePreset(preset.getDto());
+				}
 			}
 		});
 
@@ -143,11 +152,20 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		addMember(panelDisplayLayout);
 	}
 
+	private void updateWindowDtos(final PresetLabel preset) {
+		for (Canvas child : preset.getChildren()) {
+			if (child instanceof WindowLabel) {
+				WindowLabel window = (WindowLabel) child;
+				window.updateDto(scaleFactor);
+			}
+		}
+	}
+
 	@Override
 	public void setConfiguration(HardwareDto config) {
 		setSources(config.getSources());
 		setDisplay(config.getDisplay());
-		createPresetLayouts(config.getPresets(), config.getDisplay());
+		createPresetLayouts(config.getPresets());
 	}
 
 	private void setSources(List<String> sources) {
@@ -166,7 +184,7 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		Double padding = adjustPadding(displayWidth, displayHeight);
 
 		Long panelDisplayWidth = Math.round(getElement().getClientWidth() * padding);
-		Double scaleFactor = panelDisplayWidth.doubleValue() / displayWidth.doubleValue();
+		scaleFactor = panelDisplayWidth.doubleValue() / displayWidth.doubleValue();
 		Long panelDisplayHeight = Math.round(scaleFactor * displayHeight.doubleValue());
 
 		createDisplayWindow(display.getLayout(), panelDisplayWidth, panelDisplayHeight, scaleFactor);
@@ -228,11 +246,9 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		panelDisplay.addChild(panel);
 	}
 
-	private void createPresetLayouts(List<PresetDto> presets, DisplayDto display) {
-		Long displayWidth = new Long(display.getWidth());
+	private void createPresetLayouts(List<PresetDto> presets) {
 		Long panelDisplayWidth = new Long(panelDisplay.getWidth());
 		Long panelDisplayHeight = new Long(panelDisplay.getHeight());
-		Double scaleFactor = panelDisplayWidth.doubleValue() / displayWidth.doubleValue();
 
 		layouts.clear();
 		for (PresetDto preset : presets) {
@@ -305,7 +321,7 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 	}
 
 	private void onWindowChanged(WindowLabel window) {
-		window.setDirty(false);
+		window.setDirty(true);
 		applyButton.enable();
 		saveButton.enable();
 	}
@@ -313,7 +329,9 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 	private void cleanWindows(PresetLabel layout) {
 		for (Canvas child : layout.getChildren()) {
 			if (child instanceof WindowLabel) {
-				new EditWindowStyleApplier().applyStyle((WindowLabel) child);
+				WindowLabel window = (WindowLabel) child;
+				new EditWindowStyleApplier().applyStyle(window);
+				window.setSelected(false);
 			}
 		}
 	}
@@ -358,10 +376,32 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		return null;
 	}
 
+	private PresetLabel getCurrentPreset() {
+		for (Canvas child : panelDisplay.getChildren()) {
+			if (child instanceof PresetLabel) {
+				return (PresetLabel) child;
+			}
+		}
+
+		return null;
+	}
+
 	@Override
 	public void cleanState() {
 		cleanPresetLayouts();
 		cleanHeaderWidgets();
+	}
+
+	@Override
+	public void setPresenter(EditPresetPresenter presenter) {
+		this.presenter = presenter;
+	}
+
+	@Override
+	public void setPresetConfiguration(final PresetDto preset) {
+		Long panelDisplayWidth = new Long(panelDisplay.getWidth());
+		Long panelDisplayHeight = new Long(panelDisplay.getHeight());
+		createPresetLayout(preset, panelDisplayWidth, panelDisplayHeight, scaleFactor);
 	}
 
 }

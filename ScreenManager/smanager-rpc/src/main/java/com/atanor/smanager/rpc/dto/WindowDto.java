@@ -8,7 +8,7 @@ public class WindowDto extends AbstractDto {
 	private String source;
 	private Integer xTopLeft;
 	private Integer yTopLeft;
-	private Integer xBottomRigh;
+	private Integer xBottomRight;
 	private Integer yBottomRight;
 	private Integer zIndex;
 
@@ -48,11 +48,11 @@ public class WindowDto extends AbstractDto {
 	}
 
 	public Integer getXBottomRight() {
-		return xBottomRigh;
+		return xBottomRight;
 	}
 
 	public void setXBottomRight(final Integer xBottomRight) {
-		this.xBottomRigh = xBottomRight;
+		this.xBottomRight = xBottomRight;
 	}
 
 	public Integer getYBottomRight() {

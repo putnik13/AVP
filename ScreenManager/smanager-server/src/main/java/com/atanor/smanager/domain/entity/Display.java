@@ -31,6 +31,10 @@ public class Display extends AbstractEntity<Long> {
 
 	public Display() {
 	}
+	
+	public Display(final Long id) {
+		this.id = id;
+	}
 
 	public Display(final PanelLayout layout, final Integer width, final Integer high) {
 		this.layout = layout;

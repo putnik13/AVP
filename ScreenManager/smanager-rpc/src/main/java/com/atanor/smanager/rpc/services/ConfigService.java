@@ -16,5 +16,5 @@ public interface ConfigService extends RemoteService {
 
 	Boolean applyPreset(PresetDto preset);
 
-	Boolean savePreset(PresetDto preset);
+	PresetDto savePreset(PresetDto preset);
 }

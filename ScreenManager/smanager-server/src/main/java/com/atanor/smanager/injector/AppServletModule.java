@@ -8,7 +8,7 @@ import com.google.inject.servlet.ServletModule;
 
 public class AppServletModule extends ServletModule {
 
-	private static final String BASE_URL = "/" + "ScreenManager" + "/";
+	private static final String BASE_URL = "/ScreenManager/";
 
 	@Override
 	protected void configureServlets() {
@@ -17,8 +17,7 @@ public class AppServletModule extends ServletModule {
 		install(new JpaPersistModule("SMANAGER-JPA"));
         filter("/*").through(PersistFilter.class);
         
-		serve(BASE_URL + AppConstants.CONFIG_PATH)
-				.with(ConfigServlet.class);
+		serve(BASE_URL + AppConstants.CONFIG_PATH).with(ConfigServlet.class);
 	}
 
 }

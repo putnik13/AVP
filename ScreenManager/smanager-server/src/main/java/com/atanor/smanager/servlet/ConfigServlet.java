@@ -38,8 +38,9 @@ public class ConfigServlet extends RemoteServiceServlet implements ConfigService
 	}
 
 	@Override
-	public Boolean savePreset(PresetDto preset) {
-		return equipService.savePreset(presetConverter.toEntity(preset));
+	public PresetDto savePreset(PresetDto preset) {
+		equipService.savePreset(presetConverter.toEntity(preset));
+		return presetConverter.toDto(equipService.getPresetById(preset.getId()));
 	}
 
 }

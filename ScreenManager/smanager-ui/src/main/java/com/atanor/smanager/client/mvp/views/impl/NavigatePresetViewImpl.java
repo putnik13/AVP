@@ -14,6 +14,7 @@ import com.atanor.smanager.rpc.dto.PresetDto;
 import com.google.common.collect.Lists;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -22,7 +23,11 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class NavigatePresetViewImpl extends VLayout implements NavigatePresetView, ClickHandler {
 
-	private List<PresetLabel> layouts = Lists.newArrayList();
+	private final List<PresetLabel> layouts = Lists.newArrayList();
+
+	private Double scaleFactor;
+	private Long presetWidth;
+	private Long presetHeight;
 
 	public NavigatePresetViewImpl() {
 		setHeight100();
@@ -60,14 +65,14 @@ public class NavigatePresetViewImpl extends VLayout implements NavigatePresetVie
 	}
 
 	@Override
-	public void setConfiguration(HardwareDto config) {
+	public void setConfiguration(final HardwareDto config) {
 		Long displayWidth = new Long(config.getDisplay().getWidth());
 		Long displayHeight = new Long(config.getDisplay().getHigh());
 
-		Long presetWidth = Math.round(getElement().getClientWidth() * 0.8d);
+		presetWidth = Math.round(getElement().getClientWidth() * 0.8d);
 
-		Double scaleFactor = presetWidth.doubleValue() / displayWidth.doubleValue();
-		Long presetHeight = Math.round(scaleFactor * displayHeight.doubleValue());
+		scaleFactor = presetWidth.doubleValue() / displayWidth.doubleValue();
+		presetHeight = Math.round(scaleFactor * displayHeight.doubleValue());
 
 		for (PresetDto preset : config.getPresets()) {
 			createPresetWindow(preset, presetWidth, presetHeight, scaleFactor);
@@ -83,12 +88,12 @@ public class NavigatePresetViewImpl extends VLayout implements NavigatePresetVie
 		}
 	}
 
-	private void selectPreset(PresetLabel preset) {
+	private void selectPreset(final PresetLabel preset) {
 		preset.setSelected(true);
 		preset.setOpacity(20);
 	}
 
-	private void cleanPresetLayouts() {
+	private void resetPresetLayouts() {
 		for (PresetLabel layout : layouts) {
 			layout.setSelected(false);
 			layout.setOpacity(100);
@@ -97,12 +102,12 @@ public class NavigatePresetViewImpl extends VLayout implements NavigatePresetVie
 
 	@Override
 	public void cleanState() {
-		cleanPresetLayouts();
+		resetPresetLayouts();
 	}
 
 	@Override
 	public void setPreset(final Long presetId) {
-		cleanPresetLayouts();
+		resetPresetLayouts();
 		selectPreset(getPreset(presetId));
 	}
 
@@ -113,5 +118,28 @@ public class NavigatePresetViewImpl extends VLayout implements NavigatePresetVie
 			}
 		}
 		throw new IllegalStateException("Preset with following id: " + id + " not found");
+	}
+
+	@Override
+	public void setPresetConfiguration(final PresetDto newPreset) {
+		List<PresetDto> presets = Lists.newArrayList();
+		for (PresetLabel playout : layouts) {
+			presets.add(playout.getDto().getId() != newPreset.getId() ? playout.getDto() : newPreset);
+		}
+		
+		layouts.clear();
+		cleanPresetLayouts();
+		
+		for (PresetDto preset : presets) {
+			createPresetWindow(preset, presetWidth, presetHeight, scaleFactor);
+		}
+	}
+
+	private void cleanPresetLayouts() {
+		for (Canvas child : getChildren()) {
+			if (child instanceof HLayout) {
+				removeChild(child);
+			}
+		}
 	}
 }

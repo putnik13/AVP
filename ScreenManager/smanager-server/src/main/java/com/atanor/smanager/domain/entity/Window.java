@@ -47,6 +47,10 @@ public class Window extends AbstractEntity<Long> {
 	public Window() {
 	}
 
+	public Window(final Long id){
+		this.id = id;
+	}
+	
 	public Window(final String name, final String source, final Integer xTopLeft, final Integer yTopLeft,
 			final Integer xBottomRight, final Integer yBottomRight, final Integer zIndex) {
 		this.name = name;
