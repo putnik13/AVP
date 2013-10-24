@@ -16,4 +16,6 @@ public interface EditPresetView extends IsWidget {
 	void setPresetConfiguration(PresetDto preset);
 	
 	void cleanState();
+	
+	void onPresetApplied();
 }

@@ -49,8 +49,18 @@ public class PresetSelectedActivity extends AbstractActivity implements EditPres
 
 	@Override
 	public void applyPreset(PresetDto preset) {
-		// TODO Auto-generated method stub
-		
+		Client.getConfigService().applyPreset(preset, new AsyncCallback<Boolean>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				SC.say("Error. Can not apply preset configuration");
+				caught.printStackTrace();
+			}
+
+			@Override
+			public void onSuccess(Boolean result) {
+				view.onPresetApplied();
+			}});
 	}
 
 }

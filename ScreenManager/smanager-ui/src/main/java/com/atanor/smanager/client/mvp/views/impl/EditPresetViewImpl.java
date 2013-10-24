@@ -79,7 +79,11 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 
 		applyButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-
+				final PresetLabel preset = getCurrentPreset();
+				if (preset != null) {
+					updateWindowDtos(preset);
+					presenter.applyPreset(preset.getDto());
+				}
 			}
 		});
 
@@ -402,6 +406,11 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		Long panelDisplayWidth = new Long(panelDisplay.getWidth());
 		Long panelDisplayHeight = new Long(panelDisplay.getHeight());
 		createPresetLayout(preset, panelDisplayWidth, panelDisplayHeight, scaleFactor);
+	}
+
+	@Override
+	public void onPresetApplied() {
+		applyButton.disable();
 	}
 
 }
