@@ -51,8 +51,10 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 
 	private final Map<Long, PresetLabel> layouts = Maps.newHashMap();
 	private final LinkedHashMap<String, String> sourcesMap = Maps.newLinkedHashMap();
+	private final LinkedHashMap<Integer, String> zIndexesMap = Maps.newLinkedHashMap();
 
-	private final SelectItem selectInput;
+	private final SelectItem selectDepth;
+	private final SelectItem selectSource;
 	private final IButton applyButton;
 	private final IButton saveButton;
 	private final IButton cancelButton;
@@ -117,18 +119,18 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 			}
 		});
 
-		final DynamicForm form = new DynamicForm();
-		form.setAlign(Alignment.RIGHT);
-		selectInput = new SelectItem();
-		selectInput.setTitle("Select Source");
-		selectInput.setClipTitle(true);
-		selectInput.setAlign(Alignment.RIGHT);
-		selectInput.setDisabled(true);
-		form.setFields(selectInput);
-		form.setWidth(250);
-		form.setMinWidth(250);
+		final DynamicForm sources = new DynamicForm();
+		sources.setAlign(Alignment.RIGHT);
+		selectSource = new SelectItem();
+		selectSource.setTitle("Source");
+		selectSource.setClipTitle(true);
+		selectSource.setAlign(Alignment.RIGHT);
+		selectSource.setDisabled(true);
+		sources.setFields(selectSource);
+		sources.setWidth(200);
+		sources.setMinWidth(200);
 
-		selectInput.addChangedHandler(new ChangedHandler() {
+		selectSource.addChangedHandler(new ChangedHandler() {
 
 			@Override
 			public void onChanged(ChangedEvent event) {
@@ -142,9 +144,48 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 			}
 		});
 
+		final DynamicForm depth = new DynamicForm();
+		depth.setAlign(Alignment.RIGHT);
+		selectDepth = new SelectItem();
+		selectDepth.setTitle("Depth");
+		selectDepth.setClipTitle(true);
+		selectDepth.setAlign(Alignment.RIGHT);
+		selectDepth.setDisabled(true);
+		depth.setFields(selectDepth);
+		depth.setWidth(200);
+		depth.setMinWidth(200);
+
+		zIndexesMap.put(0, "Top");
+		zIndexesMap.put(1, "Top-1");
+		zIndexesMap.put(2, "Top-2");
+		zIndexesMap.put(3, "Top-3");
+		zIndexesMap.put(4, "Top-4");
+		zIndexesMap.put(5, "Top-5");
+		zIndexesMap.put(6, "Top-6");
+		zIndexesMap.put(7, "Top-7");
+		zIndexesMap.put(8, "Top-8");
+		zIndexesMap.put(9, "Top-9");
+		zIndexesMap.put(10, "Top-10");
+		selectDepth.setValueMap(zIndexesMap);
+
+		selectDepth.addChangedHandler(new ChangedHandler() {
+
+			@Override
+			public void onChanged(ChangedEvent event) {
+				final Integer newValue = Integer.parseInt((String)event.getValue());
+				final WindowLabel window = getSelectedWindow();
+				if (window != null && newValue != window.getZIndex()) {
+					window.setZIndex(newValue);
+					window.getDto().setZIndex(newValue);
+					onWindowChanged(window);
+				}
+			}
+		});
+
 		HLayout hButtonLayout = new HLayout(15);
 		hButtonLayout.setAlign(Alignment.CENTER);
-		hButtonLayout.addMember(form);
+		hButtonLayout.addMember(depth);
+		hButtonLayout.addMember(sources);
 		hButtonLayout.addMember(applyButton);
 		hButtonLayout.addMember(saveButton);
 		hButtonLayout.addMember(cancelButton);
@@ -187,7 +228,7 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		for (String source : sources) {
 			sourcesMap.put(source, source);
 		}
-		selectInput.setValueMap(sourcesMap);
+		selectSource.setValueMap(sourcesMap);
 	}
 
 	private void setDisplay(DisplayDto display) {
@@ -301,8 +342,11 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 				if (!window.isSelected()) {
 					cleanWindows(layout);
 					selectWindow(window);
-					selectInput.enable();
-					selectInput.setValue(window.getDto().getSource());
+					window.bringToFront();
+					selectSource.enable();
+					selectSource.setValue(window.getDto().getSource());
+					selectDepth.enable();
+					selectDepth.setValue(window.getDto().getZIndex());
 				}
 			}
 
@@ -367,8 +411,10 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 	}
 
 	private void cleanHeaderWidgets() {
-		selectInput.setValue("");
-		selectInput.disable();
+		selectDepth.setValue("");
+		selectSource.setValue("");
+		selectDepth.disable();
+		selectSource.disable();
 		applyButton.disable();
 		saveButton.disable();
 		cancelButton.disable();

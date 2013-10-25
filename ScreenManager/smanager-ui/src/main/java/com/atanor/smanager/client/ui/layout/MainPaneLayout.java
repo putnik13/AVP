@@ -3,8 +3,6 @@ package com.atanor.smanager.client.ui.layout;
 import com.atanor.smanager.client.ui.DisplayPanel;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.RequiresResize;
-import com.google.gwt.user.client.ui.Widget;
 
 public class MainPaneLayout extends DockLayoutPanel {
 
@@ -37,10 +35,7 @@ public class MainPaneLayout extends DockLayoutPanel {
 
 	@Override
 	public void onResize() {
-		Widget child = asWidget();
-		if (child instanceof RequiresResize) {
-			((RequiresResize) child).onResize();
-		}
+		// do nothing since throws exception
 	}
 
 }

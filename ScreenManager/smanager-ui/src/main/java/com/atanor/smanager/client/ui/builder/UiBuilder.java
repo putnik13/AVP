@@ -36,7 +36,9 @@ public class UiBuilder {
 			Long wHeight = Math.round(scaleFactor
 					* (window.getYBottomRight().doubleValue() - window.getYTopLeft().doubleValue()));
 			wlabel.setHeight(Ints.checkedCast(wHeight));
-
+			
+			wlabel.setZIndex(window.getZIndex());
+			
 			windowPostBuilder.doPostBuild(wlabel);
 
 			plabel.addChild(wlabel);

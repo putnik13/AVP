@@ -56,6 +56,7 @@ public class WindowLabel extends Label {
 		clone.setWidth(getWidth());
 		clone.setHeight(getHeight());
 		clone.setContents(getContents());
+		clone.setZIndex(getZIndex());
 		clone.setLeftOffset(leftOffset);
 		clone.setTopOffset(topOffset);
 
