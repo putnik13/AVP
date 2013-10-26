@@ -27,7 +27,7 @@ public class EditWindowPostBuilder implements WindowPostBuilder {
 		final int newTop = window.getTop() + topOffset.intValue();
 		window.setTop(newTop);
 		
-		// set offsets for back sizes scaling
+		// set offsets for backward scaling
 		window.setLeftOffset(leftOffset);
 		window.setTopOffset(topOffset);
 	}

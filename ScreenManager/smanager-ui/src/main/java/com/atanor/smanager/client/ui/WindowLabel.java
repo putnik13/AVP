@@ -1,20 +1,23 @@
 package com.atanor.smanager.client.ui;
 
+import com.atanor.smanager.client.Client;
+import com.atanor.smanager.client.mvp.events.CleanWindowSelectionEvent;
+import com.atanor.smanager.client.mvp.events.CleanWindowSelectionHandler;
 import com.atanor.smanager.client.ui.style.EditWindowStyleApplier;
 import com.atanor.smanager.rpc.dto.WindowDto;
 import com.google.common.primitives.Ints;
 import com.smartgwt.client.widgets.Label;
 
-public class WindowLabel extends Label {
+public class WindowLabel extends Label implements CleanWindowSelectionHandler {
 
 	private final WindowDto dto;
 	private final Double scaleFactor;
-	
+
 	private Boolean selected = Boolean.FALSE;
 	private Boolean dirty = Boolean.FALSE;
 	private Long leftOffset;
 	private Long topOffset;
-	
+
 	public WindowLabel(final WindowDto dto, final Double scaleFactor) {
 		this.dto = dto;
 		this.scaleFactor = scaleFactor;
@@ -62,13 +65,14 @@ public class WindowLabel extends Label {
 
 		new EditWindowStyleApplier().applyStyle(clone);
 
+		// add clean window selection handler
+		Client.getEventBus().addHandler(CleanWindowSelectionEvent.getType(), clone);
+
 		return clone;
 	}
 
 	public void updateDto() {
 		if (isDirty()) {
-			dto.setModified(true);
-			dto.setSource(getContents());
 
 			final Long xTopLeft = Math.round((new Long(getLeft()).doubleValue() - leftOffset.doubleValue())
 					/ scaleFactor);
@@ -78,13 +82,23 @@ public class WindowLabel extends Label {
 					.round((new Long(getTop()).doubleValue() - topOffset.doubleValue()) / scaleFactor);
 			dto.setYTopLeft(Ints.checkedCast(yTopLeft));
 
-			final Long xBottomRight = Math.round((new Long(getLeft()).doubleValue() + new Long(getWidth())
-					.doubleValue() - leftOffset.doubleValue()) / scaleFactor);
+			final Long xBottomRight = Math.round((new Long(getLeft()).doubleValue()
+					+ new Long(getWidth()).doubleValue() - leftOffset.doubleValue())
+					/ scaleFactor);
 			dto.setXBottomRight(Ints.checkedCast(xBottomRight));
-
-			final Long yBottomRight = Math.round((new Long(getTop()).doubleValue() + new Long(getHeight())
-					.doubleValue() - topOffset.doubleValue()) / scaleFactor);
+			
+			final Long yBottomRight = Math.round((new Long(getTop()).doubleValue()
+					+ new Long(getHeight()).doubleValue() - topOffset.doubleValue())
+					/ scaleFactor);
 			dto.setYBottomRight(Ints.checkedCast(yBottomRight));
+		}
+	}
+
+	@Override
+	public void onCleanWindowSelection(CleanWindowSelectionEvent event) {
+		if (isSelected()) {
+			setSelected(false);
+			new EditWindowStyleApplier().applyStyle(this);
 		}
 	}
 

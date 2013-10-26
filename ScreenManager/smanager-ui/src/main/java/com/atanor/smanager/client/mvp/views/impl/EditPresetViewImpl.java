@@ -1,24 +1,30 @@
 package com.atanor.smanager.client.mvp.views.impl;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.atanor.smanager.client.Client;
+import com.atanor.smanager.client.mvp.events.ActivateGridEvent;
+import com.atanor.smanager.client.mvp.events.CleanGridActivationEvent;
+import com.atanor.smanager.client.mvp.events.CleanWindowSelectionEvent;
 import com.atanor.smanager.client.mvp.places.NoPresetSelectedPlace;
 import com.atanor.smanager.client.mvp.presenters.EditPresetPresenter;
 import com.atanor.smanager.client.mvp.views.EditPresetView;
+import com.atanor.smanager.client.ui.GridLabel;
 import com.atanor.smanager.client.ui.PresetLabel;
 import com.atanor.smanager.client.ui.WindowLabel;
 import com.atanor.smanager.client.ui.builder.UiBuilder;
 import com.atanor.smanager.client.ui.builder.post.EditPresetPostBuilder;
 import com.atanor.smanager.client.ui.builder.post.EditWindowPostBuilder;
-import com.atanor.smanager.client.ui.style.EditWindowStyleApplier;
 import com.atanor.smanager.client.ui.style.PanelsDisplayStyleApplier;
 import com.atanor.smanager.rpc.dto.DisplayDto;
 import com.atanor.smanager.rpc.dto.HardwareDto;
 import com.atanor.smanager.rpc.dto.PanelLayoutDto;
 import com.atanor.smanager.rpc.dto.PresetDto;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Ints;
 import com.smartgwt.client.types.Alignment;
@@ -29,11 +35,18 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.events.DoubleClickEvent;
+import com.smartgwt.client.widgets.events.DoubleClickHandler;
+import com.smartgwt.client.widgets.events.DragRepositionMoveEvent;
+import com.smartgwt.client.widgets.events.DragRepositionMoveHandler;
 import com.smartgwt.client.widgets.events.DragRepositionStopEvent;
 import com.smartgwt.client.widgets.events.DragRepositionStopHandler;
+import com.smartgwt.client.widgets.events.DragResizeMoveEvent;
+import com.smartgwt.client.widgets.events.DragResizeMoveHandler;
 import com.smartgwt.client.widgets.events.DragResizeStopEvent;
 import com.smartgwt.client.widgets.events.DragResizeStopHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
@@ -47,19 +60,26 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 	private EditPresetPresenter presenter;
 
 	private final Label panelDisplay;
+	private final Label gridDisplay;
 	private final Label editorDisplay;
 
 	private final Map<Long, PresetLabel> layouts = Maps.newHashMap();
+	private final Map<Integer, List<GridLabel>> rowGridPanels = Maps.newLinkedHashMap();
+	private final Map<Integer, List<GridLabel>> columnGridPanels = Maps.newLinkedHashMap();
 	private final LinkedHashMap<String, String> sourcesMap = Maps.newLinkedHashMap();
 	private final LinkedHashMap<Integer, String> zIndexesMap = Maps.newLinkedHashMap();
 
 	private final SelectItem selectDepth;
 	private final SelectItem selectSource;
+	private final CheckboxItem activateGrid;
+
 	private final IButton applyButton;
 	private final IButton saveButton;
 	private final IButton cancelButton;
 
 	private Double scaleFactor;
+
+	private PresetLabel currentPreset;
 
 	public EditPresetViewImpl() {
 		setHeight100();
@@ -68,18 +88,15 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		setShowResizeBar(true);
 
 		panelDisplay = new Label();
-		panelDisplay.setBorder("1px solid black");
-		panelDisplay.setAlign(Alignment.CENTER);
+		panelDisplay.setTop(40);
+
+		gridDisplay = new Label();
+		gridDisplay.setWidth100();
+		gridDisplay.setHeight100();
 
 		editorDisplay = new Label();
 		editorDisplay.setWidth100();
 		editorDisplay.setHeight100();
-
-		HLayout panelDisplayLayout = new HLayout();
-		panelDisplayLayout.setPadding(40);
-		panelDisplayLayout.setWidth100();
-		panelDisplayLayout.setAlign(Alignment.CENTER);
-		panelDisplayLayout.addMember(panelDisplay);
 
 		applyButton = new IButton("Apply Source");
 		applyButton.setWidth(90);
@@ -87,11 +104,7 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 
 		applyButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				final PresetLabel preset = getCurrentPreset();
-				if (preset != null) {
-					updateWindowDtos(preset);
-					presenter.applyPreset(preset.getDto());
-				}
+				applyPreset();
 			}
 		});
 
@@ -101,11 +114,7 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 
 		saveButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				final PresetLabel preset = getCurrentPreset();
-				if (preset != null) {
-					updateWindowDtos(preset);
-					presenter.savePreset(preset.getDto());
-				}
+				savePreset();
 			}
 		});
 
@@ -119,16 +128,11 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 			}
 		});
 
-		final DynamicForm sources = new DynamicForm();
-		sources.setAlign(Alignment.RIGHT);
 		selectSource = new SelectItem();
 		selectSource.setTitle("Source");
 		selectSource.setClipTitle(true);
 		selectSource.setAlign(Alignment.RIGHT);
 		selectSource.setDisabled(true);
-		sources.setFields(selectSource);
-		sources.setWidth(200);
-		sources.setMinWidth(200);
 
 		selectSource.addChangedHandler(new ChangedHandler() {
 
@@ -144,16 +148,11 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 			}
 		});
 
-		final DynamicForm depth = new DynamicForm();
-		depth.setAlign(Alignment.RIGHT);
 		selectDepth = new SelectItem();
 		selectDepth.setTitle("Depth");
 		selectDepth.setClipTitle(true);
 		selectDepth.setAlign(Alignment.RIGHT);
 		selectDepth.setDisabled(true);
-		depth.setFields(selectDepth);
-		depth.setWidth(200);
-		depth.setMinWidth(200);
 
 		zIndexesMap.put(0, "Top");
 		zIndexesMap.put(1, "Top-1");
@@ -172,7 +171,7 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 
 			@Override
 			public void onChanged(ChangedEvent event) {
-				final Integer newValue = Integer.parseInt((String)event.getValue());
+				final Integer newValue = Integer.parseInt((String) event.getValue());
 				final WindowLabel window = getSelectedWindow();
 				if (window != null && newValue != window.getZIndex()) {
 					window.setZIndex(newValue);
@@ -182,10 +181,21 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 			}
 		});
 
+		activateGrid = new CheckboxItem();
+		activateGrid.setTitle("Active Grid");
+		activateGrid.setRedrawOnChange(true);
+		activateGrid.setWidth(50);
+		activateGrid.setValue(true);
+
+		final DynamicForm form = new DynamicForm();
+		form.setAlign(Alignment.RIGHT);
+		form.setNumCols(6);
+		form.setWidth(500);
+		form.setFields(activateGrid, selectDepth, selectSource);
+
 		HLayout hButtonLayout = new HLayout(15);
 		hButtonLayout.setAlign(Alignment.CENTER);
-		hButtonLayout.addMember(depth);
-		hButtonLayout.addMember(sources);
+		hButtonLayout.addMember(form);
 		hButtonLayout.addMember(applyButton);
 		hButtonLayout.addMember(saveButton);
 		hButtonLayout.addMember(cancelButton);
@@ -200,7 +210,8 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		vButtonLayout.addMember(hButtonLayout);
 
 		VLayout vDesktopLayout = new VLayout();
-		vDesktopLayout.addChild(panelDisplayLayout);
+		vDesktopLayout.addChild(panelDisplay);
+		vDesktopLayout.addChild(gridDisplay);
 		vDesktopLayout.addChild(editorDisplay);
 
 		addMember(vButtonLayout);
@@ -239,10 +250,13 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		Double padding = adjustPadding(displayWidth, displayHeight);
 
 		Long panelDisplayWidth = Math.round(getElement().getClientWidth() * padding);
+		panelDisplayWidth = makeDivisibleOn(panelDisplayWidth, display.getLayout().getColumnPanelQuantity());
+
 		scaleFactor = panelDisplayWidth.doubleValue() / displayWidth.doubleValue();
 		Long panelDisplayHeight = Math.round(scaleFactor * displayHeight.doubleValue());
 
 		createDisplayWindow(display.getLayout(), panelDisplayWidth, panelDisplayHeight, scaleFactor);
+		createGridWindow(display.getLayout(), panelDisplayWidth, panelDisplayHeight, scaleFactor);
 	}
 
 	private Double adjustPadding(Long displayWidth, Long displayHeight) {
@@ -268,11 +282,18 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 
 		panelDisplay.setWidth(Ints.checkedCast(panelDisplayWidth));
 		panelDisplay.setHeight(Ints.checkedCast(panelDisplayHeight));
+		alignInDesktop(panelDisplay);
 
 		Long panelWidth = Math.round(panelDisplayWidth.doubleValue() / layout.getColumnPanelQuantity());
 		Long panelHeight = Math.round(panelDisplayHeight.doubleValue() / layout.getRowPanelQuantity());
 
 		createDisplayPanels(layout, panelWidth, panelHeight);
+	}
+
+	private void alignInDesktop(Label panel) {
+		Long leftOffset = Math.round((getElement().getClientWidth() - panel.getWidth()) / 2d);
+		leftOffset = makeDivisibleOn(leftOffset, 2);
+		panel.setLeft(Ints.checkedCast(leftOffset));
 	}
 
 	private void createDisplayPanels(PanelLayoutDto layout, Long panelWidth, Long panelHeight) {
@@ -299,10 +320,68 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		panelDisplay.addChild(panel);
 	}
 
+	private void createGridWindow(PanelLayoutDto layout, Long panelDisplayWidth, Long panelDisplayHeight,
+			Double scaleFactor) {
+
+		gridDisplay.setWidth(Ints.checkedCast(panelDisplayWidth));
+		gridDisplay.setHeight(Ints.checkedCast(panelDisplayHeight));
+
+		Long panelWidth = Math.round(panelDisplayWidth.doubleValue() / layout.getColumnPanelQuantity());
+		Long panelHeight = Math.round(panelDisplayHeight.doubleValue() / layout.getRowPanelQuantity());
+
+		createGridPanels(layout, panelWidth, panelHeight);
+	}
+
+	private void createGridPanels(PanelLayoutDto layout, Long panelWidth, Long panelHeight) {
+		for (int row = 0, top = 0, left = 0; row < layout.getRowPanelQuantity(); row++) {
+			for (int col = 0; col < layout.getColumnPanelQuantity(); col++) {
+				createGridPanel(row, col, top, left, panelWidth, panelHeight);
+				left += panelWidth;
+			}
+			left = 0;
+			top += panelHeight;
+		}
+	}
+
+	private void createGridPanel(int row, int col, int top, int left, Long panelWidth, Long panelHeight) {
+		final GridLabel panel = new GridLabel(row, col);
+		addRowGridPanel(row, panel);
+		addColumnGridPanel(col, panel);
+
+		final Integer leftOffset = panelDisplay.getLeft();
+		final Integer topOffset = panelDisplay.getTop();
+
+		panel.setTop(top + topOffset.intValue());
+		panel.setLeft(left + leftOffset.intValue());
+		panel.setWidth(Ints.checkedCast(panelWidth));
+		panel.setHeight(Ints.checkedCast(panelHeight));
+		panel.init();
+		panel.setBorder("1px inset black");
+
+		Client.getEventBus().addHandler(ActivateGridEvent.getType(), panel);
+		Client.getEventBus().addHandler(CleanGridActivationEvent.getType(), panel);
+
+		gridDisplay.addChild(panel);
+	}
+
+	private void addRowGridPanel(final Integer row, final GridLabel panel) {
+		if (rowGridPanels.get(row) == null) {
+			rowGridPanels.put(row, new ArrayList<GridLabel>());
+		}
+		rowGridPanels.get(row).add(panel);
+	}
+
+	private void addColumnGridPanel(final Integer col, final GridLabel panel) {
+		if (columnGridPanels.get(col) == null) {
+			columnGridPanels.put(col, new ArrayList<GridLabel>());
+		}
+		columnGridPanels.get(col).add(panel);
+	}
+
 	private void createPresetLayouts(List<PresetDto> presets) {
 		Long panelDisplayWidth = new Long(panelDisplay.getWidth());
 		Long panelDisplayHeight = new Long(panelDisplay.getHeight());
-		Long leftOffset = calculateLeftOffset();
+		Long leftOffset = new Long(panelDisplay.getLeft());
 		Long topOffset = new Long(panelDisplay.getTop());
 
 		layouts.clear();
@@ -325,11 +404,10 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		if (layouts.containsKey(presetId)) {
 			cancelButton.enable();
 
-			PresetLabel layout = layouts.get(presetId);
-			layout = layout.clone();
-			addWindowsHandlers(layout);
+			currentPreset = layouts.get(presetId).clone();
+			addWindowsHandlers(currentPreset);
 
-			editorDisplay.addChild(layout);
+			editorDisplay.addChild(currentPreset);
 		}
 	}
 
@@ -340,9 +418,8 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 			public void onClick(ClickEvent event) {
 				WindowLabel window = (WindowLabel) event.getSource();
 				if (!window.isSelected()) {
-					cleanWindows(layout);
+					Client.getEventBus().fireEvent(new CleanWindowSelectionEvent());
 					selectWindow(window);
-					window.bringToFront();
 					selectSource.enable();
 					selectSource.setValue(window.getDto().getSource());
 					selectDepth.enable();
@@ -352,31 +429,79 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 
 		};
 
-		DragRepositionStopHandler dragRepositionHandler = new DragRepositionStopHandler() {
+		DoubleClickHandler doubleClickHandler = new DoubleClickHandler() {
+
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				WindowLabel window = (WindowLabel) event.getSource();
+				if (window.isSelected() && isActiveGridSupported()) {
+					resizeToFullGrid(window);
+				}
+			}
+		};
+
+		DragRepositionStopHandler dragRepositionStopHandler = new DragRepositionStopHandler() {
 
 			@Override
 			public void onDragRepositionStop(DragRepositionStopEvent event) {
 				WindowLabel window = (WindowLabel) event.getSource();
 				onWindowChanged(window);
+				if (isActiveGridSupported()) {
+					resizeToAciveGrid(window);
+					Client.getEventBus().fireEvent(new CleanGridActivationEvent());
+				}
 			}
 		};
 
-		DragResizeStopHandler dragResizeHandler = new DragResizeStopHandler() {
+		DragResizeStopHandler dragResizeStopHandler = new DragResizeStopHandler() {
 
 			@Override
 			public void onDragResizeStop(DragResizeStopEvent event) {
 				WindowLabel window = (WindowLabel) event.getSource();
 				onWindowChanged(window);
+				if (isActiveGridSupported()) {
+					resizeToAciveGrid(window);
+					Client.getEventBus().fireEvent(new CleanGridActivationEvent());
+				}
+			}
+		};
+
+		DragRepositionMoveHandler dragRepositionMoveHandler = new DragRepositionMoveHandler() {
+
+			@Override
+			public void onDragRepositionMove(DragRepositionMoveEvent event) {
+				WindowLabel window = (WindowLabel) event.getSource();
+				if (isActiveGridSupported()) {
+					activateGridPanel(window.getLeft(), window.getTop(), window.getWidth(), window.getHeight(), window);
+				}
+			}
+		};
+
+		DragResizeMoveHandler dragResizeMoveHandler = new DragResizeMoveHandler() {
+
+			@Override
+			public void onDragResizeMove(DragResizeMoveEvent event) {
+				WindowLabel window = (WindowLabel) event.getSource();
+				if (isActiveGridSupported()) {
+					activateGridPanel(window.getLeft(), window.getTop(), window.getWidth(), window.getHeight(), window);
+				}
 			}
 		};
 
 		for (Canvas child : layout.getChildren()) {
 			if (child instanceof WindowLabel) {
 				child.addClickHandler(clickHandler);
-				child.addDragRepositionStopHandler(dragRepositionHandler);
-				child.addDragResizeStopHandler(dragResizeHandler);
+				child.addDragRepositionStopHandler(dragRepositionStopHandler);
+				child.addDragResizeStopHandler(dragResizeStopHandler);
+				child.addDragRepositionMoveHandler(dragRepositionMoveHandler);
+				child.addDragResizeMoveHandler(dragResizeMoveHandler);
+				child.addDoubleClickHandler(doubleClickHandler);
 			}
 		}
+	}
+
+	private void activateGridPanel(Integer left, Integer top, Integer width, Integer height, WindowLabel w) {
+		Client.getEventBus().fireEvent(new ActivateGridEvent(left, top, width, height, w));
 	}
 
 	private void onWindowChanged(WindowLabel window) {
@@ -385,17 +510,8 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		saveButton.enable();
 	}
 
-	private void cleanWindows(PresetLabel layout) {
-		for (Canvas child : layout.getChildren()) {
-			if (child instanceof WindowLabel) {
-				WindowLabel window = (WindowLabel) child;
-				new EditWindowStyleApplier().applyStyle(window);
-				window.setSelected(false);
-			}
-		}
-	}
-
 	private void selectWindow(WindowLabel window) {
+		window.bringToFront();
 		window.setSelected(true);
 		window.setOpacity(100);
 		window.setCanDragResize(true);
@@ -403,14 +519,14 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 	}
 
 	private void cleanPresetLayouts() {
-		for (Canvas child : editorDisplay.getChildren()) {
-			if (child instanceof PresetLabel) {
-				child.destroy();
-			}
+		if (currentPreset != null) {
+			currentPreset.destroy();
+			currentPreset = null;
 		}
 	}
 
 	private void cleanHeaderWidgets() {
+		activateGrid.setValue(true);
 		selectDepth.setValue("");
 		selectSource.setValue("");
 		selectDepth.disable();
@@ -437,16 +553,6 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		return null;
 	}
 
-	private PresetLabel getCurrentPreset() {
-		for (Canvas child : editorDisplay.getChildren()) {
-			if (child instanceof PresetLabel) {
-				return (PresetLabel) child;
-			}
-		}
-
-		return null;
-	}
-
 	@Override
 	public void cleanState() {
 		cleanPresetLayouts();
@@ -462,7 +568,7 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 	public void setPresetConfiguration(final PresetDto preset) {
 		Long panelDisplayWidth = new Long(panelDisplay.getWidth());
 		Long panelDisplayHeight = new Long(panelDisplay.getHeight());
-		Long leftOffset = calculateLeftOffset();
+		Long leftOffset = new Long(panelDisplay.getLeft());
 		Long topOffset = new Long(panelDisplay.getTop());
 
 		createPresetLayout(preset, panelDisplayWidth, panelDisplayHeight, leftOffset, topOffset);
@@ -473,8 +579,120 @@ public class EditPresetViewImpl extends VLayout implements EditPresetView {
 		applyButton.disable();
 	}
 
-	private Long calculateLeftOffset() {
-		Integer delta = getElement().getClientWidth() - panelDisplay.getWidth();
-		return Math.round(delta.doubleValue() / 2);
+	private boolean hasAtLeastXActivePanels(List<GridLabel> panels, Integer x) {
+		int activeCount = 0;
+		for (GridLabel panel : panels) {
+			if (panel.isActive()) {
+				activeCount++;
+			}
+		}
+		return activeCount >= x;
 	}
+
+	private void resizeToAciveGrid(WindowLabel window) {
+		// get active area first
+		final GridLabel startActive = getFirstActivePanelInFirstActiveRow();
+		final GridLabel endActive = getLastActivePanelInLastActiveColumn();
+
+		// if active panels present
+		if (startActive != null && endActive != null) {
+			final Integer newLeft = startActive.getLeft();
+			final Integer newTop = startActive.getTop();
+			final Integer bottomRightLeft = endActive.getLeft() + endActive.getWidth();
+			final Integer bottomRightTop = endActive.getTop() + endActive.getHeight();
+			final Integer newWidth = bottomRightLeft - newLeft;
+			final Integer newHeight = bottomRightTop - newTop;
+
+			window.animateRect(newLeft, newTop, newWidth, newHeight);
+		}
+
+	}
+
+	private GridLabel getFirstActivePanelInFirstActiveRow() {
+		Set<Integer> keys = rowGridPanels.keySet();
+		for (Integer key : keys) {
+			List<GridLabel> rowElements = rowGridPanels.get(key);
+			if (hasAtLeastXActivePanels(rowElements, 1)) {
+				for (GridLabel gridPanel : rowElements) {
+					if (gridPanel.isActive()) {
+						return gridPanel;
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+	private GridLabel getLastActivePanelInLastActiveColumn() {
+		Set<Integer> keys = columnGridPanels.keySet();
+		List<Integer> reverseKeys = Lists.reverse(Lists.newArrayList(keys));
+		for (Integer key : reverseKeys) {
+			List<GridLabel> columnElements = columnGridPanels.get(key);
+			List<GridLabel> reverseColumnElements = Lists.reverse(columnElements);
+			if (hasAtLeastXActivePanels(reverseColumnElements, 1)) {
+				for (GridLabel gridPanel : reverseColumnElements) {
+					if (gridPanel.isActive()) {
+						return gridPanel;
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+	protected void resizeToFullGrid(WindowLabel window) {
+		// get grid area size
+		final GridLabel firstPanel = getFirstGridPanel();
+		final GridLabel lastPanel = getLastGridPanel();
+
+		if (firstPanel != null && lastPanel != null) {
+			final Integer newLeft = firstPanel.getLeft();
+			final Integer newTop = firstPanel.getTop();
+			final Integer bottomRightLeft = lastPanel.getLeft() + lastPanel.getWidth();
+			final Integer bottomRightTop = lastPanel.getTop() + lastPanel.getHeight();
+			final Integer newWidth = bottomRightLeft - newLeft;
+			final Integer newHeight = bottomRightTop - newTop;
+
+			window.animateRect(newLeft, newTop, newWidth, newHeight);
+		}
+	}
+
+	private GridLabel getFirstGridPanel() {
+		return rowGridPanels.get(0).get(0);
+	}
+
+	private GridLabel getLastGridPanel() {
+		List<GridLabel> lastRow = rowGridPanels.get(rowGridPanels.size() - 1);
+		return Lists.reverse(lastRow).get(0);
+	}
+
+	private Long makeDivisibleOn(Long value, Integer divisibleOn) {
+		while (true) {
+			if ((value.intValue() % divisibleOn) == 0) {
+				return value;
+			}
+			value++;
+		}
+	}
+
+	private Boolean isActiveGridSupported() {
+		return activateGrid.getValueAsBoolean();
+	}
+
+	private void applyPreset() {
+		if (currentPreset != null) {
+			updateWindowDtos(currentPreset);
+			presenter.applyPreset(currentPreset.getDto());
+		}
+	}
+
+	private void savePreset() {
+		if (currentPreset != null) {
+			updateWindowDtos(currentPreset);
+			presenter.savePreset(currentPreset.getDto());
+		}
+	}
+
 }
