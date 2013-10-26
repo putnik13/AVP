@@ -74,11 +74,6 @@ public class WindowLabel extends Label implements CleanWindowSelectionHandler {
 	public void updateDto() {
 		if (isDirty()) {
 
-			System.out.println("ScaleFactor: " + scaleFactor);
-			System.out.println("----- before update Dto");
-			System.out.println("XTopLeft: " + dto.getXTopLeft() + ", yTopLeft: " + dto.getYTopLeft()
-					+ ", XBottomRight: " + dto.getXBottomRight() + ", YBottomRight: " + dto.getYBottomRight());
-			
 			final Long xTopLeft = Math.round((new Long(getLeft()).doubleValue() - leftOffset.doubleValue())
 					/ scaleFactor);
 			dto.setXTopLeft(Ints.checkedCast(xTopLeft));
@@ -91,17 +86,11 @@ public class WindowLabel extends Label implements CleanWindowSelectionHandler {
 					+ new Long(getWidth()).doubleValue() - leftOffset.doubleValue())
 					/ scaleFactor);
 			dto.setXBottomRight(Ints.checkedCast(xBottomRight));
-			System.out.println("XBottomRight Long: " + xBottomRight); 
-			System.out.println("Left: " + getLeft() + ", width: " + getWidth()+", leftOffset: " + leftOffset); 
 			
 			final Long yBottomRight = Math.round((new Long(getTop()).doubleValue()
 					+ new Long(getHeight()).doubleValue() - topOffset.doubleValue())
 					/ scaleFactor);
 			dto.setYBottomRight(Ints.checkedCast(yBottomRight));
-			
-			System.out.println("----- after update Dto");
-			System.out.println("XTopLeft: " + dto.getXTopLeft() + ", yTopLeft: " + dto.getYTopLeft()
-					+ ", XBottomRight: " + dto.getXBottomRight() + ", YBottomRight: " + dto.getYBottomRight());
 		}
 	}
 

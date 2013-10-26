@@ -42,12 +42,8 @@ public class GridLabel extends Label implements ActivateGridHandler, CleanGridAc
 		topEnd = getTop() + getHeight();
 	}
 
-	private boolean containsInHorizontal(Integer value) {
-		return (value >= leftStart) && (value <= leftEnd);
-	}
-
-	private boolean containsInVertical(Integer value) {
-		return (value >= topStart) && (value <= topEnd);
+	private boolean containsInInterval(Integer value, Integer startInterval, Integer endInterval) {
+		return (value > startInterval) && (value < endInterval);
 	}
 
 	private void setActive(boolean active) {
@@ -73,16 +69,61 @@ public class GridLabel extends Label implements ActivateGridHandler, CleanGridAc
 
 	@Override
 	public void onActivateGrid(ActivateGridEvent event) {
-		boolean leftTopCorner = containsInHorizontal(event.getLeft()) && containsInVertical(event.getTop());
-		boolean rightTopCorner = containsInHorizontal(event.getLeft() + event.getWidth())
-				&& containsInVertical(event.getTop());
-		boolean leftBottomCorner = containsInHorizontal(event.getLeft())
-				&& containsInVertical(event.getTop() + event.getHeight());
-		boolean rightBottomCorner = containsInHorizontal(event.getLeft() + event.getWidth())
-				&& containsInVertical(event.getTop() + event.getHeight());
-		boolean active = leftTopCorner || rightTopCorner || leftBottomCorner || rightBottomCorner;
-		setActive(active);
-		moveBelow(event.getW());
+		boolean leftTopCorner = containsInInterval(event.getLeft(), leftStart, leftEnd)
+				&& containsInInterval(event.getTop(), topStart, topEnd);
+		boolean rightTopCorner = containsInInterval(event.getLeft() + event.getWidth(), leftStart, leftEnd)
+				&& containsInInterval(event.getTop(), topStart, topEnd);
+		boolean leftBottomCorner = containsInInterval(event.getLeft(), leftStart, leftEnd)
+				&& containsInInterval(event.getTop() + event.getHeight(), topStart, topEnd);
+		boolean rightBottomCorner = containsInInterval(event.getLeft() + event.getWidth(), leftStart, leftEnd)
+				&& containsInInterval(event.getTop() + event.getHeight(), topStart, topEnd);
+
+		boolean cornerOverlap = leftTopCorner || rightTopCorner || leftBottomCorner || rightBottomCorner;
+
+		// ==========================================================
+		boolean panelWidthBelongsWindow = containsInInterval(leftStart, event.getLeft(),
+				event.getLeft() + event.getWidth())
+				&& containsInInterval(leftEnd, event.getLeft(), event.getLeft() + event.getWidth());
+		boolean bottomCornerThrough = containsInInterval(event.getTop() + event.getHeight(), topStart, topEnd)
+				&& panelWidthBelongsWindow;
+		boolean topCornerThrough = containsInInterval(event.getTop(), topStart, topEnd) && panelWidthBelongsWindow;
+
+		boolean panelHeightBelongsWindow = containsInInterval(topStart, event.getTop(),
+				event.getTop() + event.getHeight())
+				&& containsInInterval(topEnd, event.getTop(), event.getTop() + event.getHeight());
+		boolean rightCornerThrough = containsInInterval(event.getLeft() + event.getWidth(), leftStart, leftEnd)
+				&& panelHeightBelongsWindow;
+		boolean leftCornerThrough = containsInInterval(event.getLeft(), leftStart, leftEnd) && panelHeightBelongsWindow;
+
+		boolean throughOverlap = bottomCornerThrough || topCornerThrough || rightCornerThrough || leftCornerThrough;
+
+		// ==========================================================
+		boolean fullOverlap = panelWidthBelongsWindow && panelHeightBelongsWindow;
+
+		// ==========================================================
+		boolean basicEqualsV = leftStart == event.getLeft() || leftEnd == event.getLeft() + event.getWidth();
+		boolean windowCornerV = (containsInInterval(event.getTop(), topStart, topEnd) || containsInInterval(
+				event.getTop() + event.getHeight(), topStart, topEnd))
+				&& basicEqualsV;
+		boolean panelsCornerV = (containsInInterval(topStart, event.getTop(), event.getTop() + event.getHeight()) || containsInInterval(
+				topEnd, event.getTop(), event.getTop() + event.getHeight())) && basicEqualsV;
+
+		boolean basicEqualsH = topStart == event.getTop() || topEnd == event.getTop() + event.getHeight();
+		boolean windowCornerH = (containsInInterval(event.getLeft(), leftStart, leftEnd) || containsInInterval(
+				event.getLeft() + event.getWidth(), leftStart, leftEnd))
+				&& basicEqualsH;
+		boolean panelsCornerH = (containsInInterval(leftStart, event.getLeft(), event.getLeft() + event.getWidth()) || containsInInterval(
+				leftEnd, event.getLeft(), event.getLeft() + event.getWidth())) && basicEqualsH;
+		
+		boolean fix = (containsInInterval(topStart, event.getTop(), event.getTop() + event.getHeight()) || containsInInterval(
+				topEnd, event.getTop(), event.getTop() + event.getHeight())) && (containsInInterval(leftStart, event.getLeft(), event.getLeft() + event.getWidth()) || containsInInterval(
+						leftEnd, event.getLeft(), event.getLeft() + event.getWidth()));
+		
+		boolean equalsOverlap = windowCornerV || panelsCornerV || windowCornerH || panelsCornerH || fix;
+
+		boolean result = cornerOverlap || throughOverlap || fullOverlap || equalsOverlap;
+
+		setActive(result);
 	}
 
 	@Override
