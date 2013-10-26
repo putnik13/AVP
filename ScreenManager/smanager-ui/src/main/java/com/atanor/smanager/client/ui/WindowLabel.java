@@ -67,6 +67,7 @@ public class WindowLabel extends Label {
 
 	public void updateDto() {
 		if (isDirty()) {
+			dto.setModified(true);
 			dto.setSource(getContents());
 
 			final Long xTopLeft = Math.round((new Long(getLeft()).doubleValue() - leftOffset.doubleValue())

@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "preset_windows")
@@ -44,6 +45,9 @@ public class Window extends AbstractEntity<Long> {
 	@Column(name = "z_index")
 	private Integer zIndex;
 
+	@Transient
+	private Boolean modified;
+	
 	public Window() {
 	}
 
@@ -79,7 +83,7 @@ public class Window extends AbstractEntity<Long> {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -87,7 +91,7 @@ public class Window extends AbstractEntity<Long> {
 		return source;
 	}
 
-	public void setSource(String source) {
+	public void setSource(final String source) {
 		this.source = source;
 	}
 
@@ -95,7 +99,7 @@ public class Window extends AbstractEntity<Long> {
 		return xTopLeft;
 	}
 
-	public void setXTopLeft(Integer xTopLeft) {
+	public void setXTopLeft(final Integer xTopLeft) {
 		this.xTopLeft = xTopLeft;
 	}
 
@@ -103,7 +107,7 @@ public class Window extends AbstractEntity<Long> {
 		return yTopLeft;
 	}
 
-	public void setYTopLeft(Integer yTopLeft) {
+	public void setYTopLeft(final Integer yTopLeft) {
 		this.yTopLeft = yTopLeft;
 	}
 
@@ -111,7 +115,7 @@ public class Window extends AbstractEntity<Long> {
 		return xBottomRight;
 	}
 
-	public void setXBottomRight(Integer xBottomRight) {
+	public void setXBottomRight(final Integer xBottomRight) {
 		this.xBottomRight = xBottomRight;
 	}
 
@@ -119,7 +123,7 @@ public class Window extends AbstractEntity<Long> {
 		return yBottomRight;
 	}
 
-	public void setYBottomRight(Integer yBottomRight) {
+	public void setYBottomRight(final Integer yBottomRight) {
 		this.yBottomRight = yBottomRight;
 	}
 
@@ -127,8 +131,16 @@ public class Window extends AbstractEntity<Long> {
 		return zIndex;
 	}
 
-	public void setZIndex(Integer zIndex) {
+	public void setZIndex(final Integer zIndex) {
 		this.zIndex = zIndex;
+	}
+
+	public Boolean isModified() {
+		return modified;
+	}
+
+	public void setModified(final Boolean modified) {
+		this.modified = modified;
 	}
 
 }

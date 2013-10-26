@@ -20,6 +20,7 @@ public class PresetConverter extends AbstractConverter<PresetDto, Preset> {
 		Validate.notNull(entity, "entity param can not be null");
 
 		final PresetDto dto = new PresetDto(entity.getId());
+		dto.setName(entity.getName());
 		dto.setWindows(convertEntityList(winConverter, entity.getWindows()));
 
 		return dto;
@@ -30,6 +31,7 @@ public class PresetConverter extends AbstractConverter<PresetDto, Preset> {
 		Validate.notNull(dto, "dto param can not be null");
 
 		final Preset entity = new Preset(dto.getId());
+		entity.setName(dto.getName());
 		
 		final List<Window> windows = convertDtoList(winConverter, dto.getWindows());
 		updatePresetReference(entity, windows);

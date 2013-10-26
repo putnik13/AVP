@@ -15,7 +15,8 @@ public class PresetConverterTest extends BaseConverterTest<PresetConverter> {
 	@Test
 	public void testToDto() {
 		Preset source = new Preset();
-
+		source.setName("PRESET1");
+		
 		Window w1 = new Window("Window 1", "CAMERA", 1, 2, 3, 4, 1);
 		Window w2 = new Window("Window 2", "INPUT1", 5, 6, 7, 8, 2);
 		Window w3 = new Window("Window 3", "INPUT1", 10, 11, 12, 13, 3);
@@ -24,6 +25,7 @@ public class PresetConverterTest extends BaseConverterTest<PresetConverter> {
 		PresetDto result = converter.toDto(source);
 
 		Assert.assertNotNull(result);
+		Assert.assertEquals("PRESET1", result.getName());
 		Assert.assertEquals(3, result.getWindows().size());
 
 		Assert.assertEquals(Integer.valueOf(1), result.getWindows().get(0).getXTopLeft());
@@ -48,7 +50,8 @@ public class PresetConverterTest extends BaseConverterTest<PresetConverter> {
 	@Test
 	public void testToEntity() {
 		PresetDto source = new PresetDto();
-
+		source.setName("PRESET1");
+		
 		WindowDto w1 = new WindowDto();
 		w1.setName("Window 1");
 		w1.setSource("CAMERA");
@@ -81,6 +84,7 @@ public class PresetConverterTest extends BaseConverterTest<PresetConverter> {
 		Preset result = converter.toEntity(source);
 
 		Assert.assertNotNull(result);
+		Assert.assertEquals("PRESET1", result.getName());
 		Assert.assertEquals(3, result.getWindows().size());
 
 		Assert.assertEquals(Integer.valueOf(1), result.getWindows().get(0).getXTopLeft());

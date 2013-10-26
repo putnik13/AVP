@@ -28,6 +28,7 @@ CREATE TABLE hardware_sources (
 
 CREATE TABLE presets (
 	id BIGINT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(32) NULL DEFAULT NULL,
 	hardware_id BIGINT NULL DEFAULT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (hardware_id) REFERENCES hardware(id) ON UPDATE CASCADE ON DELETE CASCADE
@@ -65,8 +66,8 @@ INSERT INTO hardware_sources(hardware_id, sources) VALUES (3, 'testvnc');
 INSERT INTO hardware_sources(hardware_id, sources) VALUES (3, 'video');
 INSERT INTO hardware_sources(hardware_id, sources) VALUES (3, 'web');
 
-INSERT INTO presets(hardware_id) VALUES (3);
-INSERT INTO presets(hardware_id) VALUES (3);
+INSERT INTO presets(name, hardware_id) VALUES ('Preset1', 3);
+INSERT INTO presets(name, hardware_id) VALUES ('Preset2', 3);
 
 INSERT INTO preset_windows(name,source,x_top_left,y_top_left,x_bottom_right,y_bottom_right,z_index,preset_id) VALUES ('Window 0','video',800,0,1600,600,0,1);
 INSERT INTO preset_windows(name,source,x_top_left,y_top_left,x_bottom_right,y_bottom_right,z_index,preset_id) VALUES ('Window 1','testvnc',800,600,1600,1200,4,1);

@@ -6,6 +6,7 @@ import java.util.List;
 public class PresetDto extends AbstractDto {
 
 	private Long id;
+	private String name;
 	private List<WindowDto> windows;
 
 	public PresetDto() {
@@ -17,6 +18,14 @@ public class PresetDto extends AbstractDto {
 
 	public Long getId() {
 		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public List<WindowDto> getWindows() {

@@ -3,6 +3,7 @@ package com.atanor.smanager.domain.entity;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,6 +24,9 @@ public class Preset extends AbstractEntity<Long> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@Column(name = "name", length = 32)
+	private String name;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hardware_id")
 	private Hardware hardware;
@@ -56,6 +60,14 @@ public class Preset extends AbstractEntity<Long> {
 
 	public void setHardware(final Hardware hardware) {
 		this.hardware = hardware;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

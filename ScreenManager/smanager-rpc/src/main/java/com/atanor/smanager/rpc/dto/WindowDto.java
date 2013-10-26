@@ -11,7 +11,8 @@ public class WindowDto extends AbstractDto {
 	private Integer xBottomRight;
 	private Integer yBottomRight;
 	private Integer zIndex;
-
+	private Boolean modified = Boolean.FALSE;
+	
 	public WindowDto() {
 	}
 
@@ -77,6 +78,14 @@ public class WindowDto extends AbstractDto {
 
 	public void setSource(final String source) {
 		this.source = source;
+	}
+
+	public Boolean isModified() {
+		return modified;
+	}
+
+	public void setModified(Boolean modified) {
+		this.modified = modified;
 	}
 
 }

@@ -16,7 +16,8 @@ public class PresetDaoTest extends BaseDaoTest<Preset> {
 	@Test
 	public void testInsertRecord() throws Exception {
 		Preset preset = new Preset();
-
+		preset.setName("Preset1");
+		
 		Window w1 = new Window("Window 1", "VIDEO", 1, 2, 1, 2, 1);
 		Window w2 = new Window("Window 2", "CAMERA1", 3, 1, 1, 1, 2);
 		Window w3 = new Window("Window 2", "CAMERA2", 3, 1, 2, 1, 3);
@@ -38,7 +39,8 @@ public class PresetDaoTest extends BaseDaoTest<Preset> {
 	@Test
 	public void testSelect() throws Exception {
 		Preset preset = new Preset();
-
+		preset.setName("Preset1");
+		
 		Window w1 = new Window("Window 1", "VIDEO", 1, 2, 1, 2, 1);
 		Window w2 = new Window("Window 2", "CAMERA1", 3, 1, 1, 1, 2);
 		Window w3 = new Window("Window 3", "CAMERA2", 3, 1, 2, 1, 3);
@@ -49,7 +51,8 @@ public class PresetDaoTest extends BaseDaoTest<Preset> {
 
 		Preset presetFromDB = dao.find(id);
 		Assert.assertNotNull(presetFromDB);
-
+		Assert.assertEquals("Preset1", presetFromDB.getName());
+		
 		Assert.assertEquals(3, presetFromDB.getWindows().size());
 
 		Assert.assertEquals("Window 1", presetFromDB.getWindows().get(0).getName());
