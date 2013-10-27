@@ -53,7 +53,9 @@ public class WindowLabel extends Label implements CleanWindowSelectionHandler {
 
 	public WindowLabel clone() {
 		final WindowLabel clone = new WindowLabel(dto, scaleFactor);
-
+		
+		cleanDto();
+		
 		clone.setTop(getTop());
 		clone.setLeft(getLeft());
 		clone.setWidth(getWidth());
@@ -73,7 +75,10 @@ public class WindowLabel extends Label implements CleanWindowSelectionHandler {
 
 	public void updateDto() {
 		if (isDirty()) {
-
+			
+			dto.setModified(isDirty());
+			dto.setSelected(isSelected());
+			
 			final Long xTopLeft = Math.round((new Long(getLeft()).doubleValue() - leftOffset.doubleValue())
 					/ scaleFactor);
 			dto.setXTopLeft(Ints.checkedCast(xTopLeft));
@@ -100,6 +105,11 @@ public class WindowLabel extends Label implements CleanWindowSelectionHandler {
 			setSelected(false);
 			new EditWindowStyleApplier().applyStyle(this);
 		}
+	}
+	
+	private void cleanDto(){
+		dto.setModified(false);
+		dto.setSelected(false);
 	}
 
 }

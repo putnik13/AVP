@@ -37,6 +37,7 @@ public class WindowConverter extends AbstractConverter<WindowDto, Window> {
 		entity.setZIndex(dto.getZIndex());
 		
 		entity.setModified(dto.isModified());
+		entity.setSelected(dto.isSelected());
 		
 		return entity;
 	}

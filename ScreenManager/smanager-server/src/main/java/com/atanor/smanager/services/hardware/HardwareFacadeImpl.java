@@ -21,6 +21,13 @@ public class HardwareFacadeImpl implements HardwareFacade {
 
 		try {
 			System.out.println("********************************");
+			Window w = preset.getWindows().get(0);
+			System.out.println("modified: " + w.isModified() + ", selected: " + w.isSelected());
+			w = preset.getWindows().get(1);
+			System.out.println("modified: " + w.isModified() + ", selected: " + w.isSelected());
+			if(preset != null){
+				throw new IllegalStateException();
+			}
 			// Connect to the specified server
 			telnet.connect(server, 23);
 
