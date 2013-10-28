@@ -22,6 +22,7 @@ public class HardwareFacadeImpl implements HardwareFacade {
 
 		try {
 			System.out.println("********************************");
+
 			// Connect to the specified server
 			telnet.connect(server, 23);
 

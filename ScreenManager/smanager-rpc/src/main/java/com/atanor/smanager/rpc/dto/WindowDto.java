@@ -11,8 +11,11 @@ public class WindowDto extends AbstractDto {
 	private Integer xBottomRight;
 	private Integer yBottomRight;
 	private Integer zIndex;
+
+	// state attributes
 	private Boolean modified = Boolean.FALSE;
-	
+	private Boolean selected = Boolean.FALSE;
+
 	public WindowDto() {
 	}
 
@@ -84,8 +87,16 @@ public class WindowDto extends AbstractDto {
 		return modified;
 	}
 
-	public void setModified(Boolean modified) {
+	public void setModified(final Boolean modified) {
 		this.modified = modified;
+	}
+
+	public Boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(final Boolean selected) {
+		this.selected = selected;
 	}
 
 }

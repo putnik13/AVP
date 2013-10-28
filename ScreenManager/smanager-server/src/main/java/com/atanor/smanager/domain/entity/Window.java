@@ -48,6 +48,9 @@ public class Window extends AbstractEntity<Long> {
 	@Transient
 	private Boolean modified;
 	
+	@Transient
+	private Boolean selected;
+	
 	public Window() {
 	}
 
@@ -141,6 +144,14 @@ public class Window extends AbstractEntity<Long> {
 
 	public void setModified(final Boolean modified) {
 		this.modified = modified;
+	}
+
+	public Boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(final Boolean selected) {
+		this.selected = selected;
 	}
 
 }
