@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.telnet.TelnetClient;
 
 import com.atanor.smanager.domain.entity.Preset;
@@ -80,6 +81,7 @@ public class HardwareFacadeImpl implements HardwareFacade {
 			
 			String pattern = "0-";
 			String pattern2 = "NoWindow";
+			StringUtils.substringAfter(str, "-");
 			char lastChar = pattern.charAt(pattern.length() - 1);
 			char lastChar2 = pattern2.charAt(pattern2.length() - 1);
 			StringBuffer sb = new StringBuffer();
