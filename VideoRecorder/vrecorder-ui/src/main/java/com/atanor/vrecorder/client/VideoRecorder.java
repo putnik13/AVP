@@ -1,5 +1,6 @@
 package com.atanor.vrecorder.client;
 
+import com.atanor.vrecorder.client.ui.MainPane;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -14,8 +15,7 @@ public class VideoRecorder implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 
-		Button button = new Button("Hello");
-		RootPanel.get().add(button);
+		RootPanel.get().add(new MainPane());
 	}
 
 }
