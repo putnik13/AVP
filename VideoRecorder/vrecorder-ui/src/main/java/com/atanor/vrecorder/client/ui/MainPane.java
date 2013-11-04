@@ -1,5 +1,9 @@
 package com.atanor.vrecorder.client.ui;
 
+import java.util.List;
+
+import com.atanor.vrecorder.rpc.dto.RecordingDto;
+import com.google.common.collect.Lists;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
@@ -8,6 +12,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -15,10 +20,12 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class MainPane extends HLayout {
 
 	private MainPanePresenter presenter;
+
 	private final IButton startRecord;
 	private final IButton stopRecord;
 	private final Canvas imageBox;
-	
+	private final ListGrid listGrid;
+
 	public MainPane() {
 		setWidth100();
 		setHeight100();
@@ -30,12 +37,6 @@ public class MainPane extends HLayout {
 		imageBox.setShowEdges(true);
 		imageBox.setBackgroundColor("white");
 
-//		final Img img = new Img();
-//		img.setWidth(60);
-//		img.setHeight(60);		
-//		img.setSrc("image3.png");
-//		imageBox.addChild(img);
-		
 		startRecord = new IButton("Start Recording");
 		startRecord.setWidth(90);
 		startRecord.addClickHandler(new ClickHandler() {
@@ -64,9 +65,10 @@ public class MainPane extends HLayout {
 		headerPane.addMembers(imageBox, startRecord, stopRecord);
 		headerPane.setMembersMargin(10);
 
-		final ListGrid listGrid = new ListGrid();
-		ListGridField fileName = new ListGridField("fileName");
-		ListGridField duration = new ListGridField("Duration");
+		listGrid = new ListGrid();
+		ListGridField fileName = new ListGridField("fileName", "File Name");
+		ListGridField startTime = new ListGridField("startTime", "Start Time");
+		ListGridField duration = new ListGridField("duration", "Duration");
 		listGrid.setFields(fileName, duration);
 
 		final Label freeSpace = new Label();
@@ -84,10 +86,10 @@ public class MainPane extends HLayout {
 	public void onRecordingStarted() {
 		startRecord.disable();
 		stopRecord.enable();
-		
+
 		final Img img = new Img();
 		img.setWidth(60);
-		img.setHeight(60);		
+		img.setHeight(60);
 		img.setSrc("image1.png");
 		imageBox.addChild(img);
 	}
@@ -95,6 +97,23 @@ public class MainPane extends HLayout {
 	public void onRecordingStopped() {
 		startRecord.enable();
 		stopRecord.disable();
+	}
+
+	public void setRecordings(final List<RecordingDto> recordings) {
+		List<ListGridRecord> records = createGridRecords(recordings);
+		listGrid.setData(records.toArray(new ListGridRecord[] {}));
+	}
+
+	private List<ListGridRecord> createGridRecords(final List<RecordingDto> recordings) {
+		List<ListGridRecord> records = Lists.newArrayList();
+		for (RecordingDto dto : recordings) {
+			ListGridRecord record = new ListGridRecord();
+			record.setAttribute("fileName", dto.getName());
+			record.setAttribute("duration", dto.getDuration());
+			records.add(record);
+		}
+
+		return records;
 	}
 
 	public void setPresenter(final MainPanePresenter presenter) {

@@ -2,15 +2,24 @@ package com.atanor.vrecorder.servlet;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.atanor.vrecorder.domain.converter.RecordingConverter;
 import com.atanor.vrecorder.rpc.dto.RecordingDto;
 import com.atanor.vrecorder.rpc.services.RecordingService;
+import com.atanor.vrecorder.services.RecordingDataService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 @Singleton
 @SuppressWarnings("serial")
 public class RecordingServlet extends RemoteServiceServlet implements RecordingService {
+
+	@Inject
+	private RecordingDataService recordingsService;
+
+	@Inject
+	private RecordingConverter converter;
 
 	@Override
 	public Boolean startRecording() {
@@ -26,10 +35,7 @@ public class RecordingServlet extends RemoteServiceServlet implements RecordingS
 
 	@Override
 	public List<RecordingDto> getRecordings() {
-		// TODO Auto-generated method stub
-		return null;
+		return converter.toListDto(recordingsService.getRecordings());
 	}
-
-	
 
 }

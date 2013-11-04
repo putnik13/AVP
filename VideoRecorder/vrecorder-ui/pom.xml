@@ -58,7 +58,15 @@
       <artifactId>validation-api</artifactId>
       <classifier>sources</classifier>
       <scope>provided</scope>
-    </dependency>  
+    </dependency>
+    <dependency>
+	  <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+	</dependency>
+	<dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava-gwt</artifactId>
+	</dependency>	
   </dependencies>
 
   <build>

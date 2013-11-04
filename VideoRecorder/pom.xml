@@ -105,6 +105,11 @@
         <artifactId>hibernate-jpa-2.0-api</artifactId>
         <version>1.0.1.Final</version>
       </dependency>
+	  <dependency>
+        <groupId>org.hsqldb</groupId>
+        <artifactId>hsqldb</artifactId>
+        <version>2.2.8</version>
+      </dependency>
 	  
 	  <!-- DI -->
 	  <dependency>
@@ -132,6 +137,11 @@
 	  <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
+        <version>15.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava-gwt</artifactId>
         <version>15.0</version>
       </dependency>
       <dependency>

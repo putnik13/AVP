@@ -9,6 +9,8 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class VideoRecorder implements EntryPoint {
 
+	private MainPanePresenter presenter;
+
 	/**
 	 * This is the entry point method.
 	 */
@@ -16,11 +18,16 @@ public class VideoRecorder implements EntryPoint {
 
 		RootPanel.get().add(Client.getView());
 		bind();
+
+		initRecordings();
 	}
 
 	private void bind() {
-		final MainPanePresenter presenter = new MainPanePresenter(Client.getView());
+		presenter = new MainPanePresenter(Client.getView());
 		Client.getView().setPresenter(presenter);
 	}
 
+	private void initRecordings() {
+		presenter.initRecordings();
+	}
 }

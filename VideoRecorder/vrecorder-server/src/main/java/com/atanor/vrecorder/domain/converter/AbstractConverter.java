@@ -1,0 +1,24 @@
+package com.atanor.vrecorder.domain.converter;
+
+import java.util.List;
+
+import com.atanor.vrecorder.domain.entity.AbstractEntity;
+import com.atanor.vrecorder.rpc.dto.AbstractDto;
+import com.google.common.collect.Lists;
+
+@SuppressWarnings("rawtypes")
+public abstract class AbstractConverter<D extends AbstractDto, E extends AbstractEntity> implements Converter<D, E> {
+
+	protected static <D extends AbstractDto, E extends AbstractEntity> List<D> convertEntityList(
+			final Converter<D, E> converter, final List<E> entities) {
+		final List<D> converted = Lists.newArrayList();
+		if (entities != null) {
+			for (E entity : entities) {
+				converted.add(converter.toDto(entity));
+			}
+		}
+
+		return converted;
+	}
+
+}

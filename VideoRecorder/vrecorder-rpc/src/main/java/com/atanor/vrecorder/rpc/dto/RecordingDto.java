@@ -2,7 +2,8 @@ package com.atanor.vrecorder.rpc.dto;
 
 import java.util.Date;
 
-public class RecordingDto {
+@SuppressWarnings("serial")
+public class RecordingDto extends AbstractDto {
 
 	private String name;
 	private Date startTime;

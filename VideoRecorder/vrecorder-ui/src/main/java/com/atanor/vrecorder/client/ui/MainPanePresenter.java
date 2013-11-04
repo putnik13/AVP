@@ -1,6 +1,9 @@
 package com.atanor.vrecorder.client.ui;
 
+import java.util.List;
+
 import com.atanor.vrecorder.client.Client;
+import com.atanor.vrecorder.rpc.dto.RecordingDto;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.util.SC;
 
@@ -40,6 +43,22 @@ public class MainPanePresenter {
 			@Override
 			public void onSuccess(Boolean result) {
 				view.onRecordingStopped();
+			}
+		});
+	}
+
+	public void initRecordings() {
+		Client.getRecordingService().getRecordings(new AsyncCallback<List<RecordingDto>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				SC.say("Error. Can not read recordings data");
+				caught.printStackTrace();
+			}
+
+			@Override
+			public void onSuccess(List<RecordingDto> result) {
+				view.setRecordings(result);
 			}
 		});
 	}
