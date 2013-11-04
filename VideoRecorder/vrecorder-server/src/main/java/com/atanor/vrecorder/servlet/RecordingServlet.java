@@ -6,6 +6,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.atanor.vrecorder.domain.converter.RecordingConverter;
+import com.atanor.vrecorder.domain.facades.PalantirFacade;
+import com.atanor.vrecorder.domain.facades.PlayerFacade;
+import com.atanor.vrecorder.domain.facades.Signal;
 import com.atanor.vrecorder.rpc.dto.RecordingDto;
 import com.atanor.vrecorder.rpc.services.RecordingService;
 import com.atanor.vrecorder.services.RecordingDataService;
@@ -21,15 +24,23 @@ public class RecordingServlet extends RemoteServiceServlet implements RecordingS
 	@Inject
 	private RecordingConverter converter;
 
+	@Inject
+	private PalantirFacade palantir;
+
+	@Inject
+	private PlayerFacade player;
+
 	@Override
 	public Boolean startRecording() {
-		System.out.println("Recording started ..");
+		palantir.signal(Signal.START_RECORDING);
+		player.startRecording();
 		return Boolean.TRUE;
 	}
 
 	@Override
 	public Boolean stopRecording() {
-		System.out.println("Recording stopped ..");
+		palantir.signal(Signal.STOP_RECORDING);
+		player.stopRecording();
 		return Boolean.TRUE;
 	}
 
