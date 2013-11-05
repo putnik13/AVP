@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -34,6 +35,10 @@ public class Recording extends AbstractEntity<Long> {
 
 	@Column(name = "duration", length = 32)
 	private String duration;
+
+	@Lob
+	@Column(name = "image_blob", length = 300000)
+	private String imageBlob;
 
 	public Recording() {
 	}
@@ -81,6 +86,14 @@ public class Recording extends AbstractEntity<Long> {
 
 	public void setDuration(final String duration) {
 		this.duration = duration;
+	}
+
+	public String getImageBlob() {
+		return imageBlob;
+	}
+
+	public void setImageBlob(final String imageBlob) {
+		this.imageBlob = imageBlob;
 	}
 
 }

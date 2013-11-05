@@ -57,8 +57,9 @@ public class RecordingDataServiceImpl implements RecordingDataService {
 		if (recording == null) {
 			throw new IllegalStateException("Can not find recording with id=" + recordingId);
 		}
-
-		System.out.println("ENCODED IMAGE: " + ImageDecoder.encodeImage(snapshotName));
+		
+		recording.setImageBlob(ImageDecoder.encodeImage(snapshotName));
+		recordingDao.update(recording);
 	}
 
 }

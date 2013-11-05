@@ -11,6 +11,8 @@ import com.atanor.vrecorder.domain.entity.Recording;
 
 public class RecordingDaoTest extends BaseDaoTest<Recording> {
 
+	private static final String IMAGE_BLOB = "asfgadgsdfhgfsghfdgjdfghgfhdfghfgh";
+
 	@Test
 	public void testInsertRecord() throws Exception {
 		Recording recording = new Recording();
@@ -21,7 +23,8 @@ public class RecordingDaoTest extends BaseDaoTest<Recording> {
 		recording.setStartTime(startTime);
 		recording.setEndTime(endTime);
 		recording.setDuration("00:00:03");
-
+		recording.setImageBlob(IMAGE_BLOB);
+		
 		Assert.assertNotNull(dao.insert(recording));
 	}
 
@@ -44,7 +47,8 @@ public class RecordingDaoTest extends BaseDaoTest<Recording> {
 		recording.setStartTime(startTime);
 		recording.setEndTime(endTime);
 		recording.setDuration("00:00:03");
-
+		recording.setImageBlob(IMAGE_BLOB);
+		
 		Long id = dao.insert(recording);
 
 		Recording recordingFromDB = dao.find(id);
@@ -53,6 +57,7 @@ public class RecordingDaoTest extends BaseDaoTest<Recording> {
 		Assert.assertEquals(startTime.getTime(), recordingFromDB.getStartTime().getTime());
 		Assert.assertEquals(endTime.getTime(), recordingFromDB.getEndTime().getTime());
 		Assert.assertEquals("00:00:03", recordingFromDB.getDuration());
+		Assert.assertEquals(IMAGE_BLOB, recordingFromDB.getImageBlob());
 	}
 
 	@Test

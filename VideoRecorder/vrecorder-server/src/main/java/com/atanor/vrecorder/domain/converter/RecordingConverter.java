@@ -18,7 +18,8 @@ public class RecordingConverter extends AbstractConverter<RecordingDto, Recordin
 		dto.setStartTime(entity.getStartTime());
 		dto.setEndTime(entity.getEndTime());
 		dto.setDuration(entity.getDuration());
-
+		dto.setEncodedImage(entity.getImageBlob());
+		
 		return dto;
 	}
 

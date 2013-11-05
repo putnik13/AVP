@@ -9,7 +9,8 @@ public class RecordingDto extends AbstractDto {
 	private Date startTime;
 	private Date endTime;
 	private String duration;
-
+	private String encodedImage;
+	
 	public String getName() {
 		return name;
 	}
@@ -40,6 +41,14 @@ public class RecordingDto extends AbstractDto {
 
 	public void setDuration(final String duration) {
 		this.duration = duration;
+	}
+
+	public String getEncodedImage() {
+		return encodedImage;
+	}
+
+	public void setEncodedImage(final String encodedImage) {
+		this.encodedImage = encodedImage;
 	}
 
 }
