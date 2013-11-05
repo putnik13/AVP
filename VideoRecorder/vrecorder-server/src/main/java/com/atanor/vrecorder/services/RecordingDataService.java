@@ -12,4 +12,6 @@ public interface RecordingDataService {
 	Long createRecording(String fileName, Date startTime);
 
 	void updateDuration(Long recordingId, Date endTime);
+	
+	void saveSnapshot(Long recordingId, String snapshotName);
 }

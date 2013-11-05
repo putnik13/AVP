@@ -10,6 +10,7 @@ import org.apache.commons.lang3.Validate;
 import com.atanor.vrecorder.domain.dao.RecordingDao;
 import com.atanor.vrecorder.domain.entity.Recording;
 import com.atanor.vrecorder.util.FormatTime;
+import com.atanor.vrecorder.util.ImageDecoder;
 
 public class RecordingDataServiceImpl implements RecordingDataService {
 
@@ -33,7 +34,7 @@ public class RecordingDataServiceImpl implements RecordingDataService {
 
 	@Override
 	public void updateDuration(final Long recordingId, final Date endTime) {
-		Validate.notNull(recordingId, "recordingId can not be empty or null");
+		Validate.notNull(recordingId, "recordingId can not be null");
 		Validate.notNull(endTime, "endTime can not be null");
 
 		final Recording recording = recordingDao.find(recordingId);
@@ -45,6 +46,19 @@ public class RecordingDataServiceImpl implements RecordingDataService {
 		recording.setDuration(duration);
 		recording.setEndTime(endTime);
 		recordingDao.update(recording);
+	}
+
+	@Override
+	public void saveSnapshot(final Long recordingId, final String snapshotName) {
+		Validate.notNull(recordingId, "recordingId can not be null");
+		Validate.notEmpty(snapshotName, "snapshotName can not be empty or null");
+
+		final Recording recording = recordingDao.find(recordingId);
+		if (recording == null) {
+			throw new IllegalStateException("Can not find recording with id=" + recordingId);
+		}
+
+		System.out.println("ENCODED IMAGE: " + ImageDecoder.encodeImage(snapshotName));
 	}
 
 }

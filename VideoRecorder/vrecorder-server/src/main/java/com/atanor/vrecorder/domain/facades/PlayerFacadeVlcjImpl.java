@@ -1,7 +1,9 @@
 package com.atanor.vrecorder.domain.facades;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -12,13 +14,17 @@ import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
+import com.atanor.vrecorder.events.CreateAndSaveSnapshotEvent;
 import com.atanor.vrecorder.services.RecordingDataService;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 
 public class PlayerFacadeVlcjImpl implements PlayerFacade {
 
 	private static final String OUTPUT_FOLDER = "d:/tmp/vlc-input";
+	private static final String SNAPSHOT_NAME = "vlcj-snapshot.png";
 	private static final String VLC_INTALLATION_PATH = "d:/Installed/VLC";
 	private static final String MEDIA_RESOURCE_LOCATION = "file:///D:/tmp/vlc-input/test2.mp4";
 	private static final SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd-HHmmss");
@@ -26,12 +32,18 @@ public class PlayerFacadeVlcjImpl implements PlayerFacade {
 	@Inject
 	private RecordingDataService recordingService;
 
+	private EventBus eventBus;
+
 	private final EmbeddedMediaPlayer streamPlayer;
 	private final EmbeddedMediaPlayer imagePlayer;
 
 	private Long currentRecordingId;
 
-	public PlayerFacadeVlcjImpl() {
+	@Inject
+	public PlayerFacadeVlcjImpl(final EventBus eventBus) {
+		this.eventBus = eventBus;
+		eventBus.register(this);
+
 		NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), VLC_INTALLATION_PATH);
 		Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
 
@@ -58,6 +70,7 @@ public class PlayerFacadeVlcjImpl implements PlayerFacade {
 			imagePlayer.playMedia(MEDIA_RESOURCE_LOCATION);
 
 			currentRecordingId = recordingService.createRecording(fileName, startTime);
+			eventBus.post(new CreateAndSaveSnapshotEvent(currentRecordingId));
 		}
 	}
 
@@ -73,20 +86,32 @@ public class PlayerFacadeVlcjImpl implements PlayerFacade {
 	@Override
 	public void saveSnapshot() {
 		if (isPlaying()) {
-			imagePlayer.saveSnapshot();
+			final File file = new File(buildSnapshotName());
+			file.deleteOnExit();
+			imagePlayer.saveSnapshot(file);
 		}
 	}
 
-	private String buildRecordingName(final Date date) {
+	private static String buildRecordingName(final Date date) {
 		return "RECORDING-" + df.format(date) + ".mp4";
 	}
 
-	private String buildRecordingPath(final String recordingName) {
+	private static String buildRecordingPath(final String recordingName) {
 		return OUTPUT_FOLDER + "/" + recordingName;
+	}
+
+	private static String buildSnapshotName() {
+		return OUTPUT_FOLDER + "/" + SNAPSHOT_NAME;
 	}
 
 	private boolean isPlaying() {
 		return streamPlayer.isPlaying() && imagePlayer.isPlaying();
 	}
 
+	@Subscribe
+	public void onCreateAndSaveEvent(final CreateAndSaveSnapshotEvent event) throws InterruptedException {
+		TimeUnit.SECONDS.sleep(10);
+		saveSnapshot();
+		recordingService.saveSnapshot(currentRecordingId, buildSnapshotName());
+	}
 }
