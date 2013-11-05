@@ -1,15 +1,18 @@
 package com.atanor.vrecorder.client.ui;
 
+import java.util.Date;
 import java.util.List;
 
 import com.atanor.vrecorder.rpc.dto.RecordingDto;
 import com.google.common.collect.Lists;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.grid.CellFormatter;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -18,6 +21,11 @@ import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class MainPane extends HLayout {
+
+	private static final String DURATION_GRID_ATTR = "duration";
+	private static final String START_TIME_GRID_ATTR = "startTime";
+	private static final String FILE_NAME_GRID_ATTR = "fileName";
+	private static final DateTimeFormat df = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss");
 
 	private MainPanePresenter presenter;
 
@@ -66,10 +74,20 @@ public class MainPane extends HLayout {
 		headerPane.setMembersMargin(10);
 
 		listGrid = new ListGrid();
-		ListGridField fileName = new ListGridField("fileName", "File Name");
-		ListGridField startTime = new ListGridField("startTime", "Start Time");
-		ListGridField duration = new ListGridField("duration", "Duration");
-		listGrid.setFields(fileName, duration);
+		ListGridField fileName = new ListGridField(FILE_NAME_GRID_ATTR, "File Name");
+		ListGridField startTime = new ListGridField(START_TIME_GRID_ATTR, "Start Time");
+		startTime.setCellFormatter(new CellFormatter() {
+
+			@Override
+			public String format(Object value, ListGridRecord record, int rowNum, int colNum) {
+				if (value == null) {
+					return null;
+				}
+				return df.format((Date) value);
+			}
+		});
+		ListGridField duration = new ListGridField(DURATION_GRID_ATTR, "Duration");
+		listGrid.setFields(fileName, startTime, duration);
 
 		final Label freeSpace = new Label();
 		freeSpace.setContents("Free Space on disk: ... Mb is available");
@@ -108,8 +126,9 @@ public class MainPane extends HLayout {
 		List<ListGridRecord> records = Lists.newArrayList();
 		for (RecordingDto dto : recordings) {
 			ListGridRecord record = new ListGridRecord();
-			record.setAttribute("fileName", dto.getName());
-			record.setAttribute("duration", dto.getDuration());
+			record.setAttribute(FILE_NAME_GRID_ATTR, dto.getName());
+			record.setAttribute(START_TIME_GRID_ATTR, dto.getStartTime());
+			record.setAttribute(DURATION_GRID_ATTR, dto.getDuration());
 			records.add(record);
 		}
 

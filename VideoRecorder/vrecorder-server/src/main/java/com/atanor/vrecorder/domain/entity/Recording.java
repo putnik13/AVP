@@ -32,8 +32,8 @@ public class Recording extends AbstractEntity<Long> {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date endTime;
 
-	@Column(name = "duration")
-	private Long duration;
+	@Column(name = "duration", length = 32)
+	private String duration;
 
 	public Recording() {
 	}
@@ -71,11 +71,11 @@ public class Recording extends AbstractEntity<Long> {
 		this.endTime = endTime;
 	}
 
-	public Long getDuration() {
+	public String getDuration() {
 		return duration;
 	}
 
-	public void setDuration(final Long duration) {
+	public void setDuration(final String duration) {
 		this.duration = duration;
 	}
 

@@ -20,7 +20,7 @@ public class RecordingDaoTest extends BaseDaoTest<Recording> {
 		recording.setName("Recording.avi");
 		recording.setStartTime(startTime);
 		recording.setEndTime(endTime);
-		recording.setDuration(100L);
+		recording.setDuration("00:00:03");
 
 		Assert.assertNotNull(dao.insert(recording));
 	}
@@ -43,7 +43,7 @@ public class RecordingDaoTest extends BaseDaoTest<Recording> {
 		recording.setName("Recording.avi");
 		recording.setStartTime(startTime);
 		recording.setEndTime(endTime);
-		recording.setDuration(100L);
+		recording.setDuration("00:00:03");
 
 		Long id = dao.insert(recording);
 
@@ -52,7 +52,7 @@ public class RecordingDaoTest extends BaseDaoTest<Recording> {
 		Assert.assertEquals("Recording.avi", recordingFromDB.getName());
 		Assert.assertEquals(startTime.getTime(), recordingFromDB.getStartTime().getTime());
 		Assert.assertEquals(endTime.getTime(), recordingFromDB.getEndTime().getTime());
-		Assert.assertEquals(Long.valueOf(100L), recordingFromDB.getDuration());
+		Assert.assertEquals("00:00:03", recordingFromDB.getDuration());
 	}
 
 	@Test

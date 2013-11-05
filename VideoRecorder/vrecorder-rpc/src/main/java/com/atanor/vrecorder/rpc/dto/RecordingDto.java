@@ -8,7 +8,7 @@ public class RecordingDto extends AbstractDto {
 	private String name;
 	private Date startTime;
 	private Date endTime;
-	private Long duration;
+	private String duration;
 
 	public String getName() {
 		return name;
@@ -34,11 +34,11 @@ public class RecordingDto extends AbstractDto {
 		this.endTime = endTime;
 	}
 
-	public Long getDuration() {
+	public String getDuration() {
 		return duration;
 	}
 
-	public void setDuration(Long duration) {
+	public void setDuration(final String duration) {
 		this.duration = duration;
 	}
 
