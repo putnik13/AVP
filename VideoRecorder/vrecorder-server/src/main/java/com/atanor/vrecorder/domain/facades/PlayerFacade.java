@@ -5,4 +5,6 @@ public interface PlayerFacade {
 	void startRecording();
 
 	void stopRecording();
+	
+	void saveSnapshot();
 }

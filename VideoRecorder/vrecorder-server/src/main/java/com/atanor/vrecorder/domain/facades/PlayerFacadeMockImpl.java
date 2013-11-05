@@ -12,4 +12,9 @@ public class PlayerFacadeMockImpl implements PlayerFacade {
 		System.out.println("VLC Player stops recording ..");
 	}
 
+	@Override
+	public void saveSnapshot() {
+		System.out.println("VLC Player saves snapshot ..");
+	}
+
 }
