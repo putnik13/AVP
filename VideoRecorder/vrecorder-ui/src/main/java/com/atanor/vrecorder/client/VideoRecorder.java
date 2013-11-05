@@ -28,6 +28,6 @@ public class VideoRecorder implements EntryPoint {
 	}
 
 	private void initRecordings() {
-		presenter.initRecordings();
+		presenter.refreshRecordings();
 	}
 }

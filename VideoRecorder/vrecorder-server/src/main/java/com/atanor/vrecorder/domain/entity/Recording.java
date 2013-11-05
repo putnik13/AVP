@@ -42,6 +42,10 @@ public class Recording extends AbstractEntity<Long> {
 		this.id = id;
 	}
 
+	public Recording(final String name) {
+		this.name = name;
+	}
+
 	@Override
 	public Long getId() {
 		return id;

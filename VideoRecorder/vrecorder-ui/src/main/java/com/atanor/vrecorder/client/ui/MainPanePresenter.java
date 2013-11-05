@@ -43,11 +43,12 @@ public class MainPanePresenter {
 			@Override
 			public void onSuccess(Boolean result) {
 				view.onRecordingStopped();
+				refreshRecordings();
 			}
 		});
 	}
 
-	public void initRecordings() {
+	public void refreshRecordings() {
 		Client.getRecordingService().getRecordings(new AsyncCallback<List<RecordingDto>>() {
 
 			@Override
