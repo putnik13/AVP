@@ -39,6 +39,8 @@ public class MainPane extends HLayout {
 	private final Canvas snapshotBox;
 	private final ListGrid listGrid;
 
+	private Img snapshot;
+
 	public MainPane() {
 		setWidth100();
 		setHeight100();
@@ -84,21 +86,21 @@ public class MainPane extends HLayout {
 					img.setSrc(source);
 					img.setWidth(Constants.SNAPSHOT_WIDTH);
 					img.setHeight(Constants.SNAPSHOT_HEIGHT);
-					
+
 					Canvas canvas = createSnapshotBox();
 					canvas.addChild(img);
 					return canvas;
 				}
-				
+
 				return super.getCellHoverComponent(record, rowNum, colNum);
 			}
 		};
-        listGrid.setCanHover(true);  
-        listGrid.setShowHover(true);  
-        listGrid.setShowHoverComponents(true);
-        listGrid.setSelectionType(SelectionStyle.NONE);
-        listGrid.setShowRowNumbers(true);
-        
+		listGrid.setCanHover(true);
+		listGrid.setShowHover(true);
+		listGrid.setShowHoverComponents(true);
+		listGrid.setSelectionType(SelectionStyle.NONE);
+		listGrid.setShowRowNumbers(true);
+
 		final ListGridField fileName = new ListGridField(FILE_NAME_GRID_ATTR, "File Name");
 		final ListGridField startTime = new ListGridField(START_TIME_GRID_ATTR, "Start Time");
 		startTime.setCellFormatter(new CellFormatter() {
@@ -141,11 +143,11 @@ public class MainPane extends HLayout {
 		startRecord.disable();
 		stopRecord.enable();
 
-		final Img img = new Img();
-		img.setWidth(60);
-		img.setHeight(60);
-		img.setSrc("image1.png");
-		snapshotBox.addChild(img);
+//		final Img img = new Img();
+//		img.setWidth(60);
+//		img.setHeight(60);
+//		img.setSrc("image1.png");
+//		snapshotBox.addChild(img);
 	}
 
 	public void onRecordingStopped() {
@@ -156,6 +158,25 @@ public class MainPane extends HLayout {
 	public void setRecordings(final List<RecordingDto> recordings) {
 		List<ListGridRecord> records = createGridRecords(recordings);
 		listGrid.setData(records.toArray(new ListGridRecord[] {}));
+	}
+
+	public void setSnapshot(final String encodedSnapshot) {
+		cleanSnapshot();
+		
+		final String source = "data:image/png;base64," + encodedSnapshot;
+		final Img img = new Img();		
+		img.setSrc(source);
+		img.setWidth(Constants.SNAPSHOT_WIDTH);
+		img.setHeight(Constants.SNAPSHOT_HEIGHT);
+		
+		snapshotBox.addChild(img);
+	}
+
+	private void cleanSnapshot() {
+		if (snapshot != null) {
+			snapshot.destroy();
+			snapshot = null;
+		}
 	}
 
 	private List<ListGridRecord> createGridRecords(final List<RecordingDto> recordings) {
@@ -174,7 +195,7 @@ public class MainPane extends HLayout {
 		return records;
 	}
 
-	private Canvas createSnapshotBox(){
+	private Canvas createSnapshotBox() {
 		final Canvas canvas = new Canvas();
 		canvas.setWidth(Constants.SNAPSHOT_WIDTH);
 		canvas.setHeight(Constants.SNAPSHOT_HEIGHT);
@@ -182,7 +203,7 @@ public class MainPane extends HLayout {
 		canvas.setBackgroundColor("black");
 		return canvas;
 	}
-	
+
 	public void setPresenter(final MainPanePresenter presenter) {
 		this.presenter = presenter;
 	}

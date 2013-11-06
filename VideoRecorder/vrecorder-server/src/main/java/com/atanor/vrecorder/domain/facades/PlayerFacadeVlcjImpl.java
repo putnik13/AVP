@@ -1,5 +1,6 @@
 package com.atanor.vrecorder.domain.facades;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,6 +18,7 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 import com.atanor.vrecorder.events.CreateAndSaveSnapshotEvent;
 import com.atanor.vrecorder.services.RecordingDataService;
 import com.atanor.vrecorder.shared.Constants;
+import com.atanor.vrecorder.util.ImageDecoder;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.sun.jna.Native;
@@ -77,19 +79,18 @@ public class PlayerFacadeVlcjImpl implements PlayerFacade {
 
 	@Override
 	public void stopRecording() {
-		if (isPlaying()) {
-			streamPlayer.stop();
-			imagePlayer.stop();
-			recordingService.updateDuration(currentRecordingId, new Date());
-		}
+		streamPlayer.stop();
+		imagePlayer.stop();
+		recordingService.updateDuration(currentRecordingId, new Date());
 	}
 
-	@Override
-	public void saveSnapshot() {
-		if (isPlaying()) {
-			final File file = new File(buildSnapshotName());
+	private void saveSnapshot() {
+		if (imagePlayer.isPlaying()) {
+			final String snapshotName = buildSnapshotName();
+			final File file = new File(snapshotName);
 			file.deleteOnExit();
 			imagePlayer.saveSnapshot(file, Constants.SNAPSHOT_WIDTH, Constants.SNAPSHOT_HEIGHT);
+			recordingService.saveSnapshot(currentRecordingId, snapshotName);
 		}
 	}
 
@@ -113,6 +114,16 @@ public class PlayerFacadeVlcjImpl implements PlayerFacade {
 	public void onCreateAndSaveEvent(final CreateAndSaveSnapshotEvent event) throws InterruptedException {
 		TimeUnit.SECONDS.sleep(10);
 		saveSnapshot();
-		recordingService.saveSnapshot(currentRecordingId, buildSnapshotName());
+	}
+
+	@Override
+	public String getSnapshot() {
+		if (imagePlayer.isPlaying()) {
+			final BufferedImage bufImage = imagePlayer.getSnapshot(Constants.SNAPSHOT_WIDTH, Constants.SNAPSHOT_HEIGHT);
+			if (bufImage != null) {
+				return ImageDecoder.encodeImage(bufImage);
+			}
+		}
+		return null;
 	}
 }

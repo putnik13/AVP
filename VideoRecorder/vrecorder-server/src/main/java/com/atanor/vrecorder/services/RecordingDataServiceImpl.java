@@ -1,5 +1,6 @@
 package com.atanor.vrecorder.services;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -57,8 +58,14 @@ public class RecordingDataServiceImpl implements RecordingDataService {
 		if (recording == null) {
 			throw new IllegalStateException("Can not find recording with id=" + recordingId);
 		}
-		
-		recording.setImageBlob(ImageDecoder.encodeImage(snapshotName));
+
+		final File file = new File(snapshotName);
+		if (!file.exists()) {
+			System.out.println("Recording Snapshot is not exist!");
+			return;
+		}
+
+		recording.setImageBlob(ImageDecoder.encodeImage(file));
 		recordingDao.update(recording);
 	}
 

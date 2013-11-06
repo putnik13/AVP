@@ -4,7 +4,7 @@ public interface PlayerFacade {
 	
 	void startRecording();
 
-	void stopRecording();
+	void stopRecording();	
 	
-	void saveSnapshot();
+	String getSnapshot();
 }
