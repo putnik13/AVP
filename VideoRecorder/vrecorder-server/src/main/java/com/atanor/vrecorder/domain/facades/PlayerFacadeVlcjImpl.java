@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.player.MediaPlayer;
@@ -26,10 +27,10 @@ import com.sun.jna.NativeLibrary;
 
 public class PlayerFacadeVlcjImpl implements PlayerFacade {
 
-	private static final String OUTPUT_FOLDER = "d:/tmp/vlc-input";
+	private final String outputFolder;
+	private final String mediaResourceLocation;
+
 	private static final String SNAPSHOT_NAME = "vlcj-snapshot.png";
-	private static final String VLC_INTALLATION_PATH = "d:/Installed/VLC";
-	private static final String MEDIA_RESOURCE_LOCATION = "file:///D:/tmp/vlc-input/test2.mp4";
 	private static final SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd-HHmmss");
 
 	@Inject
@@ -43,17 +44,21 @@ public class PlayerFacadeVlcjImpl implements PlayerFacade {
 	private Long currentRecordingId;
 
 	@Inject
-	public PlayerFacadeVlcjImpl(final EventBus eventBus) {
+	public PlayerFacadeVlcjImpl(final EventBus eventBus, @Named("output.folder") String outputFolder,
+			@Named("vlc.installation.path") String vlcInstallationPath,
+			@Named("media.resource.location") String mediaResourceLocation) {
 		this.eventBus = eventBus;
+		this.outputFolder = outputFolder;
+		this.mediaResourceLocation = mediaResourceLocation;
 		eventBus.register(this);
 
-		NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), VLC_INTALLATION_PATH);
+		NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), vlcInstallationPath);
 		Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
 
 		this.streamPlayer = new MediaPlayerFactory().newEmbeddedMediaPlayer();
 
 		this.imagePlayer = new MediaPlayerFactory().newEmbeddedMediaPlayer();
-		imagePlayer.setSnapshotDirectory(OUTPUT_FOLDER);
+		imagePlayer.setSnapshotDirectory(outputFolder);
 		imagePlayer.addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
 			@Override
 			public void snapshotTaken(MediaPlayer mediaPlayer, String filename) {
@@ -69,8 +74,8 @@ public class PlayerFacadeVlcjImpl implements PlayerFacade {
 			final String fileName = buildRecordingName(startTime);
 			final String[] options = { ":sout=#transcode{vcodec=h264,acodec=mpga,ab=128,channels=2,samplerate=44100}:file{dst="
 					+ buildRecordingPath(fileName) + "}" };
-			streamPlayer.playMedia(MEDIA_RESOURCE_LOCATION, options);
-			imagePlayer.playMedia(MEDIA_RESOURCE_LOCATION);
+			streamPlayer.playMedia(mediaResourceLocation, options);
+			imagePlayer.playMedia(mediaResourceLocation);
 
 			currentRecordingId = recordingService.createRecording(fileName, startTime);
 			eventBus.post(new CreateAndSaveSnapshotEvent(currentRecordingId));
@@ -98,12 +103,12 @@ public class PlayerFacadeVlcjImpl implements PlayerFacade {
 		return "RECORDING-" + df.format(date) + ".mp4";
 	}
 
-	private static String buildRecordingPath(final String recordingName) {
-		return OUTPUT_FOLDER + "/" + recordingName;
+	private String buildRecordingPath(final String recordingName) {
+		return outputFolder + "/" + recordingName;
 	}
 
-	private static String buildSnapshotName() {
-		return OUTPUT_FOLDER + "/" + SNAPSHOT_NAME;
+	private String buildSnapshotName() {
+		return outputFolder + "/" + SNAPSHOT_NAME;
 	}
 
 	private boolean isPlaying() {

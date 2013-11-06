@@ -1,5 +1,7 @@
 package com.atanor.vrecorder.injector;
 
+import java.io.IOException;
+import java.util.Properties;
 import java.util.concurrent.Executors;
 
 import com.atanor.vrecorder.domain.facades.PalantirFacade;
@@ -12,6 +14,7 @@ import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
+import com.google.inject.name.Names;
 
 public class AppCoreModule extends AbstractModule {
 
@@ -23,6 +26,20 @@ public class AppCoreModule extends AbstractModule {
 		bind(RecordingDataService.class).to(RecordingDataServiceImpl.class);
 		bind(PalantirFacade.class).to(PalantirFacadeImpl.class).in(Scopes.SINGLETON);
 		bind(PlayerFacade.class).to(PlayerFacadeMockImpl.class).in(Scopes.SINGLETON);
+
+		loadProperties();
+	}
+
+	private void loadProperties() {
+		try {
+			Properties properties = new Properties();
+			properties.load(Thread.currentThread().getContextClassLoader()
+					.getResourceAsStream("/config/init.properties"));
+			Names.bindProperties(binder(), properties);
+		} catch (IOException e) {
+			throw new IllegalStateException("Can not load init properties", e);
+		}
+
 	}
 
 }
