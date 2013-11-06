@@ -4,8 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import com.atanor.vrecorder.rpc.dto.RecordingDto;
+import com.atanor.vrecorder.shared.Constants;
 import com.google.common.collect.Lists;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.smartgwt.client.data.Record;
+import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
@@ -24,14 +27,16 @@ public class MainPane extends HLayout {
 
 	private static final String DURATION_GRID_ATTR = "duration";
 	private static final String START_TIME_GRID_ATTR = "startTime";
+	private static final String END_TIME_GRID_ATTR = "endTime";
 	private static final String FILE_NAME_GRID_ATTR = "fileName";
+	private static final String ENCODED_IMAGE_ATTR = "encodeImage";
 	private static final DateTimeFormat df = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss");
 
 	private MainPanePresenter presenter;
 
 	private final IButton startRecord;
 	private final IButton stopRecord;
-	private final Canvas imageBox;
+	private final Canvas snapshotBox;
 	private final ListGrid listGrid;
 
 	public MainPane() {
@@ -39,11 +44,7 @@ public class MainPane extends HLayout {
 		setHeight100();
 		setBackgroundColor("lightgrey");
 
-		imageBox = new Canvas();
-		imageBox.setWidth(265);
-		imageBox.setHeight(200);
-		imageBox.setShowEdges(true);
-		imageBox.setBackgroundColor("white");
+		snapshotBox = createSnapshotBox();
 
 		startRecord = new IButton("Start Recording");
 		startRecord.setWidth(90);
@@ -70,12 +71,34 @@ public class MainPane extends HLayout {
 		spacer.setHeight(20);
 
 		final HLayout headerPane = new HLayout();
-		headerPane.addMembers(imageBox, startRecord, stopRecord);
+		headerPane.addMembers(snapshotBox, startRecord, stopRecord);
 		headerPane.setMembersMargin(10);
 
-		listGrid = new ListGrid();
-		ListGridField fileName = new ListGridField(FILE_NAME_GRID_ATTR, "File Name");
-		ListGridField startTime = new ListGridField(START_TIME_GRID_ATTR, "Start Time");
+		listGrid = new ListGrid() {
+			@Override
+			protected Canvas getCellHoverComponent(Record record, Integer rowNum, Integer colNum) {
+				final String encodedImage = record.getAttribute(ENCODED_IMAGE_ATTR);
+				if (encodedImage != null) {
+					final Img img = new Img();
+					final String source = "data:image/png;base64," + encodedImage;
+					img.setSrc(source);
+
+					Canvas canvas = createSnapshotBox();
+					canvas.addChild(img);
+					return canvas;
+				}
+				
+				return super.getCellHoverComponent(record, rowNum, colNum);
+			}
+		};
+        listGrid.setCanHover(true);  
+        listGrid.setShowHover(true);  
+        listGrid.setShowHoverComponents(true);
+        listGrid.setSelectionType(SelectionStyle.NONE);
+        listGrid.setShowRowNumbers(true);
+        
+		final ListGridField fileName = new ListGridField(FILE_NAME_GRID_ATTR, "File Name");
+		final ListGridField startTime = new ListGridField(START_TIME_GRID_ATTR, "Start Time");
 		startTime.setCellFormatter(new CellFormatter() {
 
 			@Override
@@ -86,8 +109,19 @@ public class MainPane extends HLayout {
 				return df.format((Date) value);
 			}
 		});
-		ListGridField duration = new ListGridField(DURATION_GRID_ATTR, "Duration");
-		listGrid.setFields(fileName, startTime, duration);
+		final ListGridField endTime = new ListGridField(END_TIME_GRID_ATTR, "End Time");
+		endTime.setCellFormatter(new CellFormatter() {
+
+			@Override
+			public String format(Object value, ListGridRecord record, int rowNum, int colNum) {
+				if (value == null) {
+					return null;
+				}
+				return df.format((Date) value);
+			}
+		});
+		final ListGridField duration = new ListGridField(DURATION_GRID_ATTR, "Duration");
+		listGrid.setFields(fileName, startTime, endTime, duration);
 
 		final Label freeSpace = new Label();
 		freeSpace.setContents("Free Space on disk: ... Mb is available");
@@ -109,7 +143,7 @@ public class MainPane extends HLayout {
 		img.setWidth(60);
 		img.setHeight(60);
 		img.setSrc("image1.png");
-		imageBox.addChild(img);
+		snapshotBox.addChild(img);
 	}
 
 	public void onRecordingStopped() {
@@ -128,13 +162,25 @@ public class MainPane extends HLayout {
 			ListGridRecord record = new ListGridRecord();
 			record.setAttribute(FILE_NAME_GRID_ATTR, dto.getName());
 			record.setAttribute(START_TIME_GRID_ATTR, dto.getStartTime());
+			record.setAttribute(END_TIME_GRID_ATTR, dto.getEndTime());
 			record.setAttribute(DURATION_GRID_ATTR, dto.getDuration());
+			record.setAttribute(ENCODED_IMAGE_ATTR, dto.getEncodedImage());
+
 			records.add(record);
 		}
 
 		return records;
 	}
 
+	private Canvas createSnapshotBox(){
+		final Canvas canvas = new Canvas();
+		canvas.setWidth(Constants.SNAPSHOT_WIDTH);
+		canvas.setHeight(Constants.SNAPSHOT_HEIGHT);
+		canvas.setShowEdges(true);
+		canvas.setBackgroundColor("black");
+		return canvas;
+	}
+	
 	public void setPresenter(final MainPanePresenter presenter) {
 		this.presenter = presenter;
 	}
