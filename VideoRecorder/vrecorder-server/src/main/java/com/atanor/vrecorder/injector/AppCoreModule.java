@@ -5,7 +5,7 @@ import java.util.concurrent.Executors;
 import com.atanor.vrecorder.domain.facades.PalantirFacade;
 import com.atanor.vrecorder.domain.facades.PalantirFacadeImpl;
 import com.atanor.vrecorder.domain.facades.PlayerFacade;
-import com.atanor.vrecorder.domain.facades.PlayerFacadeMockImpl;
+import com.atanor.vrecorder.domain.facades.PlayerFacadeVlcjImpl;
 import com.atanor.vrecorder.services.RecordingDataService;
 import com.atanor.vrecorder.services.RecordingDataServiceImpl;
 import com.atanor.vrecorder.services.SnapshotDataService;
@@ -24,7 +24,7 @@ public class AppCoreModule extends AbstractModule {
 		bind(RecordingDataService.class).to(RecordingDataServiceImpl.class);
 		bind(SnapshotDataService.class).to(SnapshotDataServiceImpl.class);
 		bind(PalantirFacade.class).to(PalantirFacadeImpl.class);
-		bind(PlayerFacade.class).to(PlayerFacadeMockImpl.class);
+		bind(PlayerFacade.class).to(PlayerFacadeVlcjImpl.class);
 	}
 
 }

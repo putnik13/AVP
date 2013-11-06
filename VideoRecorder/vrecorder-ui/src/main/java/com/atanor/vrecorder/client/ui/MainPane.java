@@ -82,7 +82,9 @@ public class MainPane extends HLayout {
 					final Img img = new Img();
 					final String source = "data:image/png;base64," + encodedImage;
 					img.setSrc(source);
-
+					img.setWidth(Constants.SNAPSHOT_WIDTH);
+					img.setHeight(Constants.SNAPSHOT_HEIGHT);
+					
 					Canvas canvas = createSnapshotBox();
 					canvas.addChild(img);
 					return canvas;
