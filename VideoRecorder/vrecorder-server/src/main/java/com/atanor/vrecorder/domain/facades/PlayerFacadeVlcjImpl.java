@@ -16,6 +16,7 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 import com.atanor.vrecorder.events.CreateAndSaveSnapshotEvent;
 import com.atanor.vrecorder.services.RecordingDataService;
+import com.atanor.vrecorder.shared.Constants;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.sun.jna.Native;
@@ -88,7 +89,7 @@ public class PlayerFacadeVlcjImpl implements PlayerFacade {
 		if (isPlaying()) {
 			final File file = new File(buildSnapshotName());
 			file.deleteOnExit();
-			imagePlayer.saveSnapshot(file);
+			imagePlayer.saveSnapshot(file, Constants.SNAPSHOT_WIDTH, Constants.SNAPSHOT_HEIGHT);
 		}
 	}
 
