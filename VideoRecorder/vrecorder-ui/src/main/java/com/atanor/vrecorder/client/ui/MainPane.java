@@ -8,7 +8,9 @@ import com.atanor.vrecorder.shared.Constants;
 import com.google.common.collect.Lists;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.SelectionStyle;
+import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
@@ -38,6 +40,7 @@ public class MainPane extends HLayout {
 	private final IButton stopRecord;
 	private final Canvas snapshotBox;
 	private final ListGrid listGrid;
+	private final Label freeSpace;
 
 	private Img snapshot;
 
@@ -80,19 +83,13 @@ public class MainPane extends HLayout {
 			@Override
 			protected Canvas getCellHoverComponent(Record record, Integer rowNum, Integer colNum) {
 				final String encodedImage = record.getAttribute(ENCODED_IMAGE_ATTR);
-				if (encodedImage != null) {
-					final Img img = new Img();
-					final String source = "data:image/png;base64," + encodedImage;
-					img.setSrc(source);
-					img.setWidth(Constants.SNAPSHOT_WIDTH);
-					img.setHeight(Constants.SNAPSHOT_HEIGHT);
 
-					Canvas canvas = createSnapshotBox();
-					canvas.addChild(img);
-					return canvas;
-				}
+				final Canvas canvas = createSnapshotBox();
+				final Canvas canvasImg = encodedImage == null ? createSnapshotMissed()
+						: createSnapshotImage(encodedImage);
+				canvas.addChild(canvasImg);
 
-				return super.getCellHoverComponent(record, rowNum, colNum);
+				return canvas;
 			}
 		};
 		listGrid.setCanHover(true);
@@ -127,8 +124,9 @@ public class MainPane extends HLayout {
 		final ListGridField duration = new ListGridField(DURATION_GRID_ATTR, "Duration");
 		listGrid.setFields(fileName, startTime, endTime, duration);
 
-		final Label freeSpace = new Label();
-		freeSpace.setContents("Free Space on disk: ... Mb is available");
+		freeSpace = new Label();
+		freeSpace.setContents(createSpaceSizeContent(null));
+		freeSpace.setBottom(80);
 
 		final VLayout vLayout = new VLayout();
 		vLayout.setWidth("80%");
@@ -142,12 +140,6 @@ public class MainPane extends HLayout {
 	public void onRecordingStarted() {
 		startRecord.disable();
 		stopRecord.enable();
-
-//		final Img img = new Img();
-//		img.setWidth(60);
-//		img.setHeight(60);
-//		img.setSrc("image1.png");
-//		snapshotBox.addChild(img);
 	}
 
 	public void onRecordingStopped() {
@@ -162,13 +154,13 @@ public class MainPane extends HLayout {
 
 	public void setSnapshot(final String encodedSnapshot) {
 		cleanSnapshot();
-		
+
 		final String source = "data:image/png;base64," + encodedSnapshot;
-		final Img img = new Img();		
+		final Img img = new Img();
 		img.setSrc(source);
 		img.setWidth(Constants.SNAPSHOT_WIDTH);
 		img.setHeight(Constants.SNAPSHOT_HEIGHT);
-		
+
 		snapshotBox.addChild(img);
 	}
 
@@ -204,11 +196,35 @@ public class MainPane extends HLayout {
 		return canvas;
 	}
 
+	private Canvas createSnapshotMissed() {
+		final Label lbl = new Label();
+		lbl.setWidth100();
+		lbl.setHeight100();
+		lbl.setContents("<font color='white'>Snapshot Missed</font>");
+		lbl.setAlign(Alignment.CENTER);
+		lbl.setValign(VerticalAlignment.CENTER);
+		return lbl;
+	}
+
+	private Canvas createSnapshotImage(final String encodedImage) {
+		final Img img = new Img();
+		final String source = "data:image/png;base64," + encodedImage;
+		img.setSrc(source);
+		img.setWidth(Constants.SNAPSHOT_WIDTH);
+		img.setHeight(Constants.SNAPSHOT_HEIGHT);
+		return img;
+	}
+
+	private String createSpaceSizeContent(final Long spaceSize) {
+		final String size = spaceSize == null ? "..." : String.valueOf(spaceSize);
+		return "<div style='display:inline;font-weight:bold'>Free Space on disk:</div> " + size + " Mb is available";
+	}
+
 	public void setPresenter(final MainPanePresenter presenter) {
 		this.presenter = presenter;
 	}
-	
-	public void setAvailableSpaceSize(final Long size){
-		
+
+	public void setAvailableSpaceSize(final Long size) {
+		freeSpace.setContents(createSpaceSizeContent(size));
 	}
 }
