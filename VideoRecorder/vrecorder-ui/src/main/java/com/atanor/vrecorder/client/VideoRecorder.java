@@ -1,5 +1,6 @@
 package com.atanor.vrecorder.client;
 
+import com.atanor.vrecorder.client.events.GetAvailableSpaceSizeEvent;
 import com.atanor.vrecorder.client.ui.MainPanePresenter;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -20,6 +21,7 @@ public class VideoRecorder implements EntryPoint {
 		bind();
 
 		initRecordings();
+		initAvailabaleSpaceSize();
 	}
 
 	private void bind() {
@@ -29,5 +31,9 @@ public class VideoRecorder implements EntryPoint {
 
 	private void initRecordings() {
 		presenter.refreshRecordings();
+	}
+
+	private void initAvailabaleSpaceSize() {
+		Client.getEventBus().fireEvent(new GetAvailableSpaceSizeEvent());
 	}
 }

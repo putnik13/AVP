@@ -1,5 +1,6 @@
 package com.atanor.vrecorder.injector;
 
+import com.atanor.vrecorder.servlet.ConfigServlet;
 import com.atanor.vrecorder.servlet.RecordingServlet;
 import com.atanor.vrecorder.servlet.SnapshotServlet;
 import com.google.inject.persist.PersistFilter;
@@ -19,6 +20,7 @@ public class AppServletModule extends ServletModule {
 
 		serve(BASE_URL + "/recording").with(RecordingServlet.class);
 		serve(BASE_URL + "/snapshot").with(SnapshotServlet.class);
+		serve(BASE_URL + "/config").with(ConfigServlet.class);
 	}
 
 }

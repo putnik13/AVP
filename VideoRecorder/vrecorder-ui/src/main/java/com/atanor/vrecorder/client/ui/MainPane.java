@@ -207,4 +207,8 @@ public class MainPane extends HLayout {
 	public void setPresenter(final MainPanePresenter presenter) {
 		this.presenter = presenter;
 	}
+	
+	public void setAvailableSpaceSize(final Long size){
+		
+	}
 }
