@@ -51,9 +51,13 @@ public class RecordingServlet extends RemoteServiceServlet implements RecordingS
 
 	@Override
 	public Boolean removeRecordings(final List<RecordingDto> recordings) {
-		System.out.println("removeRecordings() called .. size: " + recordings.size());
 		recordingsService.removeRecordings(converter.toListEntities(recordings));
 		return Boolean.TRUE;
+	}
+
+	@Override
+	public List<RecordingDto> getSynchronizationInfo() {
+		return converter.toListDto(recordingsService.getSynchronizationInfo());
 	}
 
 }

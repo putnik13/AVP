@@ -12,6 +12,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "recordings")
@@ -39,7 +40,10 @@ public class Recording extends AbstractEntity<Long> {
 	@Lob
 	@Column(name = "image_blob", length = 300000)
 	private String imageBlob;
-
+	
+	@Transient
+	private Boolean outdated = Boolean.FALSE;
+	
 	public Recording() {
 	}
 
@@ -94,6 +98,14 @@ public class Recording extends AbstractEntity<Long> {
 
 	public void setImageBlob(final String imageBlob) {
 		this.imageBlob = imageBlob;
+	}
+
+	public Boolean isOutdated() {
+		return outdated;
+	}
+
+	public void setOutdated(final Boolean outdated) {
+		this.outdated = outdated;
 	}
 
 }

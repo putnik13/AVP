@@ -151,4 +151,20 @@ public class MainPanePresenter implements GetSnapshotHandler, GetAvailableSpaceS
 		});
 	}
 
+	public void getSynchronizationInfo() {
+		Client.getRecordingService().getSynchronizationInfo(new AsyncCallback<List<RecordingDto>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				SC.say("Error. Can not synchronize recordings data");
+				caught.printStackTrace();
+			}
+
+			@Override
+			public void onSuccess(List<RecordingDto> result) {
+				view.onSynchronizationComplete(result);
+			}
+		});
+	}
+
 }

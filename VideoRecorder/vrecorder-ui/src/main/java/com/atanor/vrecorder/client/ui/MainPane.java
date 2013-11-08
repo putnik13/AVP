@@ -31,6 +31,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class MainPane extends HLayout {
 
 	private static final String DTO_GRID_ATTR = "dto";
+	private static final String OUTDATED_FLAG_ATTR = "outdated";
 	private static final String DURATION_GRID_ATTR = "duration";
 	private static final String START_TIME_GRID_ATTR = "startTime";
 	private static final String END_TIME_GRID_ATTR = "endTime";
@@ -47,6 +48,7 @@ public class MainPane extends HLayout {
 	private final ListGrid listGrid;
 	private final Label freeSpace;
 
+	private final Img synchronizeImg;
 	private Img snapshot;
 
 	public MainPane() {
@@ -87,7 +89,15 @@ public class MainPane extends HLayout {
 		final HLayout gridToolbar = new HLayout();
 		gridToolbar.setAlign(Alignment.RIGHT);
 		gridToolbar.setHeight(TOOLBAR_SIZE);
-		final Img synchronizeImg = createToolbarImage("synchronize.png", "Synchronize Recordings");
+		synchronizeImg = createToolbarImage("synchronize.png", "Synchronize Recordings");
+		synchronizeImg.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				synchronizeImg.disable();
+				presenter.getSynchronizationInfo();
+			}
+		});
 		final Img removeImg = createToolbarImage("remove.png", "Remove Recordings");
 		removeImg.setDisabled(true);
 		removeImg.addClickHandler(new ClickHandler() {
@@ -218,6 +228,7 @@ public class MainPane extends HLayout {
 			record.setAttribute(END_TIME_GRID_ATTR, dto.getEndTime());
 			record.setAttribute(DURATION_GRID_ATTR, dto.getDuration());
 			record.setAttribute(ENCODED_IMAGE_ATTR, dto.getEncodedImage());
+			record.setAttribute(OUTDATED_FLAG_ATTR, dto.isOutdated());
 
 			records.add(record);
 		}
@@ -295,5 +306,22 @@ public class MainPane extends HLayout {
 
 	public void setAvailableSpaceSize(final Long size) {
 		freeSpace.setContents(createSpaceSizeContent(size));
+	}
+
+	public void onSynchronizationComplete(final List<RecordingDto> recordings) {
+		synchronizeImg.enable();
+		final List<ListGridRecord> records = createGridRecords(recordings);
+		listGrid.setData(records.toArray(new ListGridRecord[] {}));
+		listGrid.selectRecords(recordsToSelect(records));
+	}
+
+	private Record[] recordsToSelect(final List<ListGridRecord> records) {
+		final List<Record> toSelect = Lists.newArrayList();
+		for (Record record : records) {
+			if (record.getAttributeAsBoolean(OUTDATED_FLAG_ATTR)) {
+				toSelect.add(record);
+			}
+		}
+		return toSelect.toArray(new ListGridRecord[] {});
 	}
 }

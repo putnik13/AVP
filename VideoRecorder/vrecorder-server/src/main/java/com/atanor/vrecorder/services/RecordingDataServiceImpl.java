@@ -82,7 +82,7 @@ public class RecordingDataServiceImpl implements RecordingDataService {
 	@Override
 	public void removeRecordings(final List<Recording> recordings) {
 		for (final Recording recording : recordings) {
-			final Recording recordingFromDb =  recordingDao.find(recording.getId());
+			final Recording recordingFromDb = recordingDao.find(recording.getId());
 			recordingDao.delete(recordingFromDb);
 			removeFromDisk(recording.getName());
 		}
@@ -97,5 +97,21 @@ public class RecordingDataServiceImpl implements RecordingDataService {
 
 	private String buildRecordingPath(final String recordingName) {
 		return outputFolder + "/" + recordingName;
+	}
+
+	@Override
+	public List<Recording> getSynchronizationInfo() {
+		final List<Recording> recordings = recordingDao.findAll();
+		for (final Recording recording : recordings) {
+			checkOutdated(recording);
+		}
+		return recordings;
+	}
+
+	private void checkOutdated(final Recording recording) {
+		final File file = new File(buildRecordingPath(recording.getName()));
+		if (!file.exists()) {
+			recording.setOutdated(Boolean.TRUE);
+		}
 	}
 }

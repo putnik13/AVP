@@ -12,6 +12,8 @@ public interface RecordingDataService {
 	Long createRecording(String fileName, Date startTime);
 
 	void removeRecordings(List<Recording> recordings);
+	
+	List<Recording> getSynchronizationInfo();
 
 	void updateDuration(Long recordingId, Date endTime);
 

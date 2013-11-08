@@ -20,4 +20,5 @@ public interface RecordingService extends RemoteService {
 	
 	List<RecordingDto> getRecordings();
 	
+	List<RecordingDto> getSynchronizationInfo();
 }

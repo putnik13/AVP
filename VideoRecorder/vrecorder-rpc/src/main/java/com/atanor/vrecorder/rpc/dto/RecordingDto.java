@@ -11,7 +11,8 @@ public class RecordingDto extends AbstractDto {
 	private Date endTime;
 	private String duration;
 	private String encodedImage;
-
+	private Boolean outdated;
+	
 	public RecordingDto() {
 	}
 
@@ -61,6 +62,14 @@ public class RecordingDto extends AbstractDto {
 
 	public void setEncodedImage(final String encodedImage) {
 		this.encodedImage = encodedImage;
+	}
+
+	public Boolean isOutdated() {
+		return outdated;
+	}
+
+	public void setOutdated(final Boolean outdated) {
+		this.outdated = outdated;
 	}
 
 }

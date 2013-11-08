@@ -19,6 +19,7 @@ public class RecordingConverter extends AbstractConverter<RecordingDto, Recordin
 		dto.setEndTime(entity.getEndTime());
 		dto.setDuration(entity.getDuration());
 		dto.setEncodedImage(entity.getImageBlob());
+		dto.setOutdated(entity.isOutdated());
 
 		return dto;
 	}
@@ -36,6 +37,7 @@ public class RecordingConverter extends AbstractConverter<RecordingDto, Recordin
 		entity.setStartTime(dto.getStartTime());
 		entity.setEndTime(dto.getEndTime());
 		entity.setDuration(dto.getDuration());
+		entity.setOutdated(dto.isOutdated());
 
 		return entity;
 	}
