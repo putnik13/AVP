@@ -33,6 +33,7 @@ public class MainPane extends HLayout {
 	private static final String FILE_NAME_GRID_ATTR = "fileName";
 	private static final String ENCODED_IMAGE_ATTR = "encodeImage";
 	private static final DateTimeFormat df = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss");
+	private static final Integer TOOLBAR_SIZE = 25;
 
 	private MainPanePresenter presenter;
 
@@ -79,6 +80,15 @@ public class MainPane extends HLayout {
 		headerPane.addMembers(snapshotBox, startRecord, stopRecord);
 		headerPane.setMembersMargin(10);
 
+		final HLayout gridToolbar = new HLayout();
+		gridToolbar.setAlign(Alignment.RIGHT);
+		gridToolbar.setHeight(TOOLBAR_SIZE);
+		final Img synchronizeImg = createToolbarImage("synchronize.png", "Synchronize Recordings");
+		final Img removeImg = createToolbarImage("remove.png", "Remove Recordings");
+		removeImg.setDisabled(true);
+		
+		gridToolbar.addMembers(synchronizeImg, removeImg);
+
 		listGrid = new ListGrid() {
 			@Override
 			protected Canvas getCellHoverComponent(Record record, Integer rowNum, Integer colNum) {
@@ -124,6 +134,9 @@ public class MainPane extends HLayout {
 		final ListGridField duration = new ListGridField(DURATION_GRID_ATTR, "Duration");
 		listGrid.setFields(fileName, startTime, endTime, duration);
 
+		final VLayout gridLayout = new VLayout();
+		gridLayout.addMembers(gridToolbar, listGrid);
+
 		freeSpace = new Label();
 		freeSpace.setContents(createSpaceSizeContent(null));
 		freeSpace.setBottom(80);
@@ -132,7 +145,7 @@ public class MainPane extends HLayout {
 		vLayout.setWidth("80%");
 		vLayout.setHeight100();
 		vLayout.setMembersMargin(20);
-		vLayout.addMembers(spacer, headerPane, listGrid, freeSpace);
+		vLayout.addMembers(spacer, headerPane, gridLayout, freeSpace);
 
 		addMembers(new LayoutSpacer(), vLayout, new LayoutSpacer());
 	}
@@ -215,9 +228,19 @@ public class MainPane extends HLayout {
 		return img;
 	}
 
+	private Img createToolbarImage(final String imgSource, final String tooltip) {
+		final Img img = new Img();
+		img.setSrc(imgSource);
+		img.setTooltip(tooltip);
+		img.setWidth(TOOLBAR_SIZE);
+		img.setHeight(TOOLBAR_SIZE);
+
+		return img;
+	}
+
 	private String createSpaceSizeContent(final Long spaceSize) {
 		final String size = spaceSize == null ? "..." : String.valueOf(spaceSize);
-		return "<div style='display:inline;font-weight:bold'>Free Space on disk:</div> " + size + " Mb is available";
+		return "<b>Free Space on disk:</b> " + size + " Mb is available";
 	}
 
 	public void setPresenter(final MainPanePresenter presenter) {
