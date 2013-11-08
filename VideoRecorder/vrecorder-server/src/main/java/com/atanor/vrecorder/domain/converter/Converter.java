@@ -8,4 +8,5 @@ public interface Converter<D extends AbstractDto, E extends AbstractEntity> {
 
 	D toDto(E entity);
 
+	E toEntity(D dto);
 }

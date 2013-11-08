@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Canvas;
@@ -21,12 +22,15 @@ import com.smartgwt.client.widgets.grid.CellFormatter;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
+import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class MainPane extends HLayout {
 
+	private static final String DTO_GRID_ATTR = "dto";
 	private static final String DURATION_GRID_ATTR = "duration";
 	private static final String START_TIME_GRID_ATTR = "startTime";
 	private static final String END_TIME_GRID_ATTR = "endTime";
@@ -86,7 +90,14 @@ public class MainPane extends HLayout {
 		final Img synchronizeImg = createToolbarImage("synchronize.png", "Synchronize Recordings");
 		final Img removeImg = createToolbarImage("remove.png", "Remove Recordings");
 		removeImg.setDisabled(true);
-		
+		removeImg.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				presenter.removeRecordings(getSelectedRecordings());
+			}
+		});
+
 		gridToolbar.addMembers(synchronizeImg, removeImg);
 
 		listGrid = new ListGrid() {
@@ -105,8 +116,21 @@ public class MainPane extends HLayout {
 		listGrid.setCanHover(true);
 		listGrid.setShowHover(true);
 		listGrid.setShowHoverComponents(true);
-		listGrid.setSelectionType(SelectionStyle.NONE);
 		listGrid.setShowRowNumbers(true);
+		listGrid.setSelectionType(SelectionStyle.SIMPLE);
+		listGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
+		listGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
+
+			@Override
+			public void onSelectionChanged(SelectionEvent event) {
+				if (isAnyRecordSelected()) {
+					removeImg.enable();
+				} else {
+					removeImg.disable();
+				}
+
+			}
+		});
 
 		final ListGridField fileName = new ListGridField(FILE_NAME_GRID_ATTR, "File Name");
 		final ListGridField startTime = new ListGridField(START_TIME_GRID_ATTR, "Start Time");
@@ -188,6 +212,7 @@ public class MainPane extends HLayout {
 		List<ListGridRecord> records = Lists.newArrayList();
 		for (RecordingDto dto : recordings) {
 			ListGridRecord record = new ListGridRecord();
+			record.setAttribute(DTO_GRID_ATTR, dto);
 			record.setAttribute(FILE_NAME_GRID_ATTR, dto.getName());
 			record.setAttribute(START_TIME_GRID_ATTR, dto.getStartTime());
 			record.setAttribute(END_TIME_GRID_ATTR, dto.getEndTime());
@@ -241,6 +266,27 @@ public class MainPane extends HLayout {
 	private String createSpaceSizeContent(final Long spaceSize) {
 		final String size = spaceSize == null ? "..." : String.valueOf(spaceSize);
 		return "<b>Free Space on disk:</b> " + size + " Mb is available";
+	}
+
+	private boolean isAnyRecordSelected() {
+		for (final ListGridRecord record : listGrid.getRecords()) {
+			if (listGrid.isSelected(record)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private List<RecordingDto> getSelectedRecordings() {
+		final List<RecordingDto> recordings = Lists.newArrayList();
+		for (final ListGridRecord record : listGrid.getRecords()) {
+			if (listGrid.isSelected(record)) {
+				final RecordingDto dto = (RecordingDto) record.getAttributeAsObject(DTO_GRID_ATTR);
+				dto.setEncodedImage(null);
+				recordings.add(dto);
+			}
+		}
+		return recordings;
 	}
 
 	public void setPresenter(final MainPanePresenter presenter) {

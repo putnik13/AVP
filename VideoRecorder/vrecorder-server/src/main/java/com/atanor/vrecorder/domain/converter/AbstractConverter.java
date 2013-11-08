@@ -21,4 +21,16 @@ public abstract class AbstractConverter<D extends AbstractDto, E extends Abstrac
 		return converted;
 	}
 
+	protected static <D extends AbstractDto, E extends AbstractEntity> List<E> convertDtoList(
+			final Converter<D, E> converter, final List<D> dtos) {
+		final List<E> converted = Lists.newArrayList();
+		if (dtos != null) {
+			for (D dto : dtos) {
+				converted.add(converter.toEntity(dto));
+			}
+		}
+
+		return converted;
+	}
+
 }

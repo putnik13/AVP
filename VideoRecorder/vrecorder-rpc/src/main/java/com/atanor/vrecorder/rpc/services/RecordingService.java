@@ -16,5 +16,8 @@ public interface RecordingService extends RemoteService {
 
 	Boolean stopRecording();
 
+	Boolean removeRecordings(List<RecordingDto> recordings);
+	
 	List<RecordingDto> getRecordings();
+	
 }

@@ -135,4 +135,20 @@ public class MainPanePresenter implements GetSnapshotHandler, GetAvailableSpaceS
 		});
 	}
 
+	public void removeRecordings(final List<RecordingDto> recordings) {
+		Client.getRecordingService().removeRecordings(recordings, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				SC.say("Error. Can not remove selected recordings");
+				caught.printStackTrace();
+			}
+
+			@Override
+			public void onSuccess(Boolean result) {
+				refreshRecordings();
+			}
+		});
+	}
+
 }

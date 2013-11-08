@@ -5,12 +5,24 @@ import java.util.Date;
 @SuppressWarnings("serial")
 public class RecordingDto extends AbstractDto {
 
+	private Long id;
 	private String name;
 	private Date startTime;
 	private Date endTime;
 	private String duration;
 	private String encodedImage;
-	
+
+	public RecordingDto() {
+	}
+
+	public RecordingDto(final Long id) {
+		this.id = id;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
 	public String getName() {
 		return name;
 	}

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.apache.commons.lang3.Validate;
 
@@ -12,11 +13,19 @@ import com.atanor.vrecorder.domain.dao.RecordingDao;
 import com.atanor.vrecorder.domain.entity.Recording;
 import com.atanor.vrecorder.util.FormatTime;
 import com.atanor.vrecorder.util.ImageDecoder;
+import com.google.inject.persist.Transactional;
 
 public class RecordingDataServiceImpl implements RecordingDataService {
 
 	@Inject
 	private RecordingDao recordingDao;
+
+	private final String outputFolder;
+
+	@Inject
+	public RecordingDataServiceImpl(@Named("output.folder") String outputFolder) {
+		this.outputFolder = outputFolder;
+	}
 
 	@Override
 	public List<Recording> getRecordings() {
@@ -69,4 +78,24 @@ public class RecordingDataServiceImpl implements RecordingDataService {
 		recordingDao.update(recording);
 	}
 
+	@Transactional
+	@Override
+	public void removeRecordings(final List<Recording> recordings) {
+		for (final Recording recording : recordings) {
+			final Recording recordingFromDb =  recordingDao.find(recording.getId());
+			recordingDao.delete(recordingFromDb);
+			removeFromDisk(recording.getName());
+		}
+	}
+
+	private void removeFromDisk(final String name) {
+		final File file = new File(buildRecordingPath(name));
+		if (file.exists()) {
+			file.delete();
+		}
+	}
+
+	private String buildRecordingPath(final String recordingName) {
+		return outputFolder + "/" + recordingName;
+	}
 }
