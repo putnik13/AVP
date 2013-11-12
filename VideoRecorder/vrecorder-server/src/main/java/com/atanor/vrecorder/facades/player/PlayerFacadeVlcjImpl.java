@@ -1,4 +1,4 @@
-package com.atanor.vrecorder.domain.facades;
+package com.atanor.vrecorder.facades.player;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -17,6 +17,7 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 import com.atanor.vrecorder.events.CreateAndSaveSnapshotEvent;
+import com.atanor.vrecorder.facades.PlayerFacade;
 import com.atanor.vrecorder.services.RecordingDataService;
 import com.atanor.vrecorder.shared.Constants;
 import com.atanor.vrecorder.util.ImageDecoder;

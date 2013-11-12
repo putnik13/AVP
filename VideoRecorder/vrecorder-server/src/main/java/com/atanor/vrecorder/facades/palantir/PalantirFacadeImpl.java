@@ -1,4 +1,6 @@
-package com.atanor.vrecorder.domain.facades;
+package com.atanor.vrecorder.facades.palantir;
+
+import com.atanor.vrecorder.facades.PalantirFacade;
 
 public class PalantirFacadeImpl implements PalantirFacade {
 

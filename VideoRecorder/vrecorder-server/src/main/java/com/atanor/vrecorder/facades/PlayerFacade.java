@@ -1,4 +1,4 @@
-package com.atanor.vrecorder.domain.facades;
+package com.atanor.vrecorder.facades;
 
 public interface PlayerFacade {
 	

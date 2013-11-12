@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 
-import com.atanor.vrecorder.domain.facades.PalantirFacade;
-import com.atanor.vrecorder.domain.facades.PalantirFacadeImpl;
-import com.atanor.vrecorder.domain.facades.PlayerFacade;
-import com.atanor.vrecorder.domain.facades.PlayerFacadeMockImpl;
+import com.atanor.vrecorder.facades.PalantirFacade;
+import com.atanor.vrecorder.facades.PlayerFacade;
+import com.atanor.vrecorder.facades.palantir.PalantirFacadeImpl;
+import com.atanor.vrecorder.facades.player.PlayerFacadeMockImpl;
 import com.atanor.vrecorder.services.RecordingDataService;
 import com.atanor.vrecorder.services.RecordingDataServiceImpl;
 import com.atanor.vrecorder.util.AppUtils;

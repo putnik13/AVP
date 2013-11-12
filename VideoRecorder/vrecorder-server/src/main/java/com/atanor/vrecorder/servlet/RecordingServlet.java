@@ -6,9 +6,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.atanor.vrecorder.domain.converter.RecordingConverter;
-import com.atanor.vrecorder.domain.facades.PalantirFacade;
-import com.atanor.vrecorder.domain.facades.PlayerFacade;
-import com.atanor.vrecorder.domain.facades.Signal;
+import com.atanor.vrecorder.facades.PalantirFacade;
+import com.atanor.vrecorder.facades.PlayerFacade;
+import com.atanor.vrecorder.facades.palantir.Signal;
 import com.atanor.vrecorder.rpc.dto.RecordingDto;
 import com.atanor.vrecorder.rpc.services.RecordingService;
 import com.atanor.vrecorder.services.RecordingDataService;

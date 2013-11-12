@@ -1,4 +1,6 @@
-package com.atanor.vrecorder.domain.facades;
+package com.atanor.vrecorder.facades.player;
+
+import com.atanor.vrecorder.facades.PlayerFacade;
 
 public class PlayerFacadeMockImpl implements PlayerFacade {
 
