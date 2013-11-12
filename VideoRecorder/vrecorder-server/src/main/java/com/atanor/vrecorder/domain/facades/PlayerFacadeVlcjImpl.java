@@ -29,6 +29,7 @@ public class PlayerFacadeVlcjImpl implements PlayerFacade {
 
 	private final String outputFolder;
 	private final String mediaResourceLocation;
+	private final String mediaOptions;
 
 	private static final String SNAPSHOT_NAME = "vlcj-snapshot.png";
 	private static final SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd-HHmmss");
@@ -46,10 +47,11 @@ public class PlayerFacadeVlcjImpl implements PlayerFacade {
 	@Inject
 	public PlayerFacadeVlcjImpl(final EventBus eventBus, @Named("output.folder") String outputFolder,
 			@Named("vlc.installation.path") String vlcInstallationPath,
-			@Named("media.resource.location") String mediaResourceLocation) {
+			@Named("media.resource.location") String mediaResourceLocation, @Named("media.options") String mediaOptions) {
 		this.eventBus = eventBus;
 		this.outputFolder = outputFolder;
 		this.mediaResourceLocation = mediaResourceLocation;
+		this.mediaOptions = mediaOptions;
 		eventBus.register(this);
 
 		NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), vlcInstallationPath);
@@ -72,8 +74,7 @@ public class PlayerFacadeVlcjImpl implements PlayerFacade {
 		if (!isPlaying()) {
 			final Date startTime = new Date();
 			final String fileName = buildRecordingName(startTime);
-			final String[] options = { ":sout=#transcode{vcodec=h264,acodec=mpga,ab=128,channels=2,samplerate=44100}:file{dst="
-					+ buildRecordingPath(fileName) + "}" };
+			final String[] options = { String.format(mediaOptions, buildRecordingPath(fileName)) };
 			streamPlayer.playMedia(mediaResourceLocation, options);
 			imagePlayer.playMedia(mediaResourceLocation);
 

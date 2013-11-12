@@ -10,6 +10,7 @@ import com.atanor.vrecorder.domain.facades.PlayerFacade;
 import com.atanor.vrecorder.domain.facades.PlayerFacadeMockImpl;
 import com.atanor.vrecorder.services.RecordingDataService;
 import com.atanor.vrecorder.services.RecordingDataServiceImpl;
+import com.atanor.vrecorder.util.AppUtils;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
@@ -33,8 +34,7 @@ public class AppCoreModule extends AbstractModule {
 	private void loadProperties() {
 		try {
 			Properties properties = new Properties();
-			properties.load(Thread.currentThread().getContextClassLoader()
-					.getResourceAsStream("/config/init.properties"));
+			properties.load(AppUtils.getServletContext().getResourceAsStream("/init.properties"));
 			Names.bindProperties(binder(), properties);
 		} catch (IOException e) {
 			throw new IllegalStateException("Can not load init properties", e);
