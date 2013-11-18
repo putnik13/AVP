@@ -24,20 +24,4 @@
     <welcome-file>HdConnect.html</welcome-file>
   </welcome-file-list>
 
-<!-- 
- <servlet>
-        <servlet-name>AtmosphereServlet</servlet-name>
-        <servlet-class>org.atmosphere.cpr.AtmosphereServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-        <async-supported>true</async-supported>
-        <init-param>
-            <param-name>org.atmosphere.cpr.packages</param-name>
-            <param-value>com.atanor.hdconnect.server</param-value>
-        </init-param>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AtmosphereServlet</servlet-name>
-        <url-pattern>/HdConnect/atmosphere/*</url-pattern>
-    </servlet-mapping>
- -->
 </web-app>
