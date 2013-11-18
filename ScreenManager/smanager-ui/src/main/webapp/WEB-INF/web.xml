@@ -16,7 +16,7 @@
   </filter-mapping>
   
   <listener>
-    <listener-class>com.atanor.smanager.injector.AppConfig</listener-class>
+    <listener-class>com.atanor.hdconnect.injector.AppConfig</listener-class>
   </listener>
 
   <!-- Default page to serve -->

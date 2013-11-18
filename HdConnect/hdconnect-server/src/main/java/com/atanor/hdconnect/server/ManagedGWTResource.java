@@ -17,6 +17,8 @@ package com.atanor.hdconnect.server;
 
 import java.util.logging.Logger;
 
+import javax.inject.Singleton;
+
 import org.atmosphere.client.TrackMessageSizeInterceptor;
 import org.atmosphere.config.service.Disconnect;
 import org.atmosphere.config.service.ManagedService;
@@ -28,7 +30,6 @@ import org.atmosphere.cpr.BroadcasterFactory;
 import org.atmosphere.gwt20.managed.AtmosphereMessageInterceptor;
 import org.atmosphere.gwt20.server.GwtRpcInterceptor;
 import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
-import org.atmosphere.interceptor.BroadcastOnPostAtmosphereInterceptor;
 import org.atmosphere.interceptor.SuspendTrackerInterceptor;
 
 /**
@@ -63,8 +64,9 @@ AtmosphereMessageInterceptor.class
  * Echo the messages we are receiving from the client either as w WebSocket
  * message or an HTTP Post.
  */
-//BroadcastOnPostAtmosphereInterceptor.class 
+// BroadcastOnPostAtmosphereInterceptor.class
 })
+@Singleton
 public class ManagedGWTResource {
 
 	static final Logger logger = Logger.getLogger("AtmosphereHandler");
