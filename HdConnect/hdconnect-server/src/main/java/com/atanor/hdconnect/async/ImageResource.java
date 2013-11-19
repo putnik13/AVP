@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.atanor.hdconnect.server;
+package com.atanor.hdconnect.async;
 
 import java.util.logging.Logger;
 
@@ -26,7 +26,6 @@ import org.atmosphere.config.service.Post;
 import org.atmosphere.config.service.Ready;
 import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
-import org.atmosphere.cpr.BroadcasterFactory;
 import org.atmosphere.gwt20.managed.AtmosphereMessageInterceptor;
 import org.atmosphere.gwt20.server.GwtRpcInterceptor;
 import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
@@ -35,10 +34,8 @@ import org.atmosphere.interceptor.SuspendTrackerInterceptor;
 /**
  * Super simple managed echo application that use two broadcaster for pushing
  * data back to the client.
- * 
- * @author Jeanfrancois Arcand
  */
-@ManagedService(path = "/HdConnect/atmosphere/rpc", interceptors = {
+@ManagedService(path = "/HdConnect/atmosphere/async", interceptors = {
 /**
  * Handle lifecycle for us
  */
@@ -59,15 +56,9 @@ SuspendTrackerInterceptor.class,
 /**
  * Deserialize the GWT message
  */
-AtmosphereMessageInterceptor.class
-/**
- * Echo the messages we are receiving from the client either as w WebSocket
- * message or an HTTP Post.
- */
-// BroadcastOnPostAtmosphereInterceptor.class
-})
+AtmosphereMessageInterceptor.class })
 @Singleton
-public class ManagedGWTResource {
+public class ImageResource {
 
 	static final Logger logger = Logger.getLogger("AtmosphereHandler");
 
@@ -75,15 +66,11 @@ public class ManagedGWTResource {
 	public void onReady(final AtmosphereResource r) {
 		logger.info("Received RPC GET");
 		// Look up a new Broadcaster used for pushing who is connected.
-		BroadcasterFactory.getDefault().lookup("Connected users", true).addAtmosphereResource(r)
-				.broadcast("Browser UUID: " + r.uuid() + " connected.");
+		AsyncConnector.getBroadcaster().addAtmosphereResource(r).broadcast("Browser UUID: " + r.uuid() + " connected.");
 	}
 
 	@Disconnect
 	public void disconnected(AtmosphereResourceEvent event) {
-		// isCancelled == true. means the client didn't send the close event, so
-		// an unexpected network glitch or browser
-		// crash occurred.
 		if (event.isCancelled()) {
 			logger.info("User:" + event.getResource().uuid() + " unexpectedly disconnected");
 		} else if (event.isClosedByClient()) {
@@ -93,8 +80,8 @@ public class ManagedGWTResource {
 
 	@Post
 	public void post(AtmosphereResource r) {
-		// Don't need to do anything, the interceptor took care of it for us.
 		logger.info("POST received with transport + " + r.transport());
+		// TODO put handler for client call
 	}
 
 }

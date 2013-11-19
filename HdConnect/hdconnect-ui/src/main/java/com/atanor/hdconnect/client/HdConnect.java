@@ -38,10 +38,9 @@ public class HdConnect implements EntryPoint {
 
 		AtmosphereRequestConfig rpcRequestConfig = AtmosphereRequestConfig.create(rpcSerializer);
 
-		rpcRequestConfig.setUrl(GWT.getModuleBaseURL() + "atmosphere/rpc");
-		//rpcRequestConfig.setUrl("/recording");
+		rpcRequestConfig.setUrl(GWT.getModuleBaseURL() + "atmosphere/async");
 		rpcRequestConfig.setTransport(AtmosphereRequestConfig.Transport.WEBSOCKET);
-		rpcRequestConfig.setFallbackTransport(AtmosphereRequestConfig.Transport.LONG_POLLING);
+		rpcRequestConfig.setFallbackTransport(AtmosphereRequestConfig.Transport.STREAMING);
 		rpcRequestConfig.setOpenHandler(new AtmosphereOpenHandler() {
 			@Override
 			public void onOpen(AtmosphereResponse response) {
