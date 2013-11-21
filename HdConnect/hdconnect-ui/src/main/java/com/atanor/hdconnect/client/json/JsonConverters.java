@@ -3,7 +3,7 @@ package com.atanor.hdconnect.client.json;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 
-import com.atanor.hdconnect.client.Snapshot;
+import com.atanor.hdconnect.client.entity.Snapshot;
 import com.google.gwt.core.shared.GWT;
 
 public class JsonConverters {

@@ -1,48 +1,12 @@
 package com.atanor.hdconnect.client.ui;
 
-import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.grid.ListGrid;
-import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.layout.HLayout;
-import com.smartgwt.client.widgets.layout.LayoutSpacer;
-import com.smartgwt.client.widgets.layout.VLayout;
+import com.atanor.hdconnect.client.entity.Snapshot;
+import com.atanor.hdconnect.client.presenter.MainPanePresenter;
+import com.google.gwt.user.client.ui.IsWidget;
 
-public class MainPane extends HLayout {
+public interface MainPane extends IsWidget {
 
-	private final IButton startRecord;
+	void setPresenter(MainPanePresenter presenter);
 	
-	public MainPane() {
-		setWidth100();
-		setHeight100();
-		
-		startRecord = new IButton("Start Recording");
-		startRecord.setWidth(90);
-		final IButton stopRecord = new IButton("Stop Recording");
-		stopRecord.setWidth(90);
-
-		final HLayout headerPane = new HLayout();
-		headerPane.addMembers(startRecord, stopRecord);
-		headerPane.setMembersMargin(10);
-
-		final ListGrid listGrid = new ListGrid();
-		ListGridField fileName = new ListGridField("fileName");
-		ListGridField duration = new ListGridField("Duration");
-		listGrid.setFields(fileName, duration);
-
-		final Label freeSpace = new Label();
-		freeSpace.setContents("Free Space on disk: ... Mb is available");
-
-		final VLayout vLayout = new VLayout();
-		vLayout.setWidth("80%");
-		vLayout.setHeight100();
-		vLayout.setMembersMargin(50);
-		vLayout.addMembers(headerPane, listGrid, freeSpace);
-
-		addMembers(new LayoutSpacer(), vLayout, new LayoutSpacer());
-	}
-	
-	public IButton getStartButton(){
-		return startRecord;
-	}
+	void addSnapshot(Snapshot snapshot);
 }

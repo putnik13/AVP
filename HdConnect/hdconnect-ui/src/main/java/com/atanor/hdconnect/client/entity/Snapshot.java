@@ -1,4 +1,4 @@
-package com.atanor.hdconnect.client;
+package com.atanor.hdconnect.client.entity;
 
 import java.io.Serializable;
 
