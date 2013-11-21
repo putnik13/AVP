@@ -94,6 +94,27 @@
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-core</artifactId>
       </dependency>
+	  
+	  <!-- JSON mapper -->
+	  <dependency>
+        <groupId>name.pehl</groupId>
+        <artifactId>piriti-user</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>name.pehl</groupId>
+        <artifactId>piriti-dev</artifactId>
+      </dependency>
+	  <dependency>
+        <groupId>name.pehl</groupId>
+        <artifactId>totoe</artifactId>
+      </dependency>
+      
+	  <!-- DI -->
+	  <dependency>
+        <groupId>com.google.gwt.inject</groupId>
+        <artifactId>gin</artifactId>
+      </dependency>
+	  
   </dependencies>
 
   <build>

@@ -165,6 +165,11 @@
 	    <artifactId>guice-persist</artifactId>
 	    <version>3.0</version>
       </dependency>
+	  <dependency>
+        <groupId>com.google.gwt.inject</groupId>
+        <artifactId>gin</artifactId>
+        <version>2.1.1</version>
+      </dependency>
 	  
 	  <!-- Atmosphere libs -->
 	  <dependency>
@@ -233,7 +238,32 @@
         <artifactId>commons-lang3</artifactId>
         <version>3.1</version>
       </dependency>
-	
+	  
+	  <!-- JSON mapper -->
+	  <dependency>
+        <groupId>name.pehl</groupId>
+        <artifactId>piriti-user</artifactId>
+        <version>0.8</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>name.pehl</groupId>
+        <artifactId>piriti-dev</artifactId>
+        <version>0.8</version>
+        <scope>provided</scope>
+      </dependency>
+	  <dependency>
+        <groupId>name.pehl</groupId>
+        <artifactId>totoe</artifactId>
+        <version>0.3</version>
+      </dependency>
+
+      <dependency>
+	    <groupId>com.google.code.gson</groupId>
+	    <artifactId>gson</artifactId>
+	    <version>2.2.4</version>
+      </dependency>
+	  
 	  <!-- Tests -->
 	  <dependency>
         <groupId>junit</groupId>

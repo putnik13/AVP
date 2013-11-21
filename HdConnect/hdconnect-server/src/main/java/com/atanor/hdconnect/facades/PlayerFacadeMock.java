@@ -6,11 +6,13 @@ import java.util.TimerTask;
 import javax.inject.Inject;
 
 import com.atanor.hdconnect.async.AsyncConnector;
+import com.atanor.hdconnect.entity.Snapshot;
 import com.atanor.hdconnect.events.CloseSessionEvent;
 import com.atanor.hdconnect.events.GetSnapshotEvent;
 import com.atanor.hdconnect.events.OpenSessionEvent;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.gson.Gson;
 
 public class PlayerFacadeMock {
 
@@ -18,6 +20,7 @@ public class PlayerFacadeMock {
 	private static final int INTERVAL_TIME = 5000;
 	private final EventBus eventBus;
 	private Timer timer;
+	private Gson gson = new Gson();
 
 	@Inject
 	public PlayerFacadeMock(final EventBus eventBus) {
@@ -28,7 +31,9 @@ public class PlayerFacadeMock {
 	@Subscribe
 	public void onGetSnapshot(final GetSnapshotEvent event) {
 		System.out.println("onGetSnapshot() called");
-		AsyncConnector.broadcast("Hello123 !!!");
+
+		final String jsonRepresentation = gson.toJson(new Snapshot("aaaaabbb", "100", "200"));
+		AsyncConnector.broadcast(jsonRepresentation);
 	}
 
 	@Subscribe

@@ -13,6 +13,7 @@ import org.atmosphere.gwt20.client.AtmosphereResponse;
 import org.atmosphere.gwt20.client.managed.RPCEvent;
 import org.atmosphere.gwt20.client.managed.RPCSerializer;
 
+import com.atanor.hdconnect.client.json.JsonConverters;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.SerializationException;
@@ -65,6 +66,8 @@ public class HdConnect implements EntryPoint {
 				List<RPCEvent> messages = response.getMessages();
 				for (RPCEvent event : messages) {
 					System.out.println("received message through RPC: " + event.getMessage());
+					final Snapshot snapshot = JsonConverters.SNAPSHOT_READER.read(event.getMessage());
+					System.out.println("snapshot: " + snapshot.toString());
 				}
 			}
 		});
