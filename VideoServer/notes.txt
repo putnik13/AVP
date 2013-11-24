@@ -4,7 +4,7 @@ Admin module
 1. Stream control 
    - start/stop recording
    - saving recording to file
-   - preview recording stream as snapshots
+   - preview recording stream as snapshots (switch to Full Screen mode)
    - preview recordred recorderd through WebPlayer
    - preview through Samba(???)
 2. Broadcasting/Conversion
@@ -15,7 +15,11 @@ Admin module
    - broadcast audio (???)
 4. Save stream as presentation
    - save snapshots and audio separatly or as single avi file???
-5. Server configuration
+5. Edit configuration
+   - edit and save all possible settings 
+   - restore default settings
+
+Support for user roles and rights restriction
 
 Client module 
    - Preview snapshots from server
