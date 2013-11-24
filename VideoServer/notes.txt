@@ -23,5 +23,7 @@ Client module
 
 =================================================================================
 
+
 TASK/OWNER/STATUS[DONE, IN PROGRESS]:
+
 1. Create initial project structure (Mykola) - DONE
