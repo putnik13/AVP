@@ -1,0 +1,27 @@
+REQUIREMENTS:
+
+Admin module
+1. Stream control 
+   - start/stop recording
+   - saving recording to file
+   - preview recording stream as snapshots
+   - preview recordred recorderd through WebPlayer
+   - preview through Samba(???)
+2. Broadcasting/Conversion
+   - Support for broadcasting modes (unicast, multicast, http)
+3. Broadcasting to web clients
+   - smooth changes between snapshots
+   - change every 3 sec
+   - broadcast audio (???)
+4. Save stream as presentation
+   - save snapshots and audio separatly or as single avi file???
+5. Server configuration
+
+Client module 
+   - Preview snapshots from server
+   - Play audio from server
+
+=================================================================================
+
+TASK/OWNER/STATUS[DONE, IN PROGRESS]:
+1. Create initial project structure (Mykola) - DONE
