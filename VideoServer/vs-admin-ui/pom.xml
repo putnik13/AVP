@@ -1,0 +1,102 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>com.atanor</groupId>
+    <artifactId>vserver</artifactId>
+    <version>1.0-SNAPSHOT</version>
+	<relativePath>../pom.xml</relativePath>
+  </parent>
+  
+  <artifactId>vs-admin-ui</artifactId>
+  <name>vs-admin-ui</name>
+
+  <dependencies>
+    <!-- Project submodules dependencies -->
+	<dependency>
+    	<groupId>com.atanor</groupId>
+    	<artifactId>vs-common</artifactId>
+		<version>${project.version}</version>
+	</dependency>
+	<dependency>
+    	<groupId>com.atanor</groupId>
+    	<artifactId>vs-server</artifactId>
+		<version>${project.version}</version>
+	</dependency>
+	
+	<dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <scope>provided</scope>
+    </dependency>
+	<dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+	
+	<dependency>
+    	<groupId>com.smartgwt</groupId>
+    	<artifactId>smartgwt</artifactId>
+	</dependency>
+    <dependency>
+   		<groupId>javax.validation</groupId>
+   		<artifactId>validation-api</artifactId>
+   		<scope>provided</scope>
+	</dependency>
+	<dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <classifier>sources</classifier>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+	  <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+	</dependency>
+	<dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava-gwt</artifactId>
+	</dependency>	
+	<dependency>
+      <groupId>org.tuckey</groupId>
+      <artifactId>urlrewritefilter</artifactId>
+    </dependency>
+	  
+  </dependencies>
+  
+  <properties>
+    <gwtDestinationWarFolder>${basedir}/../vs-launch/src/main/webapp</gwtDestinationWarFolder>
+  </properties>
+	
+   <build>
+    <!-- Generate compiled stuff in the folder used for developing mode -->
+    <!--<outputDirectory>${gwtDestinationWarFolder}/WEB-INF/classes</outputDirectory>-->
+
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>          
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+		  <logLevel>INFO</logLevel>
+          <style>${gwtCompilerOutputStyle}</style>
+		  <webappDirectory>${gwtDestinationWarFolder}</webappDirectory>
+          <draftCompile>${gwtDraftCompile}</draftCompile>
+          <strict>true</strict>
+          <compileReport>${gwtCompileReport}</compileReport>
+          <enableAssertions>${gwtEnableAssertions}</enableAssertions>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+  
+</project>
