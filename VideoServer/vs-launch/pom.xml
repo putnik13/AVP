@@ -45,42 +45,10 @@
 	
 	<!-- Other dependencies -->
     <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-servlet</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-user</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-    	<groupId>com.smartgwt</groupId>
-    	<artifactId>smartgwt</artifactId>
-	</dependency>
-    <dependency>
-   		<groupId>javax.validation</groupId>
-   		<artifactId>validation-api</artifactId>
-   		<scope>provided</scope>
-	</dependency>
-	<dependency>
-      <groupId>javax.validation</groupId>
-      <artifactId>validation-api</artifactId>
-      <classifier>sources</classifier>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-	  <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-	</dependency>
-	<dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava-gwt</artifactId>
-	</dependency>
-    <dependency>
       <groupId>org.tuckey</groupId>
       <artifactId>urlrewritefilter</artifactId>
-    </dependency>  
+    </dependency>
+      
   </dependencies>
 
   <build>

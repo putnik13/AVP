@@ -11,7 +11,7 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="com.google.gdt.eclipse.maven.mavenClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.google.gwt.dev.DevMode"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-war &quot;${workspace_loc:vs-launch}/src/main/webapp&quot; -startupUrl VsClient.html -remoteUI &quot;${gwt_remote_ui_server_port}:${unique_id}&quot; -logLevel INFO -codeServerPort 9997 -port 8888 com.atanor.vserver.vsclient.VsClient"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-war &quot;${workspace_loc:vs-launch}/target/videoserver-1.0-SNAPSHOT&quot; -startupUrl VsClient.html -remoteUI &quot;${gwt_remote_ui_server_port}:${unique_id}&quot; -logLevel INFO -codeServerPort 9997 -port 8888 com.atanor.vserver.vsclient.VsClient"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="vs-client-ui"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms512m -Xmx1024m -XX:MaxPermSize=256m -XX:ReservedCodeCacheSize=128m"/>
 </launchConfiguration>

@@ -9,7 +9,7 @@
     <!-- USER PAGE RULES -->
 	<rule>
 		<from>^/connect</from>
-		<to>/VsClient.html</to>
+		<to type="redirect">/VsClient.html</to>
 	</rule>
 	
     <!-- ADMIN PAGE RULES -->

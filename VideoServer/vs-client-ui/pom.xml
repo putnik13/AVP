@@ -29,13 +29,7 @@
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
       <scope>provided</scope>
-    </dependency>
-	<dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    
+    </dependency>	
     <dependency>
     	<groupId>com.smartgwt</groupId>
     	<artifactId>smartgwt</artifactId>
@@ -51,6 +45,49 @@
       <classifier>sources</classifier>
       <scope>provided</scope>
     </dependency>
+	
+	<!-- Atmosphere libs -->
+	<dependency>
+      <groupId>org.atmosphere</groupId>
+      <artifactId>atmosphere-runtime</artifactId>
+    </dependency>
+	<dependency>
+      <groupId>org.atmosphere.extensions</groupId>
+      <artifactId>atmosphere-gwt20-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.atmosphere.extensions</groupId>
+      <artifactId>atmosphere-gwt20-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.atmosphere.extensions</groupId>
+      <artifactId>atmosphere-gwt20-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.atmosphere.extensions</groupId>
+      <artifactId>atmosphere-gwt20-managed</artifactId>
+    </dependency>
+	<dependency>
+      <groupId>org.atmosphere.client</groupId>
+      <artifactId>javascript</artifactId>
+      <type>war</type>
+      <scope>compile</scope>
+    </dependency>
+	
+	<!-- Logging -->
+	<dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+    </dependency>
+	
     <dependency>
 	  <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
@@ -63,6 +100,32 @@
       <groupId>org.tuckey</groupId>
       <artifactId>urlrewritefilter</artifactId>
     </dependency>
+	  
+	<!-- JSON mapper -->
+	<dependency>
+      <groupId>name.pehl</groupId>
+      <artifactId>piriti-user</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>name.pehl</groupId>
+      <artifactId>piriti-dev</artifactId>
+    </dependency>
+	<dependency>
+      <groupId>name.pehl</groupId>
+      <artifactId>totoe</artifactId>
+    </dependency>
+      
+	<!-- DI -->
+	<dependency>
+      <groupId>com.google.gwt.inject</groupId>
+      <artifactId>gin</artifactId>
+    </dependency>
+  
+	<dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>  
 	
   </dependencies>
   
