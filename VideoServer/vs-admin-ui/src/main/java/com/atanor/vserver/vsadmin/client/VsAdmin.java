@@ -1,53 +1,24 @@
 package com.atanor.vserver.vsadmin.client;
 
-<<<<<<< HEAD
-=======
-import java.util.LinkedHashMap;
-
->>>>>>> af3d57fab6e5c140a0a241823477543a3f35fdc2
 import com.atanor.vserver.common.services.Services;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.RootPanel;
-<<<<<<< HEAD
-import com.smartgwt.client.widgets.Button;
-import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.events.ClickHandler;
-=======
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.DragAppearance;
-import com.smartgwt.client.types.HeaderControls;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.types.SelectionStyle;
-import com.smartgwt.client.types.Side;
 import com.smartgwt.client.types.VisibilityMode;
-import com.smartgwt.client.widgets.AnimationCallback;
 import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.CloseClickEvent;
-import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.grid.CellFormatter;
 import com.smartgwt.client.widgets.grid.ListGrid;
-import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
-import com.smartgwt.client.widgets.layout.LayoutSpacer;
-import com.smartgwt.client.widgets.layout.PortalLayout;
-import com.smartgwt.client.widgets.layout.Portlet;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
-import com.smartgwt.client.widgets.layout.VLayout;
-import com.smartgwt.client.widgets.tab.Tab;
-import com.smartgwt.client.widgets.tab.TabSet;
->>>>>>> af3d57fab6e5c140a0a241823477543a3f35fdc2
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -57,33 +28,6 @@ public class VsAdmin implements EntryPoint {
 	/**
 	 * This is the entry point method.
 	 */
-<<<<<<< HEAD
-	public void onModuleLoad() {
-		Button button = new Button("Hello from Admin");
-		button.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				Services.getHelloService().hello("Admin", new AsyncCallback<Void>(){
-
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void onSuccess(Void result) {
-						// TODO Auto-generated method stub
-						
-					}});
-			}
-		});
-		
-		RootPanel.get().add(button);
-	}
-=======
-
 	public void onModuleLoad() {
 
 		final HelpCanvas help1 = new HelpCanvas("help1");
@@ -217,5 +161,4 @@ public class VsAdmin implements EntryPoint {
 			setContents(contents);
 		}
 	};
->>>>>>> af3d57fab6e5c140a0a241823477543a3f35fdc2
 }
