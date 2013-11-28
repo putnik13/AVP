@@ -30,11 +30,11 @@ Client module
 TASK/OWNER/STATUS[DONE, IN PROGRESS]:
 
 1. Create initial project structure [Mykola] - DONE
-2. Admin UI look&feel [Sergey]
+2. Admin UI look&feel [Sergey]- IN PROGRESS
 3. Client view (display snapshots and smooth change) [Mykola] - IN PROGRESS
 4. Stream control section (add WebPlayer, add tiles/photos view)
 5. Configuration persisted in DB (preview in Edit configuration section, default settings)
-6. User roles support (user entities, login/logout view, sessions control)
+6. User roles support (user entities, login/logout view [Sergey]- IN PROGRESS, sessions control)
 7. Broadcasting UI look&feel [Sergey]
 8. Client view (play audio ???)
 9. VLC modes [Sergey]
