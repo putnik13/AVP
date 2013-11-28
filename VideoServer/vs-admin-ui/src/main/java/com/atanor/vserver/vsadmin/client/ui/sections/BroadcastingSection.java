@@ -1,18 +1,14 @@
 package com.atanor.vserver.vsadmin.client.ui.sections;
 
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.layout.HLayout;
 
-public class BroadcastingSection extends HLayout {
+public class BroadcastingSection extends BaseSection {
 
-	public BroadcastingSection(){
-		setWidth100();
-		setHeight100();
-		setBackgroundColor("grey");
-		
+	public BroadcastingSection() {
+
 		Label label = new Label();
 		label.setContents("BROADCASTING");
-		//label.setTop(0);
+		// label.setTop(0);
 		addChild(label);
 	}
 }

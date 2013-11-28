@@ -1,7 +1,7 @@
 package com.atanor.vserver.vsadmin.client.injector;
 
 
-import com.atanor.vserver.vsadmin.client.ui.ContentPane;
+import com.atanor.vserver.vsadmin.client.ui.SectionsPane;
 import com.atanor.vserver.vsadmin.client.ui.MainPane;
 import com.atanor.vserver.vsadmin.client.ui.NavigatePane;
 import com.google.gwt.inject.client.GinModules;
@@ -15,7 +15,7 @@ public interface ClientInjector extends Ginjector {
 
 	MainPane getMainPane();
 	
-	ContentPane getContentPane();
+	SectionsPane getContentPane();
 	
 	NavigatePane getNavigatePane();
 }

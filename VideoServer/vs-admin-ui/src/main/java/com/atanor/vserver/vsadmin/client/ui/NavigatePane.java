@@ -26,12 +26,14 @@ public class NavigatePane extends HLayout implements SectionAnimationStartedHand
 	public NavigatePane() {
 		setWidth(200);
 		setHeight100();
-		setBackgroundColor("yellow");
-
+		//setBackgroundColor("yellow");
+		setBackgroundColor("grey");
+		
 		streamControl = new IButton("Stream Control");
 		streamControl.setWidth100();
 		streamControl.addClickHandler(buildClickHandler(Section.STREAM_CONTROL));
-
+		streamControl.setDisabled(true);
+		
 		shareConference = new IButton("Share Conference");
 		shareConference.setWidth100();
 		shareConference.addClickHandler(buildClickHandler(Section.SHARE_CONFERENCE));
