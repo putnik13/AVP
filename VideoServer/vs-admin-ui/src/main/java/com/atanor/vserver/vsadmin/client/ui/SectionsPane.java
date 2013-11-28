@@ -33,7 +33,7 @@ public class SectionsPane extends HLayout implements SectionSelectedHandler {
 
 	private final List<BaseSection> sections;
 
-	private HLayout selectedSection;
+	private BaseSection selectedSection;
 	private boolean isAnimationInProgress = false;
 
 	@Inject
@@ -70,7 +70,7 @@ public class SectionsPane extends HLayout implements SectionSelectedHandler {
 			return;
 		}
 
-		HLayout newSelectedSection = null;
+		BaseSection newSelectedSection = null;
 		switch (event.getSection()) {
 		case STREAM_CONTROL:
 			newSelectedSection = streamControl;
@@ -92,10 +92,10 @@ public class SectionsPane extends HLayout implements SectionSelectedHandler {
 		move(newSelectedSection);
 	}
 
-	private void move(final HLayout section) {
+	private void move(final BaseSection section) {
 		isAnimationInProgress = true;
 		section.animateMove(0, 0, null, ANIMATION_TIME);
-		selectedSection.animateMove(0, selectedSection.getHeight(), new AnimationCallback() {
+		selectedSection.animateMove(0, section.getHeight(), new AnimationCallback() {
 
 			@Override
 			public void execute(boolean earlyFinish) {
@@ -107,7 +107,7 @@ public class SectionsPane extends HLayout implements SectionSelectedHandler {
 
 	}
 
-	private void setToFrontSection(final HLayout selected) {
+	private void setToFrontSection(final BaseSection selected) {
 		for (BaseSection section : sections) {
 			if (section != selected) {
 				resetPosition(section);
@@ -117,7 +117,7 @@ public class SectionsPane extends HLayout implements SectionSelectedHandler {
 		this.selectedSection = selected;
 	}
 
-	private void resetPosition(final HLayout section) {
+	private void resetPosition(final BaseSection section) {
 		section.moveTo(0, -section.getHeight());
 	}
 

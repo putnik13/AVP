@@ -1,26 +1,25 @@
 package com.atanor.vserver.vsadmin.client.ui;
 
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.toolbar.ToolStrip;
-import com.smartgwt.client.widgets.toolbar.ToolStripButton;
+import com.smartgwt.client.widgets.layout.HLayout;
 
-public class HeaderPane extends ToolStrip {
+public class HeaderPane extends HLayout {
 
 	public HeaderPane() {
+		setHeight(50);
 		setWidth100();
-
-		// push all buttons to the right
-		addFill();
+		
+		final HLayout spacer = new HLayout();
+		spacer.setWidth(20);
         
         Label label = new Label();
-        label.setContents("John Doe");
-        addMember(label);
+        label.setContents("Welcome, John Doe");
+        
+        final HLayout hLayout = new HLayout();
+        hLayout.setAlign(Alignment.RIGHT);
+        hLayout.addMembers(label);
 		
-        addSeparator();
-        
-		ToolStripButton logoutButton = new ToolStripButton();  
-        logoutButton.setTitle("Logout");  
-        addButton(logoutButton);
-        
+        addMembers(hLayout, spacer);
 	}
 }
