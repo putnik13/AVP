@@ -17,6 +17,8 @@ Admin module
    - restore default settings
 5. Support Samba commands
 6. Support 2 network carts (???)
+7. Save presentation on server as images/pdf
+8. Support snapshot painting on client side (save remarks in pdf file)
 
 Support for user roles and rights restriction
 
