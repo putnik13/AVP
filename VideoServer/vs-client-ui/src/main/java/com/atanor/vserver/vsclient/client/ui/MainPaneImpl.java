@@ -20,7 +20,7 @@ public class MainPaneImpl extends HLayout implements MainPane {
 		snapshotBox.setWidth100();
 		snapshotBox.setHeight100();
 		snapshotBox.setShowEdges(false);
-		snapshotBox.setBackgroundColor("black");
+		snapshotBox.setBackgroundColor("lightgrey");
 
 		addMembers(snapshotBox);
 	}

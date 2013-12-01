@@ -14,7 +14,6 @@ import com.atanor.vserver.events.OpenSessionEvent;
 import com.atanor.vserver.util.ImageDecoder;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.google.gson.Gson;
 
 public class PlayerFacadeMock {
 
@@ -22,7 +21,6 @@ public class PlayerFacadeMock {
 	private static final int INTERVAL_TIME = 3000;
 	private final EventBus eventBus;
 	private Timer timer;
-	private Gson gson = new Gson();
 
 	@Inject
 	public PlayerFacadeMock(final EventBus eventBus) {
@@ -40,8 +38,7 @@ public class PlayerFacadeMock {
 		}
 
 		final String encodedImage = ImageDecoder.encodeImage(file);
-		final String jsonRepresentation = gson.toJson(new Snapshot(encodedImage, "795", "586"));
-		AsyncConnector.broadcast(jsonRepresentation);
+		AsyncConnector.broadcastSnapshot(new Snapshot(encodedImage, "795", "586"));
 	}
 
 	@Subscribe

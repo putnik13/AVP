@@ -1,20 +1,4 @@
-/*
- * Copyright 2013 Jeanfrancois Arcand
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package com.atanor.vserver.async;
-
 
 import javax.inject.Singleton;
 
@@ -25,8 +9,6 @@ import org.atmosphere.config.service.Post;
 import org.atmosphere.config.service.Ready;
 import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
-import org.atmosphere.gwt20.managed.AtmosphereMessageInterceptor;
-import org.atmosphere.gwt20.server.GwtRpcInterceptor;
 import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
 import org.atmosphere.interceptor.SuspendTrackerInterceptor;
 import org.slf4j.Logger;
@@ -42,29 +24,21 @@ AtmosphereResourceLifecycleInterceptor.class,
  */
 TrackMessageSizeInterceptor.class,
 /**
- * Serialize/Deserialize GWT message for us
- */
-GwtRpcInterceptor.class,
-/**
  * Make sure our {@link AtmosphereResourceEventListener#onSuspend} is only
  * called once for transport that reconnect on every requests.
  */
-SuspendTrackerInterceptor.class,
-/**
- * Deserialize the GWT message
- */
-AtmosphereMessageInterceptor.class })
+SuspendTrackerInterceptor.class })
 @Singleton
 public class SnapshotResource {
 
-	static final Logger logger = LoggerFactory.getLogger("AtmosphereHandler");
+	static final Logger logger = LoggerFactory.getLogger(SnapshotResource.class);
 
 	@Ready
 	public void onReady(final AtmosphereResource r) {
-		logger.info("Received RPC GET");
-		System.out.println("CLIENT CONNECTED!!!");
-		// Look up a new Broadcaster used for pushing who is connected.
-		AsyncConnector.getBroadcaster().addAtmosphereResource(r).broadcast("Browser UUID: " + r.uuid() + " connected.");
+		logger.info("GET request received, client connected with transport: " + r.transport());
+		
+		AsyncConnector.getBroadcaster().addAtmosphereResource(r);
+		AsyncConnector.broadcastNotification("Browser UUID: " + r.uuid() + " connected.");
 	}
 
 	@Disconnect
