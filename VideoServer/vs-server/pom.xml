@@ -12,6 +12,10 @@
   <artifactId>vs-server</artifactId>
   <name>vs-server</name>
   
+  <properties>
+    <repo.path>${basedir}/..</repo.path>
+  </properties>
+  
   <dependencies>
 	<!-- Project submodules dependencies -->
 	<dependency>
@@ -117,13 +121,27 @@
 	  <groupId>com.google.code.gson</groupId>
 	  <artifactId>gson</artifactId>
     </dependency>
-	  
+	 
 	<!-- VLC Player utilities -->
 	<dependency>
       <groupId>uk.co.caprica</groupId>
       <artifactId>vlcj</artifactId>
     </dependency>
-	  
+	
+    <!-- JavaCV (OpenCV wrapper library) -->	
+	<dependency>
+      <groupId>com.googlecode</groupId>
+      <artifactId>javacpp</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.googlecode</groupId>
+      <artifactId>javacv</artifactId>
+    </dependency>	
+	<dependency>
+      <groupId>com.googlecode</groupId>
+      <artifactId>javacv-platform</artifactId>
+    </dependency>
+	
   </dependencies>
   
 </project>

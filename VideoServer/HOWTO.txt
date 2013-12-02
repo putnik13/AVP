@@ -1,0 +1,2 @@
+Install OpenCV library:
+http://opencvlover.blogspot.in/2012/04/javacv-setup-with-eclipse-on-windows-7.html

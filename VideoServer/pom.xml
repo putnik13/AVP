@@ -33,6 +33,12 @@
     <slf4j.version>1.7.5</slf4j.version>
 	<logback.version>1.0.13</logback.version>
 	
+	<javacpp.version>0.6</javacpp.version>
+    <javacv.version>0.6</javacv.version>
+	<platform.name>windows-x86_64</platform.name>
+	
+	<repo.path>${basedir}</repo.path>
+	
 	<output.unit>${basedir}/vs-launch</output.unit>
     <war.target>${output.unit}/src/main/webapp</war.target>
 	<output.dir>${war.target}/WEB-INF/classes</output.dir>
@@ -54,30 +60,34 @@
       <url>http://smartclient.com/maven2</url>
     </repository>
 	<repository>
-            <id>oss.sonatype.org</id>
-            <url>http://oss.sonatype.org/content/repositories/releases</url>
-        </repository>
-        <repository>
-            <id>oss.sonatype.org-snapshot</id>
-            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-		<repository>
-            <id>jboss</id>
-            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>codehaus</id>
-            <name>repository.codehaus.org</name>
-            <url>http://repository.codehaus.org</url>
-        </repository>
-        <repository>
-            <id>codehaus-snapshots</id>
-            <url>http://snapshots.repository.codehaus.org</url>
-        </repository>
-        <repository>
-            <id>maven.java.net</id>
-            <url>https://maven.java.net/content/groups/public/</url>
-        </repository>
+      <id>oss.sonatype.org</id>
+      <url>http://oss.sonatype.org/content/repositories/releases</url>
+    </repository>
+    <repository>
+      <id>oss.sonatype.org-snapshot</id>
+      <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+    </repository>
+	<repository>
+      <id>jboss</id>
+      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+    </repository>
+    <repository>
+      <id>codehaus</id>
+      <name>repository.codehaus.org</name>
+      <url>http://repository.codehaus.org</url>
+    </repository>
+    <repository>
+      <id>codehaus-snapshots</id>
+      <url>http://snapshots.repository.codehaus.org</url>
+    </repository>
+    <repository>
+      <id>maven.java.net</id>
+      <url>https://maven.java.net/content/groups/public/</url>
+    </repository>
+	<repository>
+        <id>VideoServerRepo</id>
+        <url>file:${repo.path}/repo</url>
+    </repository>
   </repositories>
   
   <build>
@@ -139,7 +149,7 @@
       </plugins>
     </pluginManagement>
   </build>
-  
+       
   <dependencyManagement>
     <dependencies>
       <!-- GWT -->
@@ -337,6 +347,26 @@
 	    <groupId>com.google.code.gson</groupId>
 	    <artifactId>gson</artifactId>
 	    <version>2.2.4</version>
+      </dependency>
+	  
+	  <!-- JavaCV (OpenCV wrapper library) 
+	  javacv - 0.6 version used
+	  opencv - 2.4.6 version used
+	  -->	  
+	  <dependency>
+        <groupId>com.googlecode</groupId>
+        <artifactId>javacpp</artifactId>
+        <version>${javacpp.version}</version>
+      </dependency>
+	  <dependency>
+        <groupId>com.googlecode</groupId>
+        <artifactId>javacv</artifactId>
+        <version>${javacv.version}</version>
+      </dependency>	  	  
+	  <dependency>
+        <groupId>com.googlecode</groupId>
+        <artifactId>javacv-platform</artifactId>
+        <version>${javacv.version}-${platform.name}</version>
       </dependency>
 	  
 	  <!-- Tests -->
