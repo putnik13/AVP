@@ -22,8 +22,6 @@ public class AsyncConnector {
 		final JsonSerializer jsonSerializer = GWT.create(JsonSerializer.class);
 		final AtmosphereRequestConfig jsonRequestConfig = AtmosphereRequestConfig.create(jsonSerializer);
 
-		// rpcReqConfig.setUrl(GWT.getModuleBaseURL() + "atmosphere/async");
-		//jsonRequestConfig.setUrl("/VsClient/atmosphere/async");
 		jsonRequestConfig.setUrl(GWT.getModuleBaseURL() + "atmosphere/async");
 		jsonRequestConfig.setContentType("application/json; charset=UTF-8");
 		jsonRequestConfig.setTransport(AtmosphereRequestConfig.Transport.WEBSOCKET);
