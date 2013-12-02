@@ -3,15 +3,19 @@ package com.atanor.vserver.vsclient.client.ui;
 import com.atanor.vserver.common.entity.Snapshot;
 import com.atanor.vserver.vsclient.client.presenter.MainPanePresenter;
 import com.google.common.primitives.Ints;
+import com.smartgwt.client.widgets.AnimationCallback;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.layout.HLayout;
 
 public class MainPaneImpl extends HLayout implements MainPane {
 
+	private static final int ANIMATION_TIME = 2000;
+	
 	private final Canvas snapshotBox;
 	private MainPanePresenter presenter;
-	private Img currentImg;
+
+	private Img topImg;
 
 	public MainPaneImpl() {
 		setWidth100();
@@ -33,23 +37,31 @@ public class MainPaneImpl extends HLayout implements MainPane {
 
 	@Override
 	public void addSnapshot(final Snapshot snapshot) {
-		cleanScreen();
 
 		final String source = "data:image/png;base64," + snapshot.getEncodedImage();
-		currentImg = new Img();
-		currentImg.setSrc(source);
+		final Img img = new Img();
+		img.setSrc(source);
+		img.setAnimateTime(ANIMATION_TIME);
+		img.setOpacity(100);
 
-		adjustSize(currentImg, Long.valueOf(snapshot.getWidth()), Long.valueOf(snapshot.getHeight()));
-		adjustPosition(currentImg);
-		
-		snapshotBox.addChild(currentImg);
-	}
+		adjustSize(img, Long.valueOf(snapshot.getWidth()), Long.valueOf(snapshot.getHeight()));
+		adjustPosition(img);
 
-	private void cleanScreen() {
-		if (currentImg != null) {
-			currentImg.destroy();
-			currentImg = null;
+		if (topImg == null) {
+			topImg = img;
+		} else {
+			topImg.animateFade(0, new AnimationCallback() {
+
+				@Override
+				public void execute(boolean earlyFinish) {
+					topImg.destroy();
+					topImg = img;
+				}
+			});
 		}
+
+		snapshotBox.addChild(img);
+		img.sendToBack();
 	}
 
 	private void adjustSize(final Img image, final Long originWidth, final Long originHeight) {
@@ -74,5 +86,5 @@ public class MainPaneImpl extends HLayout implements MainPane {
 		final Long leftOffset = Math.round((getElement().getClientWidth() - image.getWidth()) / 2d);
 		image.setLeft(Ints.checkedCast(leftOffset));
 	}
-	
+
 }

@@ -32,7 +32,9 @@ public class PlayerFacadeMock {
 	public void onGetSnapshot(final GetSnapshotEvent event) {
 		System.out.println("onGetSnapshot() called");
 
-		final File file = new File("d:/temp/FOR DESIGN/2013-08-03_102606.png");
+		final Long random = Math.round(Math.random() * 4);
+		final File file = new File("d:/projects/AVP/VideoServer/vs-launch/src/main/webapp/images/test" + random
+				+ ".png");
 		if (!file.exists()) {
 			throw new IllegalStateException("Snapshot is not exist!");
 		}
