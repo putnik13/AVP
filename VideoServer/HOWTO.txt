@@ -1,2 +1,3 @@
 Install OpenCV library:
 http://opencvlover.blogspot.in/2012/04/javacv-setup-with-eclipse-on-windows-7.html
+http://opencvlover.blogspot.in/2012/05/install-opencv-231-on-ubuntu-1204.html
